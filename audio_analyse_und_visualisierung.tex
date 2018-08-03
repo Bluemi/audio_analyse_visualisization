@@ -1,0 +1,206 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{ngerman}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{cite}
+\usepackage{url}
+\usepackage{caption}
+\overfullrule=0pt
+
+\begin{document}
+
+\tableofcontents
+\newpage
+
+\setstretch{1.3}
+
+\section{Einleitung}
+Das menschliche Gehör hat die Fähigkeit komplexe akustische Signale zu verarbeiten und zu interpretieren. Für eine Person ist es kein Problem aus einer Vielzahl von unterschiedlichen Geräuschen eine bestimmte Information zu gewinnen und auf diese zu reagieren. Dabei werden rein mechanische Schwingungen der Luft in abstraktere Informationen umgewandelt und vom Hörzentrum interpretiert, sodass aufeinander folgende Laute beispielsweise als menschliche Sprache erkannt und verstanden werden können. Dabei ist es sehr robust gegenüber Störfaktoren, wie Hintergrundgeräusche oder leise Töne, so werden Laute, auf die man sich konzentriert bis zu drei mal lauter wahrgenommen (Cocktail-Party-Effekt).\\
+Die Fähigkeit aus einem komplexen Signal einzelne Features zu extrahieren, ist ein schwer zu erreichendes Ziel für die Informatik, da die zugrundeliegenden Audiodaten kaum formal erfassbaren Regeln unterliegen, die für Algorithmen dafür benutzt werden könnten abstraktere Informationen zu gewinnen, so sind Audiodaten meist sehr komplex und verrauscht.\\
+Neben der Wahrnehmung von Sprache und Umweltgeräuschen kann der Mensch Musik wahrnehmen, wobei Musik die besondere Funktion hat Emotionen auszudrücken und zu erzeugen. Dabei können sich die erzeugten Emotionen stark unterscheiden und sind von vielen Faktoren abhängig. Zu diesen Faktoren gehören die Harmonik, die Rhythmik, die Melodik, sowie subjektive Faktoren, wie die Hörerwartung des Hörers und dessen musikalische Prägung.\\
+Der Versuch die in der Musik erzeugten Emotionen zu berechnen oder zu klassifizieren wird ``Music Emotion Recognition'' genannt. Grade in den letzten Jahren wurde die Forschung auf diesem Gebiet verstärkt, vor allem mit der Motivation Musik nach Emotionen sortieren und anbieten zu können. Dabei werden nach den modernsten Methoden verschiedene Lowlevel und Highlevel Features aus der Musik extrahiert, um diese dann mit Machine Learning Algorithmen zu klassifizieren. Dafür müssen große Mengen von Musik von Menschen klassifiziert werden, was vor allem durch die Subjektivität der Hörer erschwert wird.\\
+Die emotionalen Eigenschaften von Musik werden längst in Multimedialen Inhalten genutzt, um die Wirkung der Medien zu verstärken. So wird Musik bewusst eingesetzt, um Filme und Spiele anzureichern.\\
+Andersherum sind Videos und Animationen eine Möglichkeit Musik zu untermalen. So werden vor allem in der kommerziellen Musikproduktion zahlreiche Musikvideos produziert. Auch haben viele moderne Musikplayer eine eingebaute Visualisierung, die sich passend zur Musik verändert. Diese Visualisierung basiert meistens auf einer Analyse der Musik, die keine tiefer gehenden Informationen aus der Musik zieht. Die Visualisierung ist eher willkürlich, als der Musik nachempfunden.\\
+An dieser Stelle möchte ich ansetzen und untersuchen auf welche Art und Weise eine Visualisierung der Musik durchgeführt werden kann, sodass aus der Musik eine Visualisierung generiert werden kann, die eine intuitive Verbindung zu den Emotionen des Hörers hat.
+
+\subsection{Unterschiede zu anderen Visualisierungen}
+% andere Visualizer keine tiefere Informationsverarbeitung
+Im Folgenden möchte ich auf die heutigen Möglichkeiten der Visualisierung eingehen und zeigen, wie sich diese von dem hier beschriebenen Projekt unterscheiden. Die heutigen Visualisierungen kann man in drei grobe Gebiete einteilen.\\
+% Standard Visualisierungen
+Das erste dieser Gebiete schließt die Visualisierungen der bekannten Audioplayer ein. Diese haben den Anspruch zu jeder beliebigen Musik eine passende Visualisierung zu schaffen und dabei wenig Ressourcen zu verbrauchen. Auch müssen sie ohne externe Information auskommen, die helfen könnte eine bessere Visualisierung zu erschaffen. Der Nachteil dieser Bedingungen ist eine relativ technische Interpretation der Musik, die dazu führt, dass auf unterschiedliche Emotionen, die in der Musik auftauchen nicht eingegangen wird. Sie funktionieren, indem entweder die Lautstärke der Musik Einfluss auf die Visualisierung nimmt oder die Musik über eine FFT (siehe Grundlagen) in Frequenzbänder übersetzt wird, die dann einzeln in die Visualisierung eingehen. Diese Art der Visualisierung wird beispielsweise bei der MilkDrop-Visualisierung oder beim bekannten Musikplayer iTunes verwendet.\\
+% Visualisierung selber machen (Adobe After Effects)
+Die zweite Variante wird vor allem in Einzelfällen und zunehmend für elektronische Musik verwendet. Hierbei wird die Visualisierung speziell für ein Musikstück von Hand umgesetzt. Hierbei werden wie auch bei der ersten Variante technische Aspekte der Musik mit einbezogen, um den Bezug zwischen Musik und Visualisierung zu erschaffen. Dazu werden spezielle Programme, wie Adobe After Effects, verwendet. Der große Vorteil dieser Variante ist der, dass man eine einzigartige Visualisierung erzeugt, die speziell auf dieses Lied angepasst sein kann. Man kann so die wahrscheinlich besten Ergebnisse erzielen. Der Nachteil ist, dass für ein neues Lied eine neue Visualisierung erschaffen werden muss.\\
+% Visualisierung sehr nahe an Noten
+Die dritte Variante der Visualisierungen ist heute nur noch wenig populär und basiert darauf, dass externe Informationen für die Visualisierung bereit gestellt werden. Die 1985 vorgestellte ``Music Animation Machine'' orientiert sich an MIDI Noten, die passend zur laufenden Musik bereitgestellt sind. Der Zusammenhang mit der Musik ist damit unmittelbar hergestellt, allerdings ist die Interpretation der Musik damit auch auf einer sehr technischen Ebene, da Emotionen, die durch die Musik erzeugt werden nicht in die Visualisierung einfließen.\\
+Das Ziel dieser Arbeit ist es Algorithmen zu entwickeln und zu beschreiben, die aus einem Audiosignal eine Visualisierung entwickeln, die sich passend zur empfundenen Stimmung entwickelt. Dafür muss man sich damit beschäftigen, wie menschliche Emotionen auf berechenbare Modelle abgebildet werden können und wie diese extrahierte Information dann in eine Visualisierung einfließen kann.
+
+\section{Grundlagen}
+Im Folgenden sollen kurz Grundlagen erläutert werden, die helfen sollen die implementierten Algorithmen zu verstehen.
+\subsection{Tonleitern}
+Um zu verstehen, welche Musik positive, freudige  oder negative, traurige Emotionen hervorruft, soll an dieser Stelle kurz auf die musikalischen Grundlagen der Tonleitern eingegangen werden.
+Eine Tonleiter ist eine Menge von Tönen, die einen Grundton besitzt. Es gibt unterschiedliche Tonleitern, mit denen unterschiedliche Emotionen verbunden werden. In den folgenden Bildern sind Klaviaturen zu sehen, auf denen die Töne der C Tonleitern markiert sind.
+\begin{figure}[ht]
+\begin{center}
+\begin{tabular}{c c c}
+C Dur & \hspace{15pt} C Reines Moll & \hspace{15pt} C Harmonisches Moll \\
+\includegraphics[scale=1.2]{res/images/keyboard_dur} & \hspace{15pt} \includegraphics[scale=1.2]{res/images/keyboard_rein_moll} & \hspace{15pt} \includegraphics[scale=1.2]{res/images/keyboard_harm_moll}
+\end{tabular}
+\caption[C Tonleitern]{Die C Tonleitern}
+
+\end{center}
+\end{figure}
+
+Der Grundton dieser Tonleitern ist das C. Es befindet sich ganz links auf der Klaviatur. Entscheidend für die Wirkung einer Tonleiter ist der Abstand der Tonleitertöne zum Grundton. Wie man sieht ist der dritte Ton (die Terz) über dem Grundton bei beiden Moll-Tonleitern einen Halbtonschritt niedriger, sowie der sechste Ton (die Sexte). Man spricht hierbei von der kleinen Terz und der kleinen Sexte. Der siebte Ton (die Septime oder Septe) ist beim reinen Moll eine kleine Septime, während sie beim harmonischen Moll eine große Septime ist, gleich der Dur-Tonleiter. Die große Septime wird auch Leitton genannt.\\
+Neben dem reinen und dem harmonischen Moll existiert noch das melodische Moll, das sich beim aufwärts und abwärts spielen unterscheidet. Beim aufwärts spielen wird die Sexte und die Septime wie in der Dur-Tonleiter gespielt, beim abwärts spielen wie im reinen Moll. Diese Tonleiter wird im Folgenden nicht weiter behandelt. Weiterhin existieren noch die sogenannten Kirchentonleitern, sowie zahlreiche Blues und Jazz Tonleitern, die meistens ``Scalen'' genannt werden und in denen häufig die kleine Septime wie im reinen Moll gespielt wird.\\
+Da das reine Moll und das Harmonische Moll sich von der Dur Tonleiter in der Terz und in der Sexte unterscheiden, könnte man diese Töne in die Approximation der Stimmung des Musikstückes mit einfließen lassen. Die Septime ist weniger gut zu verwenden, da sie im harmonischen Moll als große Septime (wie in der Dur-Tonleiter) und im reinen Moll als kleine Septime vorkommt. Auch wird die kleine Septime sehr häufig in eher positiv freudigen Blues Stücken verwendet.
+
+%\subsubsection{Loudness of Music / Decibel}
+
+\subsection{Music Information Retrieval}
+\subsubsection{DCT/DFT/FFT}
+% Was ist die DCT / FFT
+Die Diskrete Kosinus Transformation (engl. Discrete Cosine Transformation; kurz DCT) ist eine Transformation, die es erlaubt, Werte, die zeitdiskret kodiert sind, in den Frequenzbereich zu transformieren. Wird beispielsweise eine Sinusschwingung mit 440 Hertz in den Frequenzbereich transformiert, so ist der einzige Ausschlag im Frequenzbereich die Frequenz von 440 Hertz. Die Werte im Frequenzbereich werden als Koeffizienten von Kosinusfunktionen dargestellt. Diese Kosinusfunktionen sind unterschiedlich gestreckt, um die verschiedenen Frequenzen abbilden zu können.\\
+% Varianten von DCT / FFT
+Von der DCT gibt es die Varianten I - VIII von denen die Varianten I - IV praktischen Einsatz finden. Neben der DCT existiert auch die Diskrete Fourier Transformation (kurz DFT), die Frequenzen als Koeffizienten von Kosinus und Sinusfunktionen darstellt. Für die DFT gibt es eine optimierte Implementierung, die sogenannte Schnelle Fourier Transformation (engl. Fast Fourier Transformation; kurz FFT), die es erlaubt eine DFT mit logarithmischer Komplexität durchzuführen.\\
+% Anwendungsgebiete
+Anwendung findet die DCT bei der verlustbehafteten Audio- und Bildkompression. Für die Analyse des Spektrums eines Musikausschnittes bietet sich vor allem, dank ihrer besseren Laufzeit, die FFT an.
+
+\subsubsection{Lautstärke}
+
+\section{Analyse}
+%\subsection{Warum ist das Thema relevant?}
+%Musik spielt in der modernen Gesellschaft eine größer werdende Rolle. Während in vergangenen Jahrhunderten Musik eher %ein Luxus der reicheren Bevölkerung war, hat sich im 20. Jahrhundert der Musikmarkt zu einem Massenmarkt entwickelt, %der auch durch große online Plattformen, wie Spotify oder YouTube, wächst. So meldete Spotify 2018 rund 180 Millionen %Nutzer weltweit.
+
+\subsection{Zielsetzung}
+% Musik gerecht visualisieren
+Ziel dieser Arbeit ist es herauszuarbeiten, wie ein Programm umgesetzt werden kann, das eine Visualisierung entwickelt, die eine enge Verbindung zur Musik aufweist. Dazu soll eine tiefere Interpretation der Musik erfolgen, deren Ergebnisse dann benutzt werden, um eine Darstellung zu generieren, die die Empfindungen des Hörers bestärken.\\
+% Was braucht man für Visualisierung? Emotionen/Events
+Bei dieser Aufgabenstellung stellt sich die Frage welche Informationen von der Musik benötigt werden. Da Musik zeitlich abläuft, empfiehlt es sich auf Zeitpunkte in der Musik einzugehen, die eine besondere Relevanz haben. So gibt es Rhythmuselemente, die man unmittelbar beim Hören wahrnimmt, aber auch Events, die weniger häufig auftreten, wie Wechsel von Abschnitten des Songs. Neben diesen zeitlich positionierbaren Events gibt es Informationen, die sich stetig über den Song entwickeln, wie die gespielten Akkorde oder die Lautstärke.\\
+Auch sind die empfundenen Emotionen während des Stückes ein interessanter Aspekt, der die Visualisierung anreichern könnte.
+% Wie kann man sie ermitteln?
+Wenn Emotionen zur Visualisierung genutzt werden sollen, so stellen sich einige Fragen. Auf welche Art können Emotionen ermittelt werden oder welche Features der Musik lassen sich nutzen, um in eine Approximation der empfundenen Stimmung einzugehen?\\
+% Wie kann man sie modelieren?
+Wie lassen sich Stimmungen oder Emotionen in digitalen Systemen darstellen und welche Darstellung eignet sich für eine Visualisierung? Sollte man versuchen Emotionen zu Klassifizieren oder durch kontinuierliche Werte beschreiben?\\
+% Wie kann man sie visualisieren?
+Wenn man diese Fragestellungen gelöst hat, so ist weiter zu klären, welche Visualisierung für die ermittelten Daten als passend empfunden wird und wie man diese umsetzt.\\
+% Wie kann man testen, ob die Visualisierung als passend empfunden wird?
+Als Letztes möchte ich herausstellen, dass auch das Testen der Visualisierung eine Herausforderung darstellt, da die Subjektivität des Hörers ein einheitliches Ergebnis erschwert und die Problematik nicht formal erfassbar zu seien scheint. Die Beantwortung dieser Fragen soll Thema dieser Arbeit sein, sowie die Beschreibung einer prototypischen Umsetzung. 
+
+\subsection{Anforderungen}
+Im folgenden werden Anforderungen beschrieben, die an den Quelltext des Prototypen, sowie dessen Resultat gestellt werden.
+
+\subsubsection{Funktionale Anforderungen}
+Da der Fokus dieser Arbeit eher auf der Umsetzung von einer Visualisierung liegt, als auf der Interaktion mit dem User gibt es nur wenige funktionale Anforderungen. So wurde beispielsweise auf die Implementierung einer GUI, mit der man die Visualisierung steuern könnte, verzichtet. Im Folgenden soll trotzdem die Funktionsweise des Prototypen beschrieben sein.\\
+Die Visualisierung sollte sich mit Angabe einer Audiodatei starten lassen. Dabei sollten unterschiedliche gängige Audioformate, wie wav oder mp3, unterstützt werden, die automatisch erkannt und richtig geladen werden.\\
+Als optionale Interaktionsmöglichkeit mit dem Programm könnte die Perspektive bzw. die Kameraposition durch Tastatureingaben und Mausbewegungen des Benutzers verändert werden.\\
+Wichtig ist auch, das sich der Prototyp während der Visualisierung beenden lässt.\\
+Als weniger wichtig wird angesehen, dass der Prototyp für unterschiedliche Betriebssysteme kompatibel ist. Er wird für die Linux Umgebung entwickelt.
+
+\subsubsection{Nicht funktionale Anforderungen}
+Wie in der Zielsetzung schon behandelt, soll die Visualisierung die durch die Musik empfundenen Emotionen bekräftigen. Dazu soll die Musik analysiert werden.\\
+Die Analyse der Musik sollte performant implementiert sein, sodass kein längeres Warten auf die Ergebnisse zu spüren ist. Dazu sollen aufwendige Berechnungen, wie beispielsweise eine Spektrumsanalyse nicht mehrfach durchgeführt werden, die Algorithmen effizient implementiert werden und wo dies schwierig ist sollte auf optimierte Software-Bibliotheken zurückgegriffen werden. Auf Optimierung durch Multithreading oder Multiprocessing wird aus Zeitgründen verzichtet.\\
+Weiterhin sollten Programmabstürze abgefangen und durch verständliche Fehlermeldungen ersetzt werden. Beispielsweise durch fehlende oder fehlerhafte Audiodateien.\\
+Neben den Anforderungen an die Bedienbarkeit des Prototypen existieren Anforderungen, die die Programmierung direkt betreffen. Um unterschiedliche Visualisierungen zu generieren, ist es sinnvoll ein modulares System zu konstruieren, indem unterschiedliche Visualisierungen austauschbar realisiert werden können. Auch andere Bereiche, wie die Analyse der Musik kann man gut mit unabhängigen Modulen realisieren, die die einzelnen Verarbeitungsschritte der Analyse umsetzen. Ein weiterer Vorteil eines modularen Systems ist, dass es einfach erweitert werden kann, indem neue Module hinzugefügt werden.
+
+\subsection{Verwendete Sprachen / Bibliotheken}
+
+\subsubsection{Programmiersprachen}
+Für die Umsetzung des Prototypen wurde die Programmiersprache C++ gewählt. Einerseits da C++ schnelle Programme erzeugt, andererseits da es gute Bibliotheken mit C++ Anbindungen gibt, die für die Analyse von Audiomaterial konzipiert sind. Auch  gibt es mit OpenGL einen Standard, der schnelle 3D-Visualisierungen ermöglicht.\\
+C++ enthält objektorientierte Elemente, die für einen modularen Aufbau der Software Architektur geeignet sind. Auch enthält es mit der Standardbibliothek eine breite Auswahl an grundlegenden Klassen und Funktionen, die auch für größere Projekte geeignet sind.\\
+Ein Nachteil an C++ ist die teilweise schwierige Installation von Bibliotheken, wie ``Essentia''. Ein weiterer häufiger Kritikpunkt an C++ ist, dass Fehler in der Programmierung zu sogenanntem ``undefined behaviour'' führen, welches Abstürze erzeugt, die nur schwer auf den Implementierungsfehler zurückzuführen sind. Bjarne Stroustrup, der Entwickler von C++ sagte einmal selbst: ``C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.'' \cite{BjarneStroustrupCite}.\\
+Neben C++ wurde für Testzwecke die Scriptsprache Python verwendet. Da Python mit ``Numpy'', ``OpenCV2'' und ``Keras/Tensorflow'' schnell zu benutzende Bibliotheken bereitstellt, eignet es sich gut für kleinere Tests. Bei der Ausführung des Prototypen wird kein Python ausgeführt.
+
+\subsubsection{Bibliotheken für Audioanalyse}
+Um zu klären welche Bibliothek für die Audioanalyse genutzt wird, werden im Folgenden Anforderungen erhoben, die diese Bibliothek erfüllen muss.\\
+Sie sollte eine einfache API haben, die keine lange Einarbeitungszeit benötigt, sowie eine möglichst breite Auswahl an Algorithmen, die zur Analyse verwendet werden können. Diese sollten performant implementiert und dokumentiert sein. Unnötig wären weitere Features, wie beispielsweise Soundsynthese oder die Möglichkeit Aufnahmen machen zu können. Auch sollte sich die Bibliothek gut in ein eigenes System integrieren lassen.\\
+CLAM (C++ Library for Audio and Music) bietet eine Sammlung von fertigen Programmen, die für die Audioanalyse und deren Darstellung entwickelt wurden. Darunter auch für dieses Projekt interessante Funktionalitäten, wie das filtern von Akkordbezeichnungen aus der Musik und Algorithmen zum auslesen von Audiodateien. Jedoch schätze ich als CLAM für dieses Projekt nicht geeignet ein, da es sich eher um schon fertige Applikationen handelt, wie beispielsweise dem ``Network Editor'' oder dem Programm ``Chordata''. Weiterhin scheint die CLAM Dokumentation nicht dafür ausgelegt CLAM in ein eigenes Projekt zu integrieren, was sich daran festmachen lässt, dass große Teile der Dokumentation die graphischen Oberflächen von CLAM erklären und man nur eine Doxygen Dokumentation mit wenigen Codebeispielen findet.\\
+Für die Umsetzung des Prototypen wurde die Bibliothek ``Essentia'' verwendet. Essentia ist eine open-source Bibliothek für Musikanalyse. Es existieren Algorithmen um Audiofiles einzulesen, Standard Signalverarbeitungsschritte und Algorithmen, die spektrale, rhythmische und tonale Informationen errechnen, sowie weitere High-Level Features \cite{Bogdanov:2013:EOL:2502081.2502229}. Weiterhin gibt es Klassen, die das Zusammenspiel dieser Algorithmen erleichtern, so eine ``Pool''-Klasse, in der extrahierte Informationen gespeichert werden können. Die API ist einfach zu benutzen und verständlich dokumentiert. Ein Nachteil von Essentia ist die umständliche Installation, da Essentia mehrere andere Bibliotheken benutzt, die ebenfalls als Abhängigkeiten installiert werden müssen. Insgesamt erfüllt Essentia die Voraussetzungen am besten, weshalb diese Bibliothek auch in der Implementierung des Prototypen verwendet wurde.
+
+\subsubsection{OpenGL}
+TODO
+\subsubsection{CMake}
+\newpage
+\section{Konzept}
+\subsection{Verarbeitungsschritte}
+Um die Umwandlung von unbearbeiteten Audiosignalen in eine passende Visualisierung zu vereinfachen, wird die Aufgabenstellung in mehrere Teilschritte gegliedert. Als Ausgangspunkt existiert eine nicht annotierte Audiodatei aus der abstraktere Informationen extrahiert werden. Die Auswahl dieser Informationen ist sicherlich entscheidend und wird später behandelt.\\
+Da Teile der Musik, vor allem rhythmische Elemente einen klaren Zeitpunkt definieren, ist es sinnvoll diese Informationen nicht wie die kontinuierlichen Daten zu speichern, sondern als Events zu extrahieren. Diese beruhen auf den vorher entwickelten Daten. Diese Events, sowie die kontinuierlichen Daten werden zusammengefasst und benutzt, um eine passende Visualisierung zu generieren. Die folgende Grafik zeigt einen Entwurf der Verarbeitung:
+\begin{figure}[ht]
+\includegraphics[scale=0.65]{res/diagrams/data_flow}
+\caption[Verarbeitungsschritte]{Verarbeitungsschritte}
+\end{figure}
+Im Bild sind die Verarbeitungsschritte (1. - 3.), sowie deren Resultate (I. - IV.) zu sehen.\\
+Man stellt nun unterschiedliche Arten der Visualisierung (Schritt 3) zur Verfügung und schafft eine übergeordnete Einheit, die aus unterschiedlichen Arten der Datenvisualisierung wählt, um eine abwechslungsreichere Visualisierung zu generieren. Wenn das Umsetzen in eine Visualisierung unabhängige Eigenschaften der Visualisierung verändert, wie beispielsweise Farbe und Position, kann man auch verschiedene Objekte, die diese Eigenschaften verändern, gleichzeitig agieren lassen.
+
+\subsection{Auswahl der kontinuierlichen Daten und Events}
+Wie weiter oben angesprochen, ist die Auswahl der Informationen, die man der Musik entnimmt, entscheidend für eine gute Visualisierung. Die Daten müssen wichtig für die Visualisierung oder Grundlage für andere Daten oder Events sein. Weiterhin sollten Sie sich möglichst zuversichtlich berechnen lassen.
+%Wie sich zeigen wird, schließen sich diese beiden Kriterien fast aus.
+\paragraph{Lautstärke}
+Essentia bietet die Möglichkeit die Lautstärke für einzelne Frames  zu bestimmen (1 Frame = 2048 Samples $\approx$ 46 Millisekunden). Der Algorithmus lässt sich einfach benutzen und funktioniert zuverlässig.\\
+Wie viel sagt die Lautstärke über die Musik aus? Wie Versuche zeigten, sagt die reine Lautstärke, vor allem, wenn man sie nur lokal und nicht im Kontext des ganzen Songs betrachtet, wenig über die empfundene Stimmung aus. Dramatische klassische Musik oder auch aufgeregte Rockmusik ist meistens weniger laut, als ruhiger moderner Pop oder elektronische Musik. ``Loudness War'' bezeichnet die Tendenz der Musikproduzenten die Lautstärke der Musik über die Jahre immer weiter zu erhöhen \cite{683ea11abc74c43c6680cd4c08dc538caee546575b59c2f40d70033cf3389ec8}.\\
+Aufschlussreicher wird die Betrachtung der Lautstärke, sobald man sie im Kontext betrachtet, so unterscheiden sich unterschiedliche Abschnitte eines Songs häufig in der Lautstärke. Auch interessant ist die Betrachtung der Veränderung der Lautstärke, um rhythmische Events zu identifizieren.
+\paragraph{Dissonanz / Inharmonie}
+Die Konsonanz bzw. Dissonanz zweier Töne beschreibt, wie gut bzw. schlecht diese Töne zusammen klingen. Für westliche Musik gibt es eine klare Vorschrift, welche Töne konsonant und welche dissonant klingen. Abbildung 3 stellt die konsonanten und dissonanten Töne zum Ton C dar \cite{89a5aac0af37ff45f55cd59468ed3b0a5f30cbb229bb691b7970477c14dbe1af}.
+\begin{figure}[ht]
+\includegraphics[scale=0.5]{res/images/konsonant}
+\vspace{10pt}\\
+\includegraphics[scale=0.5]{res/images/dissonant}
+\caption[Konsonante und Dissonante Intervalle]{Die konsonanten und dissonanten Intervalle}
+\end{figure}
+In Essentia gibt es explizit einen Algorithmus, der aus den Spitzen des Spektrums dessen Dissonanz berechnet. Dazu wird die paarweise Dissonanz zweier spektraler Spitzen errechnet und deren Durchschnitt gebildet. \cite{EssentiaDissonance}
+
+\newpage
+
+\subsection{Music Emotion Recognition}
+Music Features to use, Stand der Technik, Arousal Recognition, Valence Recognition
+
+Der Versuch erzeugte Emotionen aus der Musik zu gewinnen wird ``Music Emotion Recognition'' genannt. Dabei werden nach den modernsten Methoden verschiedene Lowlevel und Highleven Features aus der Musik extrahiert um diese dann mit Machine Learning Algorithmen auszuwerten. Entweder probiert man hierbei die Musik einer Klasse zuzuordnen, wie beispielsweise ``Friedlich'' oder ``Hektisch, Aggressiv'' oder es wird versucht die Features der Musik auf ein Model von menschlichen Emotionen abzubilden.
+
+\subsection{Circumplex Model of Affect}
+
+\subsection{Music over Time}
+Paper: The Role of Time in Music Emotion Recognition
+
+\subsection{Visualization of Music}
+\subsubsection{Colors}
+\subsection{Movements}
+
+\newpage
+
+\section{Implementierung / Umsetzung}
+\subsection{Grobe Aufteilung}
+Visualizer (OpenGL) / AudioVisualizer / Essentia
+\subsection{Visualizer}
+\paragraph{OpenGL}
+\paragraph{Shapes}
+\paragraph{Entities}
+\paragraph{Movements}
+\paragraph{Creations}
+\paragraph{Queries}
+\subsection{AudioVisualizer}
+\paragraph{DataGenerators}
+\subparagraph{Die implementierten DataGenerators}
+\paragraph{EventGenerators}
+\paragraph{Dependencies}
+\paragraph{Handler}
+\paragraph{EventSystem}
+\paragraph{Essentia}
+\paragraph{Compositor}
+
+\section{Fazit}
+Auf Anforderungen eingehen
+\subsection{Erlebnis}
+
+\section{Zitate}
+Im Chapter C++. Bjarne Stroustrop am Ende.
+
+\bibliography{bib/literatur}
+\bibliographystyle{alpha}
+
+\listoffigures
+
+\end{document}
