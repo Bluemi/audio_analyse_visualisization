@@ -143,22 +143,28 @@ Wie weiter oben angesprochen, ist die Auswahl der Informationen, die man der Mus
 Essentia bietet die Möglichkeit die Lautstärke für einzelne Frames  zu bestimmen (1 Frame = 2048 Samples $\approx$ 46 Millisekunden). Der Algorithmus lässt sich einfach benutzen und funktioniert zuverlässig.\\
 Wie viel sagt die Lautstärke über die Musik aus? Wie Versuche zeigten, sagt die reine Lautstärke, vor allem, wenn man sie nur lokal und nicht im Kontext des ganzen Songs betrachtet, wenig über die empfundene Stimmung aus. Dramatische klassische Musik oder auch aufgeregte Rockmusik ist meistens weniger laut, als ruhiger moderner Pop oder elektronische Musik. ``Loudness War'' bezeichnet die Tendenz der Musikproduzenten die Lautstärke der Musik über die Jahre immer weiter zu erhöhen \cite{683ea11abc74c43c6680cd4c08dc538caee546575b59c2f40d70033cf3389ec8}.\\
 Aufschlussreicher wird die Betrachtung der Lautstärke, sobald man sie im Kontext betrachtet, so unterscheiden sich unterschiedliche Abschnitte eines Songs häufig in der Lautstärke. Auch interessant ist die Betrachtung der Veränderung der Lautstärke, um rhythmische Events zu identifizieren.
-\paragraph{Dissonanz / Inharmonie}
+\paragraph{Konsonanz / Dissonanz}
 Die Konsonanz bzw. Dissonanz zweier Töne beschreibt, wie gut bzw. schlecht diese Töne zusammen klingen. Für westliche Musik gibt es eine klare Vorschrift, welche Töne konsonant und welche dissonant klingen. Abbildung 3 stellt die konsonanten und dissonanten Töne zum Ton C dar \cite{89a5aac0af37ff45f55cd59468ed3b0a5f30cbb229bb691b7970477c14dbe1af}.
 \begin{figure}[ht]
 \includegraphics[scale=0.5]{res/images/konsonant}
-\vspace{10pt}\\
+\vspace{5pt}\\
 \includegraphics[scale=0.5]{res/images/dissonant}
 \caption[Konsonante und Dissonante Intervalle]{Die konsonanten und dissonanten Intervalle}
 \end{figure}
-In Essentia gibt es explizit einen Algorithmus, der aus den Spitzen des Spektrums dessen Dissonanz berechnet. Dazu wird die paarweise Dissonanz zweier spektraler Spitzen errechnet und deren Durchschnitt gebildet. \cite{EssentiaDissonance}
+In Essentia gibt es explizit einen Algorithmus, der aus den Spitzen des Spektrums dessen Dissonanz berechnet. Dazu wird die paarweise Dissonanz zweier spektraler Spitzen errechnet und deren Durchschnitt gebildet \cite{EssentiaDissonance}. Das Vorhandensein von dissonanten Tönen könnte ein Indikator für eine eher trübe Stimmung des Musikstückes sein.\\
+Ein praktischer Test zeigte, dass die Ergebnisse zu ungenau waren, um in die Auswertung einzugehen. Verzerrte Töne oder vielschichtige Musik wurden häufig fälschlicherweise als dissonant erkannt. Aus diesem Grund wurde die Konsonanz bzw. Dissonanz nicht mit in die Implementierung integriert.
+
+\paragraph{Akkorde}
+Die gespielten Dreiklänge vor allem aber die Information ob es sich um Moll oder Dur Akkorde handelt, kann man benutzen, um eine bessere Visualisierung zu gestalten. Essentia bietet den Algorithmus ``ChordDetection'', der aus einer gegebenen Menge von sogenannten ``Pitch-Class-Profiles'' einen Akkord extrahiert. Ein Pitch-Class-Profile enthält Informationen darüber welche Töne wie laut gespielt werden. Es besteht aus zwölf Fließkommazahlen, die jeweils für einen Ton stehen \cite{e6fe2ea94b8d448139e05e3d36c0ffd5e82905dc87f719492ff3872650c667d9}. Der ChordDetection Algorithmus gleicht nun diese Informationen mit bekannten Akkorden ab, um den Akkkord mit der höchsten Wahrscheinlichkeit zu erkennen. In der Dokumentation des Algorithmus findet sich: ``experimental (prone to errors, algorithm needs improvement)''\cite{EssentiaChordDetection}. Ein Test zeigt, dass die Akkorde nicht immer perfekt erkannt werden, aber der Grundton meistens richtig erfasst wird. Deshalb wurde der ChordDetection Algorithmus mit in die Implementierung aufgenommen.
+
+\paragraph{Menschliche Emotionen}
+Da das Ziel dieses Projektes ist die beim Hören empfundenen Emotionen zu bestärken, wäre es optimal, menschliche Emotionen modellieren zu können, um diese mit in die Visualisierung einfließen lassen zu können. Im folgenden Kapitel werden die Möglichkeiten der sogenannten ``Music Emotion Recognition'' beleuchtet.
 
 \newpage
 
 \subsection{Music Emotion Recognition}
-Music Features to use, Stand der Technik, Arousal Recognition, Valence Recognition
 
-Der Versuch erzeugte Emotionen aus der Musik zu gewinnen wird ``Music Emotion Recognition'' genannt. Dabei werden nach den modernsten Methoden verschiedene Lowlevel und Highleven Features aus der Musik extrahiert um diese dann mit Machine Learning Algorithmen auszuwerten. Entweder probiert man hierbei die Musik einer Klasse zuzuordnen, wie beispielsweise ``Friedlich'' oder ``Hektisch, Aggressiv'' oder es wird versucht die Features der Musik auf ein Model von menschlichen Emotionen abzubilden.
+%Der Versuch erzeugte Emotionen aus der Musik zu gewinnen wird ``Music Emotion Recognition'' genannt. Dabei werden %nach den modernsten Methoden verschiedene Lowlevel und Highleven Features aus der Musik extrahiert um diese dann %mit Machine Learning Algorithmen auszuwerten. Entweder probiert man hierbei die Musik einer Klasse zuzuordnen, wie %beispielsweise ``Friedlich'' oder ``Hektisch, Aggressiv'' oder es wird versucht die Features der Musik auf ein Model von %menschlichen Emotionen abzubilden.
 
 \subsection{Circumplex Model of Affect}
 
