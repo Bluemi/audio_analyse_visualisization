@@ -121,9 +121,9 @@ Sie sollte eine einfache API haben, die keine lange Einarbeitungszeit benötigt,
 CLAM (C++ Library for Audio and Music) bietet eine Sammlung von fertigen Programmen, die für die Audioanalyse und deren Darstellung entwickelt wurden. Darunter auch für dieses Projekt interessante Funktionalitäten, wie das filtern von Akkordbezeichnungen aus der Musik und Algorithmen zum auslesen von Audiodateien. Jedoch schätze ich als CLAM für dieses Projekt nicht geeignet ein, da es sich eher um schon fertige Applikationen handelt, wie beispielsweise dem ``Network Editor'' oder dem Programm ``Chordata''. Weiterhin scheint die CLAM Dokumentation nicht dafür ausgelegt CLAM in ein eigenes Projekt zu integrieren, was sich daran festmachen lässt, dass große Teile der Dokumentation die graphischen Oberflächen von CLAM erklären und man nur eine Doxygen Dokumentation mit wenigen Codebeispielen findet.\\
 Für die Umsetzung des Prototypen wurde die Bibliothek ``Essentia'' verwendet. Essentia ist eine open-source Bibliothek für Musikanalyse. Es existieren Algorithmen um Audiofiles einzulesen, Standard Signalverarbeitungsschritte und Algorithmen, die spektrale, rhythmische und tonale Informationen errechnen, sowie weitere High-Level Features \cite{Bogdanov:2013:EOL:2502081.2502229}. Weiterhin gibt es Klassen, die das Zusammenspiel dieser Algorithmen erleichtern, so eine ``Pool''-Klasse, in der extrahierte Informationen gespeichert werden können. Die API ist einfach zu benutzen und verständlich dokumentiert. Ein Nachteil von Essentia ist die umständliche Installation, da Essentia mehrere andere Bibliotheken benutzt, die ebenfalls als Abhängigkeiten installiert werden müssen. Insgesamt erfüllt Essentia die Voraussetzungen am besten, weshalb diese Bibliothek auch in der Implementierung des Prototypen verwendet wurde.
 
-\subsubsection{OpenGL}
-TODO
-\subsubsection{CMake}
+%\subsubsection{OpenGL}
+%TODO
+%\subsubsection{CMake}
 \newpage
 \section{Konzept}
 \subsection{Verarbeitungsschritte}
@@ -163,8 +163,32 @@ Da das Ziel dieses Projektes ist die beim Hören empfundenen Emotionen zu bestä
 \newpage
 
 \subsection{Music Emotion Recognition}
+Der Versuch mit Musik verbundene Emotionen zu gewinnen wird ``Music Emotion Recognition'' (MER) oder ``Mood Classification'' genannt. Dieses Gebiet der Forschung hat in den letzten Jahren mehr Aufmerksamkeit erfahren, so hat MIREX (Music Information Retrieval Evaluation Exchange) Music Emotion Recognition in seine Liste der Ziele (Tasks) aufgenommen \cite{dadf933477b66ec1591840023fc37ac83b3e10d5aa4fd440639abca907d805ba}. MIREX ist eine Community Organisation, die gemeinsam Testdatensätze, Ziele der Forschung, sowie Evaluierungsmethoden standardisieren.
+Anwendung findet MER besonders in der Suche nach Musik in großen Datenbanken und bei der Aufgabe zueinander passende Songs zusammenzustellen. Die besten heutigen Systeme schaffen blabla Prozent.\\
+Um einen Algorithmus zu definieren, der Emotionen aus Musik extrahiert, scheint es hilfreich sich klar zu machen, was Emotionen sind und wie diese definiert sind. Unglücklicherweise erweist sich die formale Erfassung von Emotionen als schwierig. Weiterhin erschwert wird die Erfassung dadurch, dass ähnliche Emotionen abhängig vom Kontext unterschiedlich verbalisiert werden \cite[S. 158]{lerch2012introduction}.\\
+Die heute eingesetzten Verfahren basieren darauf, Lowlevel-Features aus der Musik zu extrahieren und diese dann mit Hilfe von Machine Learning Algorithmen auf entweder Klassen oder ein Model abzubilden. Die am häufigsten benutzten Features beruhen auf spektralen Analysen der Musik. So zählt B. Rocha \cite{43334da08db3748e0a566e71fbb76d92cf6f15f35575908aa975b0b2baddab5b} folgende Features als die am häufigsten benutzten auf:
+\begin{itemize}
+\item \textbf{Centroid:} Der Spectral Centroid ist der Schwerpunkt des Spektrums und wird für jeden Frame neu berechnet. Er kann auf in eine Frequenzangabe in Hertz oder in eine Spanne von Null bis Eins umgerechnet werden. Niedrige Werte bedeuten einen dunklen Sound, während hohe Werte einen sehr hellen Klaren Sound anzeigen.
 
-%Der Versuch erzeugte Emotionen aus der Musik zu gewinnen wird ``Music Emotion Recognition'' genannt. Dabei werden %nach den modernsten Methoden verschiedene Lowlevel und Highleven Features aus der Musik extrahiert um diese dann %mit Machine Learning Algorithmen auszuwerten. Entweder probiert man hierbei die Musik einer Klasse zuzuordnen, wie %beispielsweise ``Friedlich'' oder ``Hektisch, Aggressiv'' oder es wird versucht die Features der Musik auf ein Model von %menschlichen Emotionen abzubilden.
+\item \textbf{Spread/Bandwidth:} Ein Maß, wie breit das Spektrum verteilt ist. Wie der Centroid kann auch der Spread in eine Frequenzangabe oder eine Spanne von Null bis Eins umgerechnet werden. Ein niedriger Spread deutet auf einen klaren Ton im Vordergrund hin, während ein breites Spektrum durch ein Rauschen entsteht.
+
+\item \textbf{Skewness:} Die ``Schrägheit'' des Spektrums ist ein Maß dafür, wie geneigt das Spektrum ist. Es erzeugt einen negativen Wert, falls der Spektrum in Richtung der tiefen Frequenzen geneigt ist, Null für ein symmetrisches Spektrum, sowie eine positive Zahl für ein Spektrum, das mehr hohe Frequenzen enthält. Im Gegensatz zum Centroid ist die Skewness nicht begrenzt.
+
+\item \textbf{Kurtosis:} Die Kurtosis oder ``Wölbung'' ist ein Maß dafür, wie spitz das Spektrum ist. Sie nimmt für eine perfekte Gaußsche Normalverteilung den Wert Null an, für ein flacheres Spektrum eine negative Zahl und für ein spitzer zulaufendes Spektrum einen positiven Wert an.
+
+
+\item \textbf{slope:}
+\item \textbf{decrease:}
+\item \textbf{rolloff:}
+\item \textbf{flux:}
+\item \textbf{contrast:}
+\item \textbf{MFCCs:}
+\end{itemize}
+
+%\cite{ce55b6c29e8a29e37397d0218054117ec1cfa88bb8ff65b14f549c3e7eda7ceb}
+\newpage
+
+%Dabei werden %nach den modernsten Methoden verschiedene Lowlevel und Highleven Features aus der Musik extrahiert um diese dann %mit Machine Learning Algorithmen auszuwerten. Entweder probiert man hierbei die Musik einer Klasse zuzuordnen, wie %beispielsweise ``Friedlich'' oder ``Hektisch, Aggressiv'' oder es wird versucht die Features der Musik auf ein Model von %menschlichen Emotionen abzubilden.
 
 \subsection{Circumplex Model of Affect}
 
