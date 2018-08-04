@@ -163,9 +163,9 @@ Da das Ziel dieses Projektes ist die beim Hören empfundenen Emotionen zu bestä
 \newpage
 
 \subsection{Music Emotion Recognition}
-Der Versuch mit Musik verbundene Emotionen zu gewinnen wird ``Music Emotion Recognition'' (MER) oder ``Mood Classification'' genannt. Dieses Gebiet der Forschung hat in den letzten Jahren mehr Aufmerksamkeit erfahren, so hat MIREX (Music Information Retrieval Evaluation Exchange) Music Emotion Recognition in seine Liste der Ziele (Tasks) aufgenommen \cite{dadf933477b66ec1591840023fc37ac83b3e10d5aa4fd440639abca907d805ba}. MIREX ist eine Community Organisation, die gemeinsam Testdatensätze, Ziele der Forschung, sowie Evaluierungsmethoden standardisieren.
-Anwendung findet MER besonders in der Suche nach Musik in großen Datenbanken und bei der Aufgabe zueinander passende Songs zusammenzustellen. Die besten heutigen Systeme schaffen blabla Prozent.\\
-Um einen Algorithmus zu definieren, der Emotionen aus Musik extrahiert, scheint es hilfreich sich klar zu machen, was Emotionen sind und wie diese definiert sind. Unglücklicherweise erweist sich die formale Erfassung von Emotionen als schwierig. Weiterhin erschwert wird die Erfassung dadurch, dass ähnliche Emotionen abhängig vom Kontext unterschiedlich verbalisiert werden \cite[S. 158]{lerch2012introduction}.\\
+Der Versuch mit Musik verbundene Emotionen zu gewinnen wird ``Music Emotion Recognition'' (MER) oder ``Mood Classification'' genannt. Dieses Gebiet der Forschung hat in den letzten Jahren mehr Aufmerksamkeit erfahren, so hat MIREX (Music Information Retrieval Evaluation Exchange) Music Emotion Recognition in seine Liste der Ziele (Tasks) aufgenommen \cite{dadf933477b66ec1591840023fc37ac83b3e10d5aa4fd440639abca907d805ba}. MIREX ist eine Community Organisation, die gemeinsam Testdatensätze, Ziele der Forschung, sowie Evaluierungsmethoden standardisiert.
+Anwendung findet MER besonders in der Suche nach Musik in großen Datenbanken und bei der Aufgabe zueinander passende Songs zusammenzustellen.\\Die besten 2017 von MIREX veröffentlichten Ergebnisse wiesen eine Wahrscheinlichkeit von ca. 67\% auf, eine aus fünf Emotionsklassen richtig zu identifizieren\cite{mirex_results_2017}. Man ließt häufig den Begriff ``glass ceiling'', der beschreibt, dass eine gewisse Grenze nicht überschritten werden kann und neue Konzepte zur Überwindung dieser gebraucht werden.\\
+Um einen Algorithmus zu definieren, der Emotionen aus Musik extrahiert, scheint es hilfreich den Begriff ``Emotion'' zu definieren. Unglücklicherweise erweist sich die formale Erfassung von Emotionen als schwierig. Weiterhin erschwert wird die Erfassung dadurch, dass ähnliche Emotionen abhängig vom Kontext unterschiedlich verbalisiert werden \cite[S. 158]{lerch2012introduction}.\\
 Die heute eingesetzten Verfahren basieren darauf, Lowlevel-Features aus der Musik zu extrahieren und diese dann mit Hilfe von Machine Learning Algorithmen auf entweder Klassen oder ein Model abzubilden. Die am häufigsten benutzten Features beruhen auf spektralen Analysen der Musik. So zählt B. Rocha \cite{43334da08db3748e0a566e71fbb76d92cf6f15f35575908aa975b0b2baddab5b} folgende Features als die am häufigsten benutzten auf:
 \begin{itemize}
 \item \textbf{Centroid:} Der Spectral Centroid ist der Schwerpunkt des Spektrums und wird für jeden Frame neu berechnet. Er kann auf in eine Frequenzangabe in Hertz oder in eine Spanne von Null bis Eins umgerechnet werden. Niedrige Werte bedeuten einen dunklen Sound, während hohe Werte einen sehr hellen Klaren Sound anzeigen.
@@ -184,6 +184,46 @@ Die heute eingesetzten Verfahren basieren darauf, Lowlevel-Features aus der Musi
 
 \item \textbf{Mel Frequency Ceptral Coefficients:} Mel Frequency Ceptral Coefficients (kurz MFCCs) wurden vor allem bei der computergestützten Spracherkennung eingesetzt und sind eine kompakte Beschreibung des Spektrums. Nachdem ihre Nützlichkeit in der Spracherkennung festgestellt wurde, benutzte man sie auch in der Music Genre Recognition, sowie auch in der Music Emotion Recognition. Die Berechnung des MFCCs ist kompliziert und sei hier nur so weit erklärt, dass die Frequenzen der Spektrums auf der logarithmischen Mel-Scala interpretiert werden, diese Frequenzen dann in Bänder unterteilt werden und die Frequenzen jedes Bandes zusammen summiert werden. Anschließend erfolgt auf den so gewonnenen Daten eine DCT. Meist erhält man auf diese Weise mehr Koeffizienten als eigentlich benötigt, um die wesentlichen Informationen darzustellen. Daher werden meist nur die unteren 4 bis 20 Koeffizienten in das Ergebnis mit aufgenommen. Abgesehen von der Verwertbarkeit für Machine Learning Algorithmen ist es schwierig einen einfachen Bezug zwischen dem Eingangssignal und den MFCCs zu erkennen \cite[S. 41 ff.]{lerch2012introduction}.
 \end{itemize}
+Neben diesen Features werden mittlerweile auch Highlevel Features, wie die Tonart oder das Tempo, mit in das Featureset aufgenommen.\\
+Weiterhin entscheidend ist die Auswahl der abzubildenden Klassen oder alternativ des abzubildenden Models. MIREX gibt die in Tabelle 4 gezeigten Klassen vor:
+\begin{center}
+\begin{figure}[h]
+\begin{tabular}{c c c c c}
+\textbf{Klasse 1} & \textbf{Klasse 2} & \textbf{Klasse 3} & \textbf{Klasse 4} & \textbf{Klasse 5} \\
+\hline
+passionate & rollicking & literate & humorous & aggressive \\
+rousing & cheerful & poignant & silly & fiery \\
+confident & fun & wistful & campy & tense/anxious \\
+boisterous & sweet & bittersweet & quirky & intense \\
+rowdy & amiable/good natured & autumnal & whimsical & volatile \\
+ & & brooding & witty & visceral \\
+  & & & wry &
+\end{tabular}
+\caption[MIREX Music Emotion Recognition Klassen]{MIREX Music Emotion Recognition Klassen}
+\end{figure}
+\end{center}
+Auch andere Klasseneinteilungen sind möglich, so erarbeitet Janto Skowronek, Martin McKinney und Steven van de Par
+ \cite{7cd5f337a4b030e3fafd0b4bc7e0976ff7cc1ec8c28d583c5dab695e0ee78941} die in Tabelle 5 gezeigten Klassen.
+
+\begin{center}
+\begin{figure}[h]
+\begin{tabular}{c c c c c c}
+\textbf{Klasse 1} & \textbf{Klasse 2} & \textbf{Klasse 3} & \textbf{Klasse 4} & \textbf{Klasse 5} & \textbf{Klasse 6} \\
+\hline
+arousing  & angry     & calming  & carefree     & festive  & passionate \\
+awakening & furious   & soothing & lighthearted & cheerful & emotional \\
+          & agressive &          & light        &          & touching    \\
+          &           &          & playful      &          & moving      \\
+\vspace{10pt}\\
+\textbf{Klasse 7} & \textbf{Klasse 8} & \textbf{Klasse 9} & \textbf{Klasse 10} & \textbf{Klasse 11} & \textbf{Klasse 12}\\
+\hline
+loving   & peaceful & powerful & sad & restless & soft\\
+romantic &          & strong   &     & jittery  & tender\\
+         &          &          &     & nervous  & \\
+         &          &          &     &          & \\       \end{tabular}
+\caption[Alternative Music Emotion Recognition Klassen]{Alternative Music Emotion Recognition Klassen}
+\end{figure}
+\end{center}
 
 \newpage
 
