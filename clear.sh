@@ -1,0 +1,12 @@
+#!/bin/bash
+
+rm audio_analyse_und_visualisierung.aux
+rm audio_analyse_und_visualisierung.bbl
+rm audio_analyse_und_visualisierung.bcf
+rm audio_analyse_und_visualisierung.blg
+rm audio_analyse_und_visualisierung-blx.bib
+rm audio_analyse_und_visualisierung.lof
+rm audio_analyse_und_visualisierung.log
+rm audio_analyse_und_visualisierung.run.xml
+rm audio_analyse_und_visualisierung.synctex.gz
+rm audio_analyse_und_visualisierung.toc
