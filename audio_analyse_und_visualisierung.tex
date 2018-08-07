@@ -11,6 +11,9 @@
 \usepackage{url}
 \usepackage{caption}
 \usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{sidecap}
+\usepackage{wrapfig}
 \overfullrule=0pt
 
 \begin{document}
@@ -62,20 +65,18 @@ Da das reine Moll und das Harmonische Moll sich von der Dur Tonleiter in der Ter
 
 %\subsubsection{Loudness of Music / Decibel}
 
-\subsection{Music Information Retrieval}
-\subsubsection{DCT/DFT/FFT}
+\subsection{DCT/DFT/FFT}
 % Was ist die DCT / FFT
 Die Diskrete Kosinus Transformation (engl. Discrete Cosine Transformation; kurz DCT) ist eine Transformation, die es erlaubt, Werte, die zeitdiskret kodiert sind, in den Frequenzbereich zu transformieren. Wird beispielsweise eine Sinusschwingung mit 440 Hertz in den Frequenzbereich transformiert, so ist der einzige Ausschlag im Frequenzbereich die Frequenz von 440 Hertz. Die Werte im Frequenzbereich werden als Koeffizienten von Kosinusfunktionen dargestellt. Diese Kosinusfunktionen sind unterschiedlich gestreckt, um die verschiedenen Frequenzen abbilden zu können.\\
 % Varianten von DCT / FFT
 Von der DCT gibt es die Varianten I - VIII von denen die Varianten I - IV praktischen Einsatz finden. Neben der DCT existiert auch die Diskrete Fourier Transformation (kurz DFT), die Frequenzen als Koeffizienten von Kosinus und Sinusfunktionen darstellt. Für die DFT gibt es eine optimierte Implementierung, die sogenannte Schnelle Fourier Transformation (engl. Fast Fourier Transformation; kurz FFT), die es erlaubt eine DFT mit logarithmischer Komplexität durchzuführen.\\
 % Anwendungsgebiete
-Anwendung findet die DCT bei der verlustbehafteten Audio- und Bildkompression. Für die Analyse des Spektrums eines Musikausschnittes bietet sich vor allem, dank ihrer besseren Laufzeit, die FFT an.
+Anwendung findet die DCT bei der verlustbehafteten Audio- und Bildkompression. Für die Analyse des Spektrums eines Musikausschnittes bietet sich vor allem, dank ihrer besseren Laufzeit, die FFT an \cite[S. 20 f.]{lerch2012introduction}.
 
-\subsubsection{Lautstärke}
+%\subsubsection{Lautstärke}
+% TODO
 
 \section{Analyse}
-%\subsection{Warum ist das Thema relevant?}
-%Musik spielt in der modernen Gesellschaft eine größer werdende Rolle. Während in vergangenen Jahrhunderten Musik eher %ein Luxus der reicheren Bevölkerung war, hat sich im 20. Jahrhundert der Musikmarkt zu einem Massenmarkt entwickelt, %der auch durch große online Plattformen, wie Spotify oder YouTube, wächst. So meldete Spotify 2018 rund 180 Millionen %Nutzer weltweit.
 
 \subsection{Zielsetzung}
 % Musik gerecht visualisieren
@@ -125,7 +126,8 @@ Für die Umsetzung des Prototypen wurde die Bibliothek ``Essentia'' verwendet. E
 %\subsubsection{OpenGL}
 %TODO
 %\subsubsection{CMake}
-\newpage
+%TODO
+
 \section{Konzept}
 \subsection{Verarbeitungsschritte}
 Um die Umwandlung von unbearbeiteten Audiosignalen in eine passende Visualisierung zu vereinfachen, wird die Aufgabenstellung in mehrere Teilschritte gegliedert. Als Ausgangspunkt existiert eine nicht annotierte Audiodatei aus der abstraktere Informationen extrahiert werden. Die Auswahl dieser Informationen ist sicherlich entscheidend und wird später behandelt.\\
@@ -191,7 +193,7 @@ Ein Modell hingegen wird nicht durch eine definierte Anzahl von Rubriken beschri
 Weiterhin entscheidend ist die Auswahl der abzubildenden Klassen oder alternativ des abzubildenden Modells.\\
 MIREX gibt die in Tabelle 1 gezeigten Klassen vor, indem assoziierte Adjektive benannt werden.
 \begin{center}
-\begin{table}[h]
+\begin{table}[h!]
 \begin{tabular}{c c c c c}
 \textbf{Klasse 1} & \textbf{Klasse 2} & \textbf{Klasse 3} & \textbf{Klasse 4} & \textbf{Klasse 5} \\
 \hline
@@ -208,7 +210,7 @@ rowdy & amiable/good natured & autumnal & whimsical & volatile \\
 \end{center}
 Auch andere Klasseneinteilungen sind möglich, so erarbeiteten J. Skowronek, M. McKinney und S. Par  \cite{7cd5f337a4b030e3fafd0b4bc7e0976ff7cc1ec8c28d583c5dab695e0ee78941} 12 Klassen, die in Tabelle 2 gezeigt werden. Sie verfolgen ein anderes Konzept bei dem ein Musikstück zu mehr als einer Klasse gehören kann, die Klassen also nicht mutually exclusive sind.
 \begin{center}
-\begin{table}[h]
+\begin{table}[h!]
 \begin{tabular}{c c c c c c}
 \textbf{Klasse 1} & \textbf{Klasse 2} & \textbf{Klasse 3} & \textbf{Klasse 4} & \textbf{Klasse 5} & \textbf{Klasse 6} \\
 \hline
@@ -226,10 +228,10 @@ romantic &          & strong   &     & jittery  & tender\\
 \caption[Alternative Music Emotion Recognition Klassen]{Alternative Klassen für MER}
 \end{table}
 \end{center}
-Wie weiter oben beschrieben besteht neben der Möglichkeit auf Klassen abzubilden auch die Möglichkeit auf ein Modell abzubilden. Das für MER am häufigsten benutzte Modell ist das ``Circumplex Model of Affect'' (kurz. CMA). Es wird auch ``Russels two dimensional Emotion Space'' genannt. Dieses Modell hat zwei Dimensionen, namentlich den ``Arousal''-Wert (Aktiviertheit) und den ``Valence''-Wert (Wohlbefinden). Wie in Abbildung 4 gezeigt, wird der Arousal-Wert meist auf der Y-Achse und der Valence-Wert auf der X-Achse abgebildet. \\
 
+Wie weiter oben beschrieben besteht neben der Möglichkeit auf Klassen abzubilden auch die Möglichkeit auf ein Modell abzubilden. Das für MER am häufigsten benutzte Modell ist das ``Circumplex Model of Affect'' (kurz. CMA) \cite[S. 158 f.]{lerch2012introduction}. Es wird auch ``Russels two dimensional Emotion Space'' genannt. Dieses Modell hat zwei Dimensionen, namentlich den ``Arousal''-Wert (Aktiviertheit) und den ``Valence''-Wert (Wohlbefinden). Wie in Abbildung 4 gezeigt, wird der Arousal-Wert meist auf der Y-Achse und der Valence-Wert auf der X-Achse abgebildet. 
 \begin{center}
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \vspace{20pt}
 \begin{tikzpicture}
@@ -266,18 +268,68 @@ Wie weiter oben beschrieben besteht neben der Möglichkeit auf Klassen abzubilde
 \node[darkgray] at (2.5, 5.5) {Tense};
 \node[darkgray] at (2.1, 5.9) {Alarmed};
 \end{tikzpicture}
-\caption{Circumplex Model of Affect \cite{8a02f9c512933d46fbea928d23ac65e38b61b88caba9b38319a5d4952b5a6667}}
+\caption[Circumplex Model of Affect]{Circumplex Model of Affect \cite[S. 4]{8a02f9c512933d46fbea928d23ac65e38b61b88caba9b38319a5d4952b5a6667} bzw. \cite[S. 7]{russell1980circumplex}}
 \end{figure}
 \end{center}
 
+Weiterhin sind Emotionen zu lesen, die an der entsprechenden Stelle im Valence-Arousal Koordinatensystem eingetragen sind \cite[S. 4]{8a02f9c512933d46fbea928d23ac65e38b61b88caba9b38319a5d4952b5a6667} \cite[S. 7]{russell1980circumplex}. Wie man sieht werden die abgebildeten Emotionen nach rechts hin glücklicher, sowie nach oben hin aufgeregter oder aktiver. Zu entscheiden ist nun, ob die Einteilung in Klassen oder die Approximation über ein Modell für eine Visualisierung besser geeignet ist.\\
+Für die Umsetzung des Prototypen wurde das Circumplex Model of Affect benutzt, da ein Modell ein differenzierteres Ergebnis liefert, als die Klassifizierung. Auch könnten Fehler bei der Klassifizierung eher zu auffallend unpassenden Visualisierungen führen. Der Hauptgrund liegt aber darin, dass sich die Musik und damit auch die durch sie erzeugte Stimmung über die Zeit ändert \cite{8a02f9c512933d46fbea928d23ac65e38b61b88caba9b38319a5d4952b5a6667}. Diese Veränderungen lassen sich nur schwer über Klassen darstellen, da keine Möglichkeiten zwischen den Klassen existieren. Diese Veränderungen sind leicht über ein Modell zu realisieren, da zwischen zwei Punkten im Valence-Arousal-Raum beliebig viele Zwischenpunkte zu finden sind. Aus diesen Gründen werden zu den kontinuierlichen Daten ein Valence, sowie ein Arousal Wert hinzugefügt. Die praktische Berechnung dieser Werte wird im Abschnitt Implementierung behandelt.
+
+\subsection{Zeit in der Musik}
+Musik verändert sich über die Zeit. Aus diesem Grund ist es nicht zielführend einem Attribut der Musik einen einzelnen Wert pro Musikstück zu geben, sondern es ist vielmehr sinnvoll die Attribute und deren Entwicklung über die Zeit des Stückes zu betrachten. Würde man beispielsweise versuchen einen einzelnen Arousal-Wert zu errechnen, so würden ruhigere oder lautere Stellen nicht unterschiedlich visualisiert werden. Auch klingen gleiche Akkorde unterschiedlichen, wenn man sie in anderen Kontexten benutzt und sind somit Kontextabhängig. Die Emotionen verändern sich nicht sprunghaft, sondern entwickeln sich während des Hörens. Auch spielen Gedächtnis und Erwartung des Hörers eine entscheidende Rolle bei der Wahrnehmung von Musik \cite[S. 2]{8a02f9c512933d46fbea928d23ac65e38b61b88caba9b38319a5d4952b5a6667}. Aus diesen Gründen sind Durchschnittswerte von den gewonnenen Daten für eine Visualisierung uninteressant.\\
+Um die Informationen in der Musik speichern zu können, wird eine passende Darstellung benötigt. Diese muss zu unterschiedlichen Zeitpunkten unterschiedliche Werte für das gleiche Attribut annehmen können. Bei der Umsetzung des Prototypen wurde diese zeitliche Darstellung für Events und kontinuierliche Daten unterschiedlich vorgenommen. Events besitzen, wie oben angesprochen ein Zeitattribut in Sekunden. Dadurch lassen sich Events auch nach Zeit sortieren, was für die Verarbeitung dieser hilfreich ist. Im Gegensatz dazu besitzen die kontinuierlichen Daten keine explizite Zeitangabe. Für die Umsetzung des Prototypen wurde die Musik in sogenannte Frames eingeteilt. Ein Frame ist eine Zeitspanne von 2048 Samples, was bei einer Samplerate von 44100 Hz einer Zeit von ca. 46.4 Millisekunden entspricht. Diese Frames überlappen sich zur Hälfte, was dazu führt, dass alle 1024 Samples (= 23.3 Millisekunden) ein Frame beginnt. Die Werte der kontinuierlichen Daten werden für jeden Frame neu berechnet und gespeichert, um für weitere Berechnungen zur Verfügung zu stehen oder für die Visualisierung benutzt zu werden.\\
+Für die Einteilung in Frames bietet Essentia den ``FrameCutter'' Algorithmus \cite{EssentiaFrameCutter}. Von diesem lässt sich die Größe (FrameSize) als auch die Sprungweite (HopSize) konfigurieren. Alle weiteren kontinuierlichen Berechnungen bauen auf den so gewonnenen Frames auf.
+
+\subsection{Visualisierung der Musik}
+\subsubsection{Farben}
+Der Zusammenhang von Musik und Farben ist wenig erforscht. Besser erforscht ist hingegen der Zusammenhang zwischen Farben und Emotionen, so werden Farben bewusst eingesetzt, um in Bildern, Filmen, Computerspielen und anderen Multimediaanwendungen gesteuerte Emotionen hervorzurufen \cite{10.3389/fpsyg.2017.00440}. Will man menschliche Emotionen untersuchen, so werden häufig kurze Filme oder Bilder verwendet, um die gewünschten Emotionen zu erzeugen. Zu beachten ist hierbei, dass gleiche Farben in unterschiedlichen Ländern und Kulturen unterschiedliche Bedeutungen haben und dadurch unterschiedliche Emotionen hervorrufen können. So ist in China die Farbe des Todes Weiß, während es in westlichen Ländern Schwarz ist.\\
+In Tabelle 3 sind Farben und ihre nach Naz Kaya and Helen H. Epps
+ \cite{c0f471f7e6a618d880cf25175c9f99ac97ef8ba7d016c7f8c523f8d902892d9e} zugeordneten Emotionen und Assoziationen zu sehen.
+
+\definecolor{yellow_color}{RGB}{248, 230, 77}
+\definecolor{green_color}{RGB}{0, 142, 78}
+\definecolor{blue_color}{RGB}{5, 158, 212}
+\definecolor{red_color}{RGB}{218, 65, 74}
+\definecolor{white_color}{RGB}{255, 255, 255}
+\definecolor{gray_color}{RGB}{80, 80, 80}
+\definecolor{black_color}{RGB}{0, 0, 0}
+
+\begin{center}
+\begin{table}[h!]
+\begin{tabular}{l | l | l | l}
+\textbf{Farbe} & & \textbf{Emotionen} & \textbf{Assoziationen}\\
+\hline
+Gelb & \cellcolor{yellow_color} & Fröhlichkeit, Aufregung & Sonne, Sommer \\
+Grün & \cellcolor{green_color} & Fröhlichkeit, Entspannung, Frieden, Hoffnung & Natur, Pflanzen \\
+Blau & \cellcolor{blue_color} & Ruhe, Entspannung & Ozean, Himmel \\
+Rot & \cellcolor{red_color} & Liebe, Wärme, Aktivität, Gefahr & Herzen, Blut \\
+Weiß & \cellcolor{white_color} & Unschuld, Friede, Einsamkeit, Langeweile & Brautkleid, Schnee \\
+Grau & \cellcolor{gray_color} & Traurigkeit, Langeweile & Schlechtes Wetter \\
+Schwarz & \cellcolor{black_color} & Depression, Angst & Trauer, Wohlstand \\
+
+\end{tabular}
+\caption[Farben Emotionen Assoziationen]{Farben, ihre Emotionen und Assoziationen}
+\end{table}
+\end{center}
+Trägt man die Farben entsprechend den Beschreibungen in ein Valence Arousal Koordinatensystem ein, so ergibt sich der in Abbildung 5 zu sehende Verlauf.
+
+\begin{wrapfigure}{l}{0.5\linewidth}
+\begin{tikzpicture}[]
+  \pgftext{\includegraphics[scale=0.5]{res/images/color_map}} at (0pt,0pt);
+  \draw[white,thick,->] (-3,-3) -- (-3,3) node[anchor=north west] at(-3, 1) {Arousal};
+  \draw[white,thick,->] (-3,-3) -- (3,-3) node[anchor=north east] at(1, -3) {Valence};
+\end{tikzpicture}
+\captionsetup{justification=centering}
+\caption[Farbverlauf im Valence Arousal Koordinatensystem]{Farbverlauf\\im Valence Arousal\\Koordinatensystem}
+\end{wrapfigure}
+\noindent
+Jedem Punkt im Arousal Valence Koordinatensystem ist eine entsprechende Farbe zugeordnet. Bei niedrigen Arousal Werten, also bei ruhiger Musik, gehen die Farben ins Blaue beziehungsweise ins Graue für kleine Valence Werte oder ins Grüne für hohe Valence Werte. Gelbe Farben werden bei aktiven fröhlichen (hohe Valence und hohe Arousal Werte) erzeugt und rote Farben, wenn die Musik weniger fröhlich, aber immer noch aktiv ist. Wird die Musik noch trauriger wird Schwarz erzeugt. In der Mitte befindet sich ein Orange-Braun. Dies ist nur eine mögliche Anordnung von Farben und es würde sich eventuell anbieten, weitere kompatible Farbeverläufe zu kreieren, um Farbkombinationen zu ermöglichen.
+
 \newpage
 
-\subsection{Music over Time}
-Paper: The Role of Time in Music Emotion Recognition
+\subsubsection{Bewegungen}
 
-\subsection{Visualization of Music}
-\subsubsection{Colors}
-\subsection{Movements}
+\subsubsection{Größe}
 
 \newpage
 
