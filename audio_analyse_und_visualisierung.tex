@@ -14,6 +14,7 @@
 \usepackage{colortbl}
 \usepackage{sidecap}
 \usepackage{wrapfig}
+
 \overfullrule=0pt
 
 \begin{document}
@@ -280,8 +281,11 @@ Musik verändert sich über die Zeit. Aus diesem Grund ist es nicht zielführend
 Um die Informationen in der Musik speichern zu können, wird eine passende Darstellung benötigt. Diese muss zu unterschiedlichen Zeitpunkten unterschiedliche Werte für das gleiche Attribut annehmen können. Bei der Umsetzung des Prototypen wurde diese zeitliche Darstellung für Events und kontinuierliche Daten unterschiedlich vorgenommen. Events besitzen, wie oben angesprochen ein Zeitattribut in Sekunden. Dadurch lassen sich Events auch nach Zeit sortieren, was für die Verarbeitung dieser hilfreich ist. Im Gegensatz dazu besitzen die kontinuierlichen Daten keine explizite Zeitangabe. Für die Umsetzung des Prototypen wurde die Musik in sogenannte Frames eingeteilt. Ein Frame ist eine Zeitspanne von 2048 Samples, was bei einer Samplerate von 44100 Hz einer Zeit von ca. 46.4 Millisekunden entspricht. Diese Frames überlappen sich zur Hälfte, was dazu führt, dass alle 1024 Samples (= 23.3 Millisekunden) ein Frame beginnt. Die Werte der kontinuierlichen Daten werden für jeden Frame neu berechnet und gespeichert, um für weitere Berechnungen zur Verfügung zu stehen oder für die Visualisierung benutzt zu werden.\\
 Für die Einteilung in Frames bietet Essentia den ``FrameCutter'' Algorithmus \cite{EssentiaFrameCutter}. Von diesem lässt sich die Größe (FrameSize) als auch die Sprungweite (HopSize) konfigurieren. Alle weiteren kontinuierlichen Berechnungen bauen auf den so gewonnenen Frames auf.
 
-\subsection{Visualisierung der Musik}
-\subsubsection{Farben}
+\subsection{Visualisierung}
+Will man eine 3D-Visualisierung umsetzen, so bietet es sich an Objekte zu benutzen, die passend zur Musik Eigenschaften 
+und damit ihr Aussehen verändern. Position, Farbe und Form sind solche Eigenschaften. Über die Position selbst lassen sich wenig Informationen zum Betrachter transportieren, weshalb hier eher die Veränderung der Position, also die Bewegung, eine entscheidende Rolle spielt. Im Folgenden werden die einzelnen Attribute und ihre Verbindung zur Musik behandelt. Dadurch werden Möglichkeiten entwickelt, wie eine Visualisierung der vorher gewonnenen Daten umgesetzt werden kann.
+
+\subsubsection{Farbe}
 Der Zusammenhang von Musik und Farben ist wenig erforscht. Besser erforscht ist hingegen der Zusammenhang zwischen Farben und Emotionen, so werden Farben bewusst eingesetzt, um in Bildern, Filmen, Computerspielen und anderen Multimediaanwendungen gesteuerte Emotionen hervorzurufen \cite{10.3389/fpsyg.2017.00440}. Will man menschliche Emotionen untersuchen, so werden häufig kurze Filme oder Bilder verwendet, um die gewünschten Emotionen zu erzeugen. Zu beachten ist hierbei, dass gleiche Farben in unterschiedlichen Ländern und Kulturen unterschiedliche Bedeutungen haben und dadurch unterschiedliche Emotionen hervorrufen können. So ist in China die Farbe des Todes Weiß, während es in westlichen Ländern Schwarz ist.\\
 In Tabelle 3 sind Farben und ihre nach Naz Kaya and Helen H. Epps
  \cite{c0f471f7e6a618d880cf25175c9f99ac97ef8ba7d016c7f8c523f8d902892d9e} zugeordneten Emotionen und Assoziationen zu sehen.
@@ -308,7 +312,10 @@ Grau & \cellcolor{gray_color} & Traurigkeit, Langeweile & Schlechtes Wetter \\
 Schwarz & \cellcolor{black_color} & Depression, Angst & Trauer, Wohlstand \\
 
 \end{tabular}
-\caption[Farben Emotionen Assoziationen]{Farben, ihre Emotionen und Assoziationen}
+\captionsetup{justification=centering}
+\caption[Farben Emotionen Assoziationen]{Farben, ihre Emotionen und Assoziationen\\nach Naz Kaya and Helen H. Epps
+ \cite{c0f471f7e6a618d880cf25175c9f99ac97ef8ba7d016c7f8c523f8d902892d9e}}
+
 \end{table}
 \end{center}
 Trägt man die Farben entsprechend den Beschreibungen in ein Valence Arousal Koordinatensystem ein, so ergibt sich der in Abbildung 5 zu sehende Verlauf.
@@ -325,10 +332,37 @@ Trägt man die Farben entsprechend den Beschreibungen in ein Valence Arousal Koo
 \noindent
 Jedem Punkt im Arousal Valence Koordinatensystem ist eine entsprechende Farbe zugeordnet. Bei niedrigen Arousal Werten, also bei ruhiger Musik, gehen die Farben ins Blaue beziehungsweise ins Graue für kleine Valence Werte oder ins Grüne für hohe Valence Werte. Gelbe Farben werden bei aktiven fröhlichen (hohe Valence und hohe Arousal Werte) erzeugt und rote Farben, wenn die Musik weniger fröhlich, aber immer noch aktiv ist. Wird die Musik noch trauriger wird Schwarz erzeugt. In der Mitte befindet sich ein Orange-Braun. Dies ist nur eine mögliche Anordnung von Farben und es würde sich eventuell anbieten, weitere kompatible Farbeverläufe zu kreieren, um Farbkombinationen zu ermöglichen. Die Umsetzung der Stimmung$ \rightarrow $Farbe-Zuordnung wird im Kapitel Implementierung behandelt.
 
+\subsubsection{Bewegung}
+Bewegung und Musik sind eng miteinander verbunden. Rolf Inge God{\o}y und Alexander Refsum Jensenius meinen: ``Performers produce sound through movements, and listeners very often move to music, as can be seen in dance and innumerable everyday listening situations.'' \cite[S. 1]{905eee055abaf2a4f198ce11f35362a8963f61d552297a02dfc8fbc0c4f78679}. Aus diesem Grund ist die Auswahl von Bewegungen für eine Visualisierung wichtig. Im Folgenden werden erst Grundprinzipien natürlicher Bewegungen besprochen. Danach Parameter von Bewegungen und warum diese für die Visualisierung wichtig sind. Zum Schluss werden beispielhaft bestimmte Typen von Bewegungen und Formationen besprochen.
+\paragraph{Grundprinzipien}
+In der Umwelt sind physische Dinge massebehaftet. Daraus folgt, dass es weder schlagartige Positions- noch Geschwindigkeitsänderungen gibt. Will man eine Gruppe von Objekten oder Partikeln natürlich bewegen, so muss dieser Fakt mit einbezogen werden. Angenommen wird hierbei meistens eine Punktmasse, wobei die gesamte Masse des Objektes im Zentrum des Objektes liegt. Dadurch wird das Objekt besser berechenbar. Um plötzliche Positions- und Geschwindigkeitsunterschiede zu vermeiden sollten bewegte Objekte eine Position und eine Geschwindigkeit haben, die jeden Frame verändert werden kann. Auf die Position wird die Geschwindigkeit addiert. Eine Wirkung auf das sich bewegende Objekt erzeugt man durch Beschleunigungen, welche die aktuelle Geschwindigkeit anpassen. Diese Beschleunigungen können plötzlich auftreten und werden jeden Frame neu berechnet. Sie sind also nicht über mehrere Frames persistent wie die Position oder die Geschwindigkeit.\\
+Eine bekannte Methode, um Objekte natürlich zu beschleunigen ist das sogenannte ``Steering Behaviour'' \cite{580abc6c6615ef9f9c16f9069351938a0dda3c5120b7e8d1450d6b1abf0a71df}. Dabei wird eine Beschleunigung für ein bewegtes System errechnet. Das Ziel ist es das Objekt zu einem gewissen Punkt zu bringen oder es davon zu entfernen. Es gibt mehrere Variationen des Steering Behaviours, es soll hier aber nur um die einfache Form ``Seek'' (Anstreben) gehen.\\
+Hat ein bewegtes System die Geschwindigkeit $current\_velocity$, eine maximale Geschwindigkeit von $max_velocity$ und die Position $current\_position$ und existiert weiterhin ein angestrebter Punkt $target\_position$, so kann man eine einwirkende Beschleunigung $steering\_force$ berechnen, die das Objekt zur $target\_position$ bringt.
+\begin{align}
+desired\_velocity &= current\_position - target\_position \\
+steering\_force &= desired\_velocity - current\_velocity
+\end{align}
+Neben dem Seek Algorithmus gibt es Abwandlungen, wie ``Flee'', ``Arrive'' oder ``Wander''.\\
+Um die Geschwindigkeit zu begrenzen kann Formel (1) wie folgt abgewandelt werden:
+\begin{align}
+desired\_velocity &= (current\_position - target\_position) * max\_velocity
+\end{align}
+\noindent
+Die Formel (2) bleibt bestehen.\\
+Eine andere Möglichkeit die Geschwindigkeit zu begrenzen, ist es eine Reibung (einen Drag) einzuführen. Dazu wird die Geschwindigkeit mit folgender Beschleunigung addiert:
+\begin{align}
+drag\_force = current\_velocity * -drag
+\end{align}
+
+\noindent
+Die Variable $drag$ sollte dabei eine Zahl $0 < drag < 1$ sein. Ein kleiner $drag$ bedeutet eine geringe Dämpfung, während ein großer $drag$ eine stärkere Dämpfung der Geschwindigkeit erzeugt.
+
+\paragraph{Bewegungen spannend gestalten}
+Eine Bewegung von Objekten sollte möglichst nicht einseitig werden, weshalb ein zufälliger Anteil der Abläufe vorteilhaft sein kann. Eine andere Möglichkeit, um die entstehenden Bilder abwechslungsreich zu gestalten, ist Parameter der Bewegungen zu definieren, die abhängig von den analysierten Daten verändert werden können. Nicht alle Parameter müssen von allen Bewegungen implementiert werden.\\
+Die Geschwindigkeit der bewegten Objekte kann als Parameter verwendet werden. Aktive, hektische Musik kann auf diese Weise behandelt werden, indem die Geschwindigkeit der Objekte erhöht wird. Unter Umständen bietet es sich bei Gruppenbewegungen an, einen Parameter einzuführen, der beschreibt, wie kompakt die Objekte beieinander gehalten werden.\\
+
+
 \newpage
-
-\subsubsection{Bewegungen}
-
 \subsubsection{Größe}
 
 \newpage
