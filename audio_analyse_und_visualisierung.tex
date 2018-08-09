@@ -365,18 +365,41 @@ Die Geschwindigkeit der bewegten Objekte kann als Parameter verwendet werden. Ak
 \paragraph{Mögliche Bewegungen}
 Im Folgenden sollen Beispiele für Bewegungen beleuchtet und darauf untersucht werden, ob sie sich für eine Visualisierung eignen. Dazu wird geprüft, ob die Bewegung interessant genug ist und ob sie sich performant genug umsetzen lässt.\\
 
-\begin{itemize}
-\item \textbf{Flow Fields:} Flow Fields sind eine interessante Art der Bewegung, die in der Computergraphik vor allem für die Simulation von Flüssigkeiten eingesetzt werden \cite{stam1999stable}. Sie stellen ein in Quadrate eingeteilten Raum dar. Für jedes Quadrat wird ein zufälliger Vektor bestimmt, der sich den Vektoren der umliegenden Quadrate ähnelt. Nun werden Partikel in diesem Raum erzeugt. Der Mittelpunkt von jedem Partikel befindet sich in genau einem der Quadrate. Jeder Partikel wird in Richtung des Vektors beschleunigt, in dessen zugehörigen Quadrat er sich befindet. Durch die Ähnlichkeit der Vektoren von anliegenden Quadraten entsteht eine Fließbewegung der Partikel. Eine Erweiterung wäre, die Vektoren der Quadrate über Zeit verändern zu lassen, um die Bahnen der Partikel zu verändern. Auch kann die Beschleunigung der Partikel verändert werden, sowie die Kompaktheit des Feldes.\\
-Die Umsetzung eines Flow Fields ist aufwendig, da es nicht einfach ist, den Anforderungen entsprechende Richtungsvektoren zu generieren, die sich über Zeit verändern und dabei ihre Ähnlichkeit bewahren. Um diese Vektoren zu generieren, wird ``Perlin Noise'' oder der Nachfolger ``Simplex Noise'' verwendet \cite{bcc7190da8e90284b4e790817b8eed4ee3ea6cffbe5a23ef07a000ca5628ffbc}. Perlin Noise ist eine Zufallsfunktion mit besonderen Eigenschaften. Sie wurde 1982 von Ken Perlin für den Film ``Tron'' entwickelt. Perlin erhielt dafür 1997 einen Oscar.\\
+\paragraph{Flow Fields} Flow Fields sind eine Art der Bewegung, die in der Computergraphik vor allem für die Simulation von Flüssigkeiten und Gasen eingesetzt werden \cite{stam1999stable}. Sie werden mit Hilfe eines in Würfel eingeteilten Raumes umgesetzt. Für jeden Würfel wird ein zufälliger Vektor bestimmt, der den Vektoren der umliegenden Würfel ähnelt. Nun werden Partikel in diesem Raum erzeugt. Der Mittelpunkt von jedem Partikel befindet sich in genau einem der Würfel. Jeder Partikel wird in Richtung des Vektors beschleunigt, in dessen zugehörigen Würfel er sich befindet. Durch die Ähnlichkeit der Vektoren von anliegenden Würfeln entsteht eine Fließbewegung der Partikel.\\
+Eine Erweiterung ist, die Vektoren der Würfel über Zeit verändern zu lassen, um die Bahnen der Partikel zu verändern. Auch kann die Beschleunigung der Partikel verändert werden, sowie die Kompaktheit des Feldes.\\
+Die Umsetzung eines Flow Fields ist aufwendig, da es nicht einfach ist, den Anforderungen entsprechende Richtungsvektoren zu generieren, die sich über Zeit verändern und dabei ihre Ähnlichkeit bewahren. Um diese Vektoren zu generieren, wird ``Perlin Noise'' oder der Nachfolger ``Simplex Noise'' verwendet \cite{bcc7190da8e90284b4e790817b8eed4ee3ea6cffbe5a23ef07a000ca5628ffbc}. Perlin Noise ist eine Zufallsfunktion mit besonderen Eigenschaften. Sie wurde 1982 von Ken Perlin für den Film ``Tron'' entwickelt. Perlin erhielt dafür 1997 einen Oscar. Sie wurde damals zur Generierung von Texturen eingesetzt.\\
 Perlin Noise ist eine kontinuierliche Funktion, die im  eindimensionalen Fall eine Zahl $x \in \mathbb{R}$ auf eine andere zufällige Zahl $noise(x) \in \mathbb{R}$ abbildet \cite{25a05da283ffd9d4bdda94c308ccf3a8759f22373b368f895cbef2e9186ab646}. Weiterhin sorgt eine kleine Änderung von $x$ auch nur für eine kleine Änderung von $noise(x)$. Ein möglicher Plot der Perlin Noise Funktion ist in Abbildung 6 zu sehen.
 \begin{SCfigure}[][h]
 \hspace{110pt}
 \includegraphics[scale=0.5]{res/images/perlin_noise}
-\caption[Perlin Noise Plot aus \cite{nature_of_code}]{\\Perlin Noise Plot aus \cite[\\Kap. Introduction]{nature_of_code}}
+\caption[Perlin Noise Plot aus \cite{nature_of_code}]{\\Perlin Noise Plot aus \cite[Kap.\\Introduction]{nature_of_code}}
 \end{SCfigure}
-\end{itemize}
-
-Weiterschreiben...
+\noindent
+Neben der eindimensionalen Perlin Noise Funktion existieren auch mehrdimensionale. Diese bilden die Zahlen $x_1, x_2, ..., x_n \in \mathbb{R}$ auf eine Zahl $noise(x_1, x_2, ..., x_n) \in \mathbb{R}$ ab. Dabei gilt wie bei der eindimensionalen Version, dass eine kleine Änderung von einem der Eingangswerte auch nur eine kleine Auswirkung auf die Ausgabe der $noise$ Funktion hat.\\
+Flow Fields lassen sich unter Zuhilfenahme der mehrdimensionalen Perlin Noise Funktion umsetzen. Eine Möglichkeit einen Vektor $v_{x,y,z}$ zu generieren, wobei $x, y, z$ die Koordinaten des zu $v_{x, y, z}$ gehörigen Würfels sind, funktioniert wie in Formel (5) gezeigt.
+\begin{align}
+v_{x,y,z} = \left(
+\begin{array}{c}
+noise(x, y, z) \\
+noise(x+a, y+a, z+a) \\
+noise(x+2a, y+2a, z+2a)
+\end{array}
+\right)
+\end{align}
+\noindent
+Das konstante Offset $a$ wurde eingeführt, damit sich die einzelnen Koordinaten des Vektors unterscheiden. Es sollte möglichst groß gewählt sein, da so Wiederholungen räumlich weiter voneinander getrennt sind und so nicht sichtbar werden.\\
+Da $noise(x, y, z)$ und $noise(x+\delta, y+\delta, z+\delta)$ umso ähnlicher werden je kleiner $\delta$ wird, kann man die Ähnlichkeit der Vektoren bestimmen, indem die Iterationsvariablen $x, y, z$ mit einem Faktor $f$ multipliziert werden.
+\begin{align}
+v_{x,y,z} = \left(
+\begin{array}{c}
+noise(f \cdot x, f \cdot y, f \cdot z) \\
+noise(f \cdot x+a, f \cdot y+a, f \cdot z+a) \\
+noise(f \cdot x+2a, f \cdot y+2a, f \cdot z+2a)
+\end{array}
+\right)
+\end{align}
+\noindent
+Für kleine $f$ sind die erzeugten Vektoren $v_{x, y, z}$ und $v_{x+\delta, y+\delta, z+\delta}$ ähnlicher als für große $f$. Kritisch könnte der Rechenaufwand der Perlin Noise Funktion werden, da sie für jeden Würfel drei mal ausgeführt werden muss. Eine Alternative wäre, einen den Vektor $v_{x, y, z}$ aus einer einzelnen Zahl zu entwickeln. Dafür wäre ein Abbildung $f: \mathbb{R} \mapsto \mathbb{R}^3$ nötig. Eine andere Möglichkeit wäre es, das Flow Field nur in zwei Dimensionen zu erstellen und die Höhe der Objekte über eine andere Logik zu bestimmen. Dies würde auch die Laufzeit der $noise(x_1, ..., x_n)$ Funktion verbessern, die eine Komplexität von $2^n$ hat, wobei $n$ die Anzahl der Dimensionen ist.
 
 \newpage
 \subsubsection{Größe}
