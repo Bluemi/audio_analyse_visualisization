@@ -132,11 +132,13 @@ Für die Umsetzung des Prototypen wurde die Bibliothek ``Essentia'' verwendet. E
 \section{Konzept}
 \subsection{Verarbeitungsschritte}
 Um die Umwandlung von unbearbeiteten Audiosignalen in eine passende Visualisierung zu vereinfachen, wird die Aufgabenstellung in mehrere Teilschritte gegliedert. Als Ausgangspunkt existiert eine nicht annotierte Audiodatei aus der abstraktere Informationen extrahiert werden. Die Auswahl dieser Informationen ist sicherlich entscheidend und wird später behandelt.\\
-Da Teile der Musik, vor allem rhythmische Elemente einen klaren Zeitpunkt definieren, ist es sinnvoll diese Informationen nicht wie die kontinuierlichen Daten zu speichern, sondern als Events zu extrahieren. Diese beruhen auf den vorher entwickelten Daten. Diese Events, sowie die kontinuierlichen Daten werden zusammengefasst und benutzt, um eine passende Visualisierung zu generieren. Die folgende Grafik zeigt einen Entwurf der Verarbeitung:
-\begin{figure}[ht]
+Da Teile der Musik, vor allem rhythmische Elemente einen klaren Zeitpunkt definieren, ist es sinnvoll diese Informationen nicht wie die kontinuierlichen Daten zu speichern, sondern als Events zu extrahieren. Diese beruhen auf den vorher entwickelten Daten. Diese Events, sowie die kontinuierlichen Daten werden zusammengefasst und benutzt, um eine passende Visualisierung zu generieren. Abbildung 2 zeigt einen Entwurf der Verarbeitung.
+\begin{figure}[h!]
 \includegraphics[scale=0.65]{res/diagrams/data_flow}
 \caption[Verarbeitungsschritte]{Verarbeitungsschritte}
 \end{figure}
+
+\noindent
 Im Bild sind die Verarbeitungsschritte (1. - 3.), sowie deren Resultate (I. - IV.) zu sehen.\\
 Man stellt nun unterschiedliche Arten der Visualisierung (Schritt 3) zur Verfügung und schafft eine übergeordnete Einheit, die aus unterschiedlichen Arten der Datenvisualisierung wählt, um eine abwechslungsreichere Visualisierung zu generieren. Wenn das Umsetzen in eine Visualisierung unabhängige Eigenschaften der Visualisierung verändert, wie beispielsweise Farbe und Position, kann man auch verschiedene Objekte, die diese Eigenschaften verändern, gleichzeitig agieren lassen.
 
@@ -159,12 +161,13 @@ In Essentia gibt es explizit einen Algorithmus, der aus den Spitzen des Spektrum
 Ein praktischer Test zeigte, dass die Ergebnisse zu ungenau waren, um in die Auswertung einzugehen. Verzerrte Töne oder vielschichtige Musik wurden häufig fälschlicherweise als dissonant erkannt. Aus diesem Grund wurde die Konsonanz bzw. Dissonanz nicht mit in die Implementierung integriert.
 
 \paragraph{Akkorde}
-Die gespielten Dreiklänge vor allem aber die Information ob es sich um Moll oder Dur Akkorde handelt, kann man benutzen, um eine bessere Visualisierung zu gestalten. Essentia bietet den Algorithmus ``ChordDetection'', der aus einer gegebenen Menge von sogenannten ``Pitch-Class-Profiles'' einen Akkord extrahiert. Ein Pitch-Class-Profile enthält Informationen darüber welche Töne wie laut gespielt werden. Es besteht aus zwölf Fließkommazahlen, die jeweils für einen Ton stehen \cite{e6fe2ea94b8d448139e05e3d36c0ffd5e82905dc87f719492ff3872650c667d9}. Der ChordDetection Algorithmus gleicht nun diese Informationen mit bekannten Akkorden ab, um den Akkkord mit der höchsten Wahrscheinlichkeit zu erkennen. In der Dokumentation des Algorithmus findet sich: ``experimental (prone to errors, algorithm needs improvement)''\cite{EssentiaChordDetection}. Ein Test zeigt, dass die Akkorde nicht immer perfekt erkannt werden, aber der Grundton meistens richtig erfasst wird. Deshalb wurde der ChordDetection Algorithmus mit in die Implementierung aufgenommen.
+Die gespielten Dreiklänge vor allem aber die Information ob es sich um Moll oder Dur Akkorde handelt, kann man benutzen, um eine bessere Visualisierung zu gestalten. Essentia bietet den Algorithmus ``ChordDetection'', der aus einer gegebenen Menge von sogenannten ``Pitch-Class-Profiles'' einen Akkord extrahiert. Ein Pitch-Class-Profile enthält Informationen darüber, welche Töne wie laut gespielt werden. Es besteht aus zwölf Fließkommazahlen, die jeweils für einen Ton stehen \cite{e6fe2ea94b8d448139e05e3d36c0ffd5e82905dc87f719492ff3872650c667d9}. Der ChordDetection Algorithmus gleicht nun diese Informationen mit bekannten Akkorden ab, um den Akkkord mit der höchsten Wahrscheinlichkeit zu erkennen. In der Dokumentation des Algorithmus findet sich: ``experimental (prone to errors, algorithm needs improvement)''\cite{EssentiaChordDetection}. Ein Test bestätigt, dass die Akkorde nicht immer perfekt erkannt werden, aber der Grundton meistens richtig erfasst wird. Deshalb wurde der ChordDetection Algorithmus mit in die Implementierung aufgenommen.
+
+\paragraph{Abschnitte der Musik}
+Um eine abwechslungsreiche Visualisierung umsetzen zu können, ist es gut, wenn sich die Visualisierung verändert. Tritt diese Veränderung ein, wenn sich auch die Musik verändert, so wirkt der Übergang gewollt und der Musik nachempfunden. Aus diesem Grund ist es sinnvoll eine Möglichkeit zu erarbeiten, einzelne Teile eines Stückes in Gruppen zusammenzufassen, um diese unterschiedlich zu visualisieren.
 
 \paragraph{Menschliche Emotionen}
 Da das Ziel dieses Projektes ist die beim Hören empfundenen Emotionen zu bestärken, wäre es optimal, menschliche Emotionen modellieren zu können, um diese mit in die Visualisierung einfließen lassen zu können. Im folgenden Kapitel werden die Möglichkeiten der sogenannten ``Music Emotion Recognition'' beleuchtet.
-
-\newpage
 
 \subsection{Music Emotion Recognition}
 Der Versuch mit Musik verbundene Emotionen zu gewinnen wird ``Music Emotion Recognition'' (MER) oder ``Mood Classification'' genannt. Dieses Gebiet der Forschung hat in den letzten Jahren mehr Aufmerksamkeit erfahren, so hat MIREX (Music Information Retrieval Evaluation Exchange) Music Emotion Recognition in seine Liste der Ziele (Tasks) aufgenommen \cite{dadf933477b66ec1591840023fc37ac83b3e10d5aa4fd440639abca907d805ba}. MIREX ist eine Community Organisation, die gemeinsam Testdatensätze, Ziele der Forschung, sowie Evaluierungsmethoden standardisiert.
@@ -361,8 +364,6 @@ Die Variable $drag$ sollte dabei eine Zahl $0 < drag < 1$ sein. Ein kleiner $dra
 \paragraph{Bewegungen spannend gestalten}
 Eine Bewegung von Objekten sollte möglichst nicht einseitig werden, weshalb ein zufälliger Anteil der Abläufe vorteilhaft sein kann. Eine andere Möglichkeit, um die entstehenden Bilder abwechslungsreich zu gestalten, ist Parameter der Bewegungen zu definieren, die abhängig von den analysierten Daten verändert werden können. Nicht alle Parameter müssen von allen Bewegungen implementiert werden.\\
 Die Geschwindigkeit der bewegten Objekte kann als Parameter verwendet werden. Aktive, hektische Musik kann auf diese Weise behandelt werden, indem die Geschwindigkeit der Objekte erhöht wird. Unter Umständen bietet es sich bei Gruppenbewegungen an, einen Parameter einzuführen, der beschreibt, wie kompakt die Objekte beieinander gehalten werden und einen Parameter, der beschreibt, wie häufig sich Richtungsänderungen der Bewegungen ereignen.\\
-
-\paragraph{Mögliche Bewegungen}
 Im Folgenden sollen Beispiele für Bewegungen beleuchtet und darauf untersucht werden, ob sie sich für eine Visualisierung eignen. Dazu wird geprüft, ob die Bewegung interessant genug ist und ob sie sich performant genug umsetzen lässt.\\
 
 \paragraph{Flow Fields} Flow Fields sind eine Art der Bewegung, die in der Computergraphik vor allem für die Simulation von Flüssigkeiten und Gasen eingesetzt werden \cite{stam1999stable}. Sie werden mit Hilfe eines in Würfel eingeteilten Raumes umgesetzt. Für jeden Würfel wird ein zufälliger Vektor bestimmt, der den Vektoren der umliegenden Würfel ähnelt. Nun werden Partikel in diesem Raum erzeugt. Der Mittelpunkt von jedem Partikel befindet sich in genau einem der Würfel. Jeder Partikel wird in Richtung des Vektors beschleunigt, in dessen zugehörigen Würfel er sich befindet. Durch die Ähnlichkeit der Vektoren von anliegenden Würfeln entsteht eine Fließbewegung der Partikel.\\
@@ -399,12 +400,52 @@ noise(f \cdot x+2a, f \cdot y+2a, f \cdot z+2a)
 \right)
 \end{align}
 \noindent
-Für kleine $f$ sind die erzeugten Vektoren $v_{x, y, z}$ und $v_{x+\delta, y+\delta, z+\delta}$ ähnlicher als für große $f$. Kritisch könnte der Rechenaufwand der Perlin Noise Funktion werden, da sie für jeden Würfel drei mal ausgeführt werden muss. Eine Alternative wäre, einen den Vektor $v_{x, y, z}$ aus einer einzelnen Zahl zu entwickeln. Dafür wäre ein Abbildung $f: \mathbb{R} \mapsto \mathbb{R}^3$ nötig. Eine andere Möglichkeit wäre es, das Flow Field nur in zwei Dimensionen zu erstellen und die Höhe der Objekte über eine andere Logik zu bestimmen. Dies würde auch die Laufzeit der $noise(x_1, ..., x_n)$ Funktion verbessern, die eine Komplexität von $2^n$ hat, wobei $n$ die Anzahl der Dimensionen ist.
+Für kleine $f$ sind die erzeugten Vektoren $v_{x, y, z}$ und $v_{x+\delta, y+\delta, z+\delta}$ ähnlicher als für große $f$. Kritisch könnte der Rechenaufwand der Perlin Noise Funktion werden, da sie für jeden Würfel drei mal ausgeführt werden muss. Eine Alternative wäre, einen den Vektor $v_{x, y, z}$ aus einer einzelnen Zahl zu entwickeln. Dafür wäre ein Abbildung $f: \mathbb{R} \mapsto \mathbb{R}^3$ nötig. Eine andere Möglichkeit wäre es, das Flow Field nur in zwei Dimensionen zu erstellen und die Höhe der Objekte über eine andere Logik zu bestimmen. Dies würde auch die Laufzeit der $noise(x_1, ..., x_n)$ Funktion verbessern, die eine Komplexität von $2^n$ hat, wobei $n$ die Anzahl der Dimensionen ist.\\
+Weiterhin muss das Problem gelöst werden, dass Objekte aus dem Flow Field heraus gedrückt werden können. Diesem Problem könnte man begegnen, indem auf jeden Vektor $v$ ein Vektor, der in Richtung der Mitte des Feldes zeigt, addiert.
+
+\paragraph{Random Acceleration}
+Objekte in eine zufällige Richtung zu beschleunigen, kann vor allem dafür verwendet werden, rhythmische Elemente zu visualisieren. Wird eine Gruppe von dicht zusammenstehenden Objekten gleichzeitig in unterschiedliche Richtungen beschleunigt, wird eine pulsierende Bewegung erzeugt. Erweitert werden kann dies, indem alle betroffenen Objekte zu einem gemeinsamen Punkt hin beschleunigt werden oder von diesem weg. Dadurch lässt sich auch die Kompaktheit der Gruppen verändern.
+
+\paragraph{Formationen}
+Um eine Alternative zu den Flow Fields zu haben, bieten sich viele unterschiedliche Formationen an, in denen die Partikel bewegt werden. Eine einfach zu implementierende Variante ist es, die Partikel in Kreisen parallel zum Horizont fliegen zu lassen. Dazu wird der Mittelpunkt $m \in \mathbb{R}^3$ des Kreises bei der Erstellung definiert, sowie sein Radius $r \in \mathbb{R}$.
+Will man ein Partikel mit der Position $p \in \mathbb{R}^3$ kreisen lassen, so kann wie folgt vorgegangen werden.\\
+Man projiziert den Vektor $p - m$, also den Vektor der von $m$ auf $p$ zeigt, auf die Ebene, die parallel zum Horizont verläuft, indem man die y-Koordinate von $p - m$ auf Null setzt. Man bildet jetzt das Kreuzprodukt mit dem resultierenden Vektor und dem Up-Vektor $(0, 1, 0)$. Daraus entsteht ein parallel zum Horizont verlaufender Vektor $t$.
+\begin{center}
+\begin{figure}[h!]
+\centering
+\vspace{20pt}
+\begin{tikzpicture}
+
+
+\draw (0,0) ellipse (120pt and 30pt);
+
+\filldraw[white] (2.17, 0.9) circle (3pt);
+
+%\filldraw (0, 0.05) circle (1pt and 0.4pt);
+\draw[thick,->] (0,0.05) -- (5,2);
+\node[darkgray] at (2.8,1.5) {$p-m$};
+
+\node[darkgray] at (-0.3,0.1) {$m$};
+\node[darkgray] at (5.3,1.8) {$p$};
+
+\draw[thick] (0,0.05) -- (5,-0.5);
+\node[darkgray] at (5.3,-0.5) {$p_0$};
+
+\draw[darkgray,thick,->] (5,-0.5) -- (5,0.7);
+
+\draw[darkgray,thick,->] (5,-0.5) -- (3.9,-1.4);
+\node[darkgray] at (4.7,-1.3) {$t$};
+
+\end{tikzpicture}
+\caption[Kreisbewegung]{Kreisbewegung}
+\end{figure}
+\end{center}
+
+\noindent
+Nimmt man jetzt $m+t$ und setzt die Länge des resultierenden Vektors auf $r$, so erhält man einen Punkt, der vom Partikel angesteuert werden kann (Steering Behaviour), um den Partikel in eine Kreisbahn zu bringen. Über die Länge von $t$ lässt sich die Geschwindigkeit der Partikel bestimmen.
 
 \newpage
 \subsubsection{Größe}
-
-\newpage
 
 \section{Implementierung / Umsetzung}
 \subsection{Grobe Aufteilung}
