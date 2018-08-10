@@ -409,7 +409,7 @@ Objekte in eine zufällige Richtung zu beschleunigen, kann vor allem dafür verw
 \paragraph{Formationen}
 Um eine Alternative zu den Flow Fields zu haben, bieten sich viele unterschiedliche Formationen an, in denen die Partikel bewegt werden. Eine einfach zu implementierende Variante ist es, die Partikel in Kreisen parallel zum Horizont fliegen zu lassen. Dazu wird der Mittelpunkt $m \in \mathbb{R}^3$ des Kreises bei der Erstellung definiert, sowie sein Radius $r \in \mathbb{R}$.
 Will man ein Partikel mit der Position $p \in \mathbb{R}^3$ kreisen lassen, so kann wie folgt vorgegangen werden.\\
-Man projiziert den Vektor $p - m$, also den Vektor der von $m$ auf $p$ zeigt, auf die Ebene, die parallel zum Horizont verläuft, indem man die y-Koordinate von $p - m$ auf Null setzt. Man bildet jetzt das Kreuzprodukt mit dem resultierenden Vektor und dem Up-Vektor $(0, 1, 0)$. Daraus entsteht ein parallel zum Horizont verlaufender Vektor $t$.
+Man projiziert den Vektor $p - m$, also den Vektor der von $m$ auf $p$ zeigt, auf die Ebene, die parallel zum Horizont verläuft und durch m geht, indem man die y-Koordinate von $p - m$ auf die y-Koordinate von $m$ setzt. Diesen Vektor nennen wir $p_0$. Man bildet jetzt das Kreuzprodukt zwischen $p_0$ und dem Up-Vektor $(0, 1, 0)$. Daraus entsteht ein parallel zum Horizont verlaufender Vektor $t$.
 \begin{center}
 \begin{figure}[h!]
 \centering
@@ -442,10 +442,9 @@ Man projiziert den Vektor $p - m$, also den Vektor der von $m$ auf $p$ zeigt, au
 \end{center}
 
 \noindent
-Nimmt man jetzt $m+t$ und setzt die Länge des resultierenden Vektors auf $r$, so erhält man einen Punkt, der vom Partikel angesteuert werden kann (Steering Behaviour), um den Partikel in eine Kreisbahn zu bringen. Über die Länge von $t$ lässt sich die Geschwindigkeit der Partikel bestimmen.
+Nimmt man jetzt $p_0+t$ und setzt die Länge des resultierenden Vektors auf $r$, so erhält man einen Punkt, der vom Partikel angesteuert werden kann (Steering Behaviour), um den Partikel in eine Kreisbahn zu bringen. Über die Länge von $t$ lässt sich die Geschwindigkeit der Partikel bestimmen.
 
 \newpage
-\subsubsection{Größe}
 
 \section{Implementierung / Umsetzung}
 \subsection{Grobe Aufteilung}
