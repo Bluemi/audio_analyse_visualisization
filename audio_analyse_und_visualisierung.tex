@@ -146,25 +146,26 @@ Man stellt nun unterschiedliche Arten der Visualisierung (Schritt 3) zur Verfüg
 
 \subsection{Speicherung der Objekte}
 Die Objekte oder Partikel, mit denen die Visualisierung erzeugt wird, werden durch eine ``Entity'' Klasse beschrieben. Diese Entity Klasse enthält alle Informationen, die für das Rendern des Objektes benötigt werden. Diese Attribute sind eine Beschreibung des Shapes, also die Form der Oberfläche, eine Position, eine Größe, sowie eine Farbe.\\
-Diese Entity Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine ``Movable'' Klasse, die eine Entity Instanz enthält. Die Movable Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Movable ausgeführt werden sollen, sowie eine Liste von ``Tags'', die benutzt werden kann, um Movables zu identifizieren. Weiterhin existiert eine ``Beschleunigung'' für die Farbe des Objektes, da auch die Farbe keine schlagartigen Änderungen erfahren soll. Im folgenden sollen unterschiedliche Möglichkeiten untersucht werden, eine Menge dieser Movable Instanzen zu speichern.
+Diese Entity Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine ``Movable'' Klasse, die eine Entity Instanz enthält. Die Movable Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Movable ausgeführt werden sollen, sowie eine Liste von ``Tags'', die benutzt werden kann, um Movables zu identifizieren. Weiterhin existiert eine ``Beschleunigung'' für die Farbe des Objektes, da auch die Farbe keine schlagartigen Änderungen erfahren soll. Im Folgenden sollen unterschiedliche Möglichkeiten untersucht werden, eine Menge dieser Movable Instanzen zu speichern.
 \paragraph{EntityBuffer}
 Da die Movable Klasse keine Form der Vererbung benutzt, müssen keine Movable-Pointer verwendet werden. Deshalb wäre eine triviale Art der Speicherung eine Liste oder ein Array (in c++ einen std::vector<Movable>) zu verwenden, um die einzelnen Partikel zu speichern. Nennen wir diese Liste ``EntityBuffer''.\\
 Folgender Anwendungsfall wird hierbei problematisch. Wenn man nur eine Teilmenge aller Movables betrachten möchte, um beispielsweise diesen eine Bewegung zu geben, so muss über den gesamten EntityBuffer iteriert werden und nur die in der Gruppe enthaltenen Movables behandelt werden. Da diese Operation mehrmals pro Frame passieren kann, ist diese Variante nicht sehr effektiv.
 \paragraph{Externe Gruppen}
 Um dieses Problem zu lösen, könnte man über den EntityBuffer iterieren und sich mehrere std::vector<Movable*> erstellen, die jeweils eine Teilmenge repräsentieren. Dies ist sehr riskant, da die Movable-Pointer invalide werden, wenn der EntityBuffer neuen Speicher alloziert oder Elemente aus dem EntityBuffer entfernt werden.
 \paragraph{Heap Allocation}
-Dies würde nicht passieren, wenn schon der EntityBuffer Movable-Pointer speichern würde, anstatt Movables direkt zu speichern. Dies hätte den Nachteil, dass die Objekte mit ``new'' und ``delete'' erstellt und gelöscht werden müssten oder die Verwendung von Smartpointern notwendig wird, wobei das Löschen der Objekte aus allen Vektoren nicht einfach wird.
+Dies würde nicht passieren, wenn schon der EntityBuffer Movable-Pointer speichern würde, anstatt Movables direkt zu speichern. Dies hätte den Nachteil, dass die Objekte mit ``new'' und ``delete'' erstellt und gelöscht werden müssten oder die Verwendung von Smartpointern notwendig wird, wobei das Löschen der Objekte aus allen Vektoren ein Problem darstellt.
 \paragraph{Map}
 Wenn die Gruppen der Movables direkt in Gruppen gespeichert werden, so ist das ansprechen einer Gruppe direkt möglich, ohne über alle Movables iterieren zu müssen. Dazu werden die Movables in einer Map gespeichert, die einen Identifikator, zum Beispiel einen String, auf einen Vektor von Movables abbildet. Nachteil ist, dass das iterieren über alle Movables umständlicher ist, da erst über die Map und dann über den Vektor iteriert werden muss. Weiterhin können externe Pointer auf Movables invalide werden, sobald die Map oder einer der Vektoren neuen Speicher alloziert oder verschiebt.
 
 \begin{center}
 \begin{table}[h!]
+%\resizebox{\textwidth}{!}{%
 \begin{tabular}{l | l | l}
 \textbf{Bezeichnung} & \textbf{Vorteile} & \textbf{Nachteile}\\
 \hline
 EntityBuffer & - kein new/delete & - langsamer Zugriff auf Teilmengen \\
-& - einfaches iterieren über alle\\
-& \hspace{4pt} Entities\\
+& - einfaches iterieren über\\
+& \hspace{4pt} alle Entities\\
  \hline
 Externe Gruppen & - schneller Zugriff auf & - Gruppen müssen neu erstellt werden, \\
 & \hspace{4pt} Teilmengen &\hspace{4pt}  wenn EntityBuffer Speicher verschiebt. \\
@@ -179,10 +180,12 @@ Map & - Schneller Zugriff auf & - Iterieren über alle Movables umständlich \\
 & & - Movable kann nicht in mehreren \\
 & & \hspace{4pt} Gruppen sein \\
 \end{tabular}
+%}
 \captionsetup{justification=centering}
 \caption[Möglichkeiten des Memory Managements]{Möglichkeiten des Memory Managements}
 \end{table}
 \end{center} 
+\normalsize
 Für die Umsetzung des Prototypen wurde die Map gewählt, da deren Nachteile am wenigsten ins Gewicht fallen. Das Iterieren über alle Movables kann man mit einem eigenen Iterator vereinfachen und der Zugriff auf Teilmengen erfolgt schnell. Weiterhin müssen die Movables nicht einzeln referenziert werden (std::vector\textless Movable$^\ast$\textgreater), sondern der gesamte Vektor kann benutzt werden (std::vector\textless Movable\textgreater$^\ast$). Der Fakt, dass ein Movable auf diese Weise nicht in mehreren Gruppen sein kann, wird in Kauf genommen.
 
 \subsection{Auswahl der kontinuierlichen Daten und Events}
@@ -478,9 +481,16 @@ Nimmt man jetzt $p_0+t$ und setzt die Länge des resultierenden Vektors auf $r$,
 
 \newpage
 
-\section{Implementierung / Umsetzung}
-\subsection{Grobe Aufteilung}
-Visualizer (OpenGL) / AudioVisualizer / Essentia
+\section{Implementierung}
+In diesem Abschnitt wird die Implementierung des Prototypes mit Hilfe der oben beschriebenen Konzepte erläutert. Dazu wird zuerst die grobe Aufteilung des Projektes aufgezeigt, um danach auf die einzelnen Bestandteile des Prototypen einzugehen. Dabei werden auch die Schnittstellen der Bestandteile gezeigt und wie diese miteinander interagieren. Neben dem Skizzieren des Gesamtsystems sollen auch Algorithmen, die eine gewisse Komplexität übersteigen, erläutert werden, um die Funktionsweise des Prototypen zu veranschaulichen.
+
+\subsection{Aufbau}
+Der Prototyp gliedert sich in drei größere Bestandteile, nämlich den Visualizer, die Audioanalyse und den AudioVisualizer, der die beiden anderen Teile zusammen verwendet. Der Visualizer wurde als eigenständige Bibliothek umgesetzt, die sowohl von der Audioanalyse, sowie vom AudioVisualizer unabhängig ist. Er verwaltet die animierten Objekte, deren Aussehen und Bewegungen, sowie den Rendervorgang mit Hilfe von OpenGL. Auch verarbeitet er die Benutzereingaben und die damit verbundene Kameraposition.\\
+Für die Audioanalyse wird, wie bereits in der Analyse erläutert, Essentia verwendet. Die grundlegenden Funktionen von Essentia wurden erweitert, um spezielle Informationen, die für die Umsetzung nötig waren, extrahieren zu können.\\
+Um die beiden unabhängigen Komponenten Visualizer und Audioanalyse zu verbinden, wurde der AudioVisualizer entwickelt. Dieser entscheidet, welche Daten und Events erzeugt werden und setzt diese Informationen in eine Visualisierung um, die dann im Visualizer realisiert wird, indem Objekte erzeugt, gelöscht und verändert werden. Im Unterschied zu Essentia und dem Visualizer, ist der AudioVisualizer eine ausführbare Datei und keine Bibliothek. Bei der Ausführung wird der AudioVisualizer gestartet, der dann die Audioanalyse durchführt. Erst wenn diese fertig ist, wird mit Hilfe des Visualizers die Visualisierung gestartet. Theoretisch hätte die Analyse auch während der laufenden Visualisierung durchgeführt werden können, um das Programm schneller starten zu können. Ich habe mich dagegen entschieden, da einige Algorithmen für die Analyse besser funktionieren, wenn Informationen aus der Zukunft mit verarbeitet werden können. Die modulare Aufteilung wurde gewählt, um das Projekt überschaubar zu gestalten und die einzelnen Komponenten unabhängig voneinander testen und weiterentwickeln zu können.
+
+% Warum modular
+\newpage
 \subsection{Visualizer}
 \paragraph{OpenGL}
 \paragraph{Shapes}
