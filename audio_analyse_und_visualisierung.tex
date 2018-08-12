@@ -144,50 +144,6 @@ Da Teile der Musik, vor allem rhythmische Elemente einen klaren Zeitpunkt defini
 Im Bild sind die Verarbeitungsschritte (1. - 3.), sowie deren Resultate (I. - IV.) zu sehen.\\
 Man stellt nun unterschiedliche Arten der Visualisierung (Schritt 3) zur Verfügung und schafft eine übergeordnete Einheit, die aus unterschiedlichen Arten der Datenvisualisierung wählt, um eine abwechslungsreichere Visualisierung zu generieren. Wenn das Umsetzen in eine Visualisierung unabhängige Eigenschaften der Visualisierung verändert, wie beispielsweise Farbe und Position, kann man auch verschiedene Objekte, die diese Eigenschaften verändern, gleichzeitig agieren lassen.
 
-\subsection{Speicherung der Objekte}
-Die Objekte oder Partikel, mit denen die Visualisierung erzeugt wird, werden durch eine ``Entity'' Klasse beschrieben. Diese Entity Klasse enthält alle Informationen, die für das Rendern des Objektes benötigt werden. Diese Attribute sind eine Beschreibung des Shapes, also die Form der Oberfläche, eine Position, eine Größe, sowie eine Farbe.\\
-Diese Entity Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine ``Movable'' Klasse, die eine Entity Instanz enthält. Die Movable Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Movable ausgeführt werden sollen, sowie eine Liste von ``Tags'', die benutzt werden kann, um Movables zu identifizieren. Weiterhin existiert eine ``Beschleunigung'' für die Farbe des Objektes, da auch die Farbe keine schlagartigen Änderungen erfahren soll. Im Folgenden sollen unterschiedliche Möglichkeiten untersucht werden, eine Menge dieser Movable Instanzen zu speichern.
-\paragraph{EntityBuffer}
-Da die Movable Klasse keine Form der Vererbung benutzt, müssen keine Movable-Pointer verwendet werden. Deshalb wäre eine triviale Art der Speicherung eine Liste oder ein Array (in c++ einen std::vector<Movable>) zu verwenden, um die einzelnen Partikel zu speichern. Nennen wir diese Liste ``EntityBuffer''.\\
-Folgender Anwendungsfall wird hierbei problematisch. Wenn man nur eine Teilmenge aller Movables betrachten möchte, um beispielsweise diesen eine Bewegung zu geben, so muss über den gesamten EntityBuffer iteriert werden und nur die in der Gruppe enthaltenen Movables behandelt werden. Da diese Operation mehrmals pro Frame passieren kann, ist diese Variante nicht sehr effektiv.
-\paragraph{Externe Gruppen}
-Um dieses Problem zu lösen, könnte man über den EntityBuffer iterieren und sich mehrere std::vector<Movable*> erstellen, die jeweils eine Teilmenge repräsentieren. Dies ist sehr riskant, da die Movable-Pointer invalide werden, wenn der EntityBuffer neuen Speicher alloziert oder Elemente aus dem EntityBuffer entfernt werden.
-\paragraph{Heap Allocation}
-Dies würde nicht passieren, wenn schon der EntityBuffer Movable-Pointer speichern würde, anstatt Movables direkt zu speichern. Dies hätte den Nachteil, dass die Objekte mit ``new'' und ``delete'' erstellt und gelöscht werden müssten oder die Verwendung von Smartpointern notwendig wird, wobei das Löschen der Objekte aus allen Vektoren ein Problem darstellt.
-\paragraph{Map}
-Wenn die Gruppen der Movables direkt in Gruppen gespeichert werden, so ist das ansprechen einer Gruppe direkt möglich, ohne über alle Movables iterieren zu müssen. Dazu werden die Movables in einer Map gespeichert, die einen Identifikator, zum Beispiel einen String, auf einen Vektor von Movables abbildet. Nachteil ist, dass das iterieren über alle Movables umständlicher ist, da erst über die Map und dann über den Vektor iteriert werden muss. Weiterhin können externe Pointer auf Movables invalide werden, sobald die Map oder einer der Vektoren neuen Speicher alloziert oder verschiebt.
-
-\begin{center}
-\begin{table}[h!]
-%\resizebox{\textwidth}{!}{%
-\begin{tabular}{l | l | l}
-\textbf{Bezeichnung} & \textbf{Vorteile} & \textbf{Nachteile}\\
-\hline
-EntityBuffer & - kein new/delete & - langsamer Zugriff auf Teilmengen \\
-& - einfaches iterieren über\\
-& \hspace{4pt} alle Entities\\
- \hline
-Externe Gruppen & - schneller Zugriff auf & - Gruppen müssen neu erstellt werden, \\
-& \hspace{4pt} Teilmengen &\hspace{4pt}  wenn EntityBuffer Speicher verschiebt. \\
-& & - Dies ist schwierig festzustellen. \\
-\hline
-Heap Allocation & - Schneller Zugriff auf & - Löschen einer Entity schwierig, \\
-& \hspace{4pt} Teilmengen & \hspace{4pt} da diese in mehreren Listen steht. \\
-& - Movable$^\ast$ bleiben valide & - Weiterer Layer of Indirection\\
-\hline
-Map & - Schneller Zugriff auf & - Iterieren über alle Movables umständlich \\
-& \hspace{4pt} Teilmengen & - Weiterer Layer of Indiretion\\
-& & - Movable kann nicht in mehreren \\
-& & \hspace{4pt} Gruppen sein \\
-\end{tabular}
-%}
-\captionsetup{justification=centering}
-\caption[Möglichkeiten des Memory Managements]{Möglichkeiten des Memory Managements}
-\end{table}
-\end{center} 
-\normalsize
-Für die Umsetzung des Prototypen wurde die Map gewählt, da deren Nachteile am wenigsten ins Gewicht fallen. Das Iterieren über alle Movables kann man mit einem eigenen Iterator vereinfachen und der Zugriff auf Teilmengen erfolgt schnell. Weiterhin müssen die Movables nicht einzeln referenziert werden (std::vector\textless Movable$^\ast$\textgreater), sondern der gesamte Vektor kann benutzt werden (std::vector\textless Movable\textgreater$^\ast$). Der Fakt, dass ein Movable auf diese Weise nicht in mehreren Gruppen sein kann, wird in Kauf genommen.
-
 \subsection{Auswahl der kontinuierlichen Daten und Events}
 Wie weiter oben angesprochen, ist die Auswahl der Informationen, die man der Musik entnimmt, entscheidend für eine gute Visualisierung. Die Daten müssen wichtig für die Visualisierung oder Grundlage für andere Daten oder Events sein. Weiterhin sollten Sie sich möglichst zuversichtlich berechnen lassen.
 %Wie sich zeigen wird, schließen sich diese beiden Kriterien fast aus.
@@ -484,17 +440,73 @@ Nimmt man jetzt $p_0+t$ und setzt die Länge des resultierenden Vektors auf $r$,
 \section{Implementierung}
 In diesem Abschnitt wird die Implementierung des Prototypes mit Hilfe der oben beschriebenen Konzepte erläutert. Dazu wird zuerst die grobe Aufteilung des Projektes aufgezeigt, um danach auf die einzelnen Bestandteile des Prototypen einzugehen. Dabei werden auch die Schnittstellen der Bestandteile gezeigt und wie diese miteinander interagieren. Neben dem Skizzieren des Gesamtsystems sollen auch Algorithmen, die eine gewisse Komplexität übersteigen, erläutert werden, um die Funktionsweise des Prototypen zu veranschaulichen.
 
-\subsection{Aufbau}
-Der Prototyp gliedert sich in drei größere Bestandteile, nämlich den Visualizer, die Audioanalyse und den AudioVisualizer, der die beiden anderen Teile zusammen verwendet. Der Visualizer wurde als eigenständige Bibliothek umgesetzt, die sowohl von der Audioanalyse, sowie vom AudioVisualizer unabhängig ist. Er verwaltet die animierten Objekte, deren Aussehen und Bewegungen, sowie den Rendervorgang mit Hilfe von OpenGL. Auch verarbeitet er die Benutzereingaben und die damit verbundene Kameraposition.\\
+\subsection{Übersicht}
+Der Prototyp gliedert sich in drei größere Bestandteile, nämlich den Visualizer, die Audioanalyse und den AudioVisualizer, der die beiden anderen Teile zusammen verwendet. Der Visualizer wurde als eigenständige Bibliothek umgesetzt, die vom AudioVisualizer benutzt wird und von der Audioanalyse unabhängig ist. Er verwaltet die animierten Objekte, deren Aussehen und Bewegungen, sowie den Rendervorgang mit Hilfe von OpenGL. Auch verarbeitet er die Benutzereingaben und die damit verbundene Kameraposition.\\
 Für die Audioanalyse wird, wie bereits in der Analyse erläutert, Essentia verwendet. Die grundlegenden Funktionen von Essentia wurden erweitert, um spezielle Informationen, die für die Umsetzung nötig waren, extrahieren zu können.\\
 Um die beiden unabhängigen Komponenten Visualizer und Audioanalyse zu verbinden, wurde der AudioVisualizer entwickelt. Dieser entscheidet, welche Daten und Events erzeugt werden und setzt diese Informationen in eine Visualisierung um, die dann im Visualizer realisiert wird, indem Objekte erzeugt, gelöscht und verändert werden. Im Unterschied zu Essentia und dem Visualizer, ist der AudioVisualizer eine ausführbare Datei und keine Bibliothek. Bei der Ausführung wird der AudioVisualizer gestartet, der dann die Audioanalyse durchführt. Erst wenn diese fertig ist, wird mit Hilfe des Visualizers die Visualisierung gestartet. Theoretisch hätte die Analyse auch während der laufenden Visualisierung durchgeführt werden können, um das Programm schneller starten zu können. Ich habe mich dagegen entschieden, da einige Algorithmen für die Analyse besser funktionieren, wenn Informationen aus der Zukunft mit verarbeitet werden können. Die modulare Aufteilung wurde gewählt, um das Projekt überschaubar zu gestalten und die einzelnen Komponenten unabhängig voneinander testen und weiterentwickeln zu können.
 
 % Warum modular
 \newpage
 \subsection{Visualizer}
-\paragraph{OpenGL}
+In diesem Kapitel soll die Funktionsweise und die Benutzung der Visualizer Bibliothek beschrieben werden. Dafür wird erst das System im Großen aufgezeigt, sowie die Möglichkeit auf dieses einzuwirken, um danach die einzelnen Funktionalitäten genauer zu erklären.
+
+\subsubsection{Aufbau}
+Der Visualizer ist die Implementierung des grafischen Anteils des Projektes. Er verwaltet die Objekte, aus denen die Animation besteht und bietet eine Schnittstelle, die es erlaubt, auf das Verhalten dieser Objekte einzuwirken.\\
+Um die Funktionalität der Visualisierung zu definieren, wurde eine ``Visualizer'' Klasse geschrieben. Diese Klasse ruft bei ihrer Instanziierung die Initialisierungsfunktionen für OpenGL auf, erzeugt ein Fenster mit einer gegebenen Breite und Höhe und kompiliert die ``Shader''. Um den Stand der Visualisierung zu verändern existiert eine ``tick()'' Funktion, die jeden Frame aufgerufen werden sollte. Um den Ablauf der Visualisierung auf unterschiedlichen Systemen stabil zu halten, wird eine delta-Time berechnet, um die Geschwindigkeit der Objekte so zu skalieren, dass die Visualisierung auch auf langsamen Systemen mit gleicher Geschwindigkeit abläuft. Weiterhin speichert die Visualizer Klasse die Objekte mit der die Animation umgesetzt wurde.\\
+Die Animation der Musik wird über viele kleine Objekte, die sogenannten Entities, umgesetzt. Das Verhalten von Entities wird über ``Movements'' realisiert. Movements können einer Entity oder einer Gruppe von Entities zugeordnet werden, um das Verhalten dieser Entities zu verändern, wobei vor allem die Bewegungen und die Farbe der Entities modifiziert werden.\\
+Weiterhin wird die Form der Entities über sogenannte ``Shapes'' definiert. Das Shape einer Entity wird über die ``Vertices'' umgesetzt, die später noch genauer behandelt werden. Jede Entity hat genau einen Shape.\\
+Um neue Entities erzeugen zu können, wurde die ``Creation'' Klasse geschrieben, die alle nötigen Informationen enthält, die für die Erstellung einer Gruppe von Entities nötig sind. Mit ihr ist es möglich mit nur einem Funktionsaufruf viele unterschiedliche Entities zu erzeugen, die sich jeweils in Position, Shape, Größe und Farbe unterscheiden.\\
+Um auch nach der Erstellung auf Entities einwirken zu können, kann man im Visualizer nach Entities mit definierten Eigenschaften suchen. Dazu existiert die ``Query''-Klasse.
+
+%\subsubsection{OpenGL}
+
+%\newpage
+\subsubsection{Speicherung der Objekte}
+Die Objekte oder Partikel, mit denen die Visualisierung erzeugt wird, werden durch eine ``Entity'' Klasse beschrieben. Diese Entity Klasse enthält alle Informationen, die für das Rendern des Objektes benötigt werden. Diese Attribute sind eine Beschreibung des Shapes, also die Form der Oberfläche, eine Position, eine Größe, sowie eine Farbe.\\
+Diese Entity Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine ``Movable'' Klasse, die eine Entity Instanz enthält. Die Movable Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Movable ausgeführt werden sollen, sowie eine Liste von ``Tags'', die benutzt werden kann, um Movables zu identifizieren. Weiterhin existiert eine ``Beschleunigung'' für die Farbe des Objektes, da auch die Farbe keine schlagartigen Änderungen erfahren soll. Im Folgenden sollen unterschiedliche Möglichkeiten untersucht werden, eine Menge dieser Movable Instanzen zu speichern.
+\paragraph{EntityBuffer}
+Da die Movable Klasse keine Form der Vererbung benutzt, müssen keine Movable-Pointer verwendet werden. Deshalb wäre eine triviale Art der Speicherung eine Liste oder ein Array (in c++ einen std::vector<Movable>) zu verwenden, um die einzelnen Partikel zu speichern. Nennen wir diese Liste ``EntityBuffer''.\\
+Folgender Anwendungsfall wird hierbei problematisch. Wenn man nur eine Teilmenge aller Movables betrachten möchte, um beispielsweise diesen eine Bewegung zu geben, so muss über den gesamten EntityBuffer iteriert werden und nur die in der Gruppe enthaltenen Movables behandelt werden. Da diese Operation mehrmals pro Frame passieren kann, ist diese Variante nicht sehr effektiv.
+\paragraph{Externe Gruppen}
+Um dieses Problem zu lösen, könnte man über den EntityBuffer iterieren und sich mehrere std::vector<Movable*> erstellen, die jeweils eine Teilmenge repräsentieren. Dies ist sehr riskant, da die Movable-Pointer invalide werden, wenn der EntityBuffer neuen Speicher alloziert oder Elemente aus dem EntityBuffer entfernt werden.
+\paragraph{Heap Allocation}
+Dies würde nicht passieren, wenn schon der EntityBuffer Movable-Pointer speichern würde, anstatt Movables direkt zu speichern. Dies hätte den Nachteil, dass die Objekte mit ``new'' und ``delete'' erstellt und gelöscht werden müssten oder die Verwendung von Smartpointern notwendig wird, wobei das Löschen der Objekte aus allen Vektoren ein Problem darstellt.
+\paragraph{Map}
+Wenn die Gruppen der Movables direkt in Gruppen gespeichert werden, so ist das ansprechen einer Gruppe direkt möglich, ohne über alle Movables iterieren zu müssen. Dazu werden die Movables in einer Map gespeichert, die einen Identifikator, zum Beispiel einen String, auf einen Vektor von Movables abbildet. Nachteil ist, dass das iterieren über alle Movables umständlicher ist, da erst über die Map und dann über den Vektor iteriert werden muss. Weiterhin können externe Pointer auf Movables invalide werden, sobald die Map oder einer der Vektoren neuen Speicher alloziert oder verschiebt.
+
+\begin{center}
+\begin{table}[h!]
+%\resizebox{\textwidth}{!}{%
+\begin{tabular}{l | l | l}
+\textbf{Bezeichnung} & \textbf{Vorteile} & \textbf{Nachteile}\\
+\hline
+EntityBuffer & - kein new/delete & - langsamer Zugriff auf Teilmengen \\
+& - einfaches iterieren über\\
+& \hspace{4pt} alle Entities\\
+ \hline
+Externe Gruppen & - schneller Zugriff auf & - Gruppen müssen neu erstellt werden, \\
+& \hspace{4pt} Teilmengen &\hspace{4pt}  wenn EntityBuffer Speicher verschiebt. \\
+& & - Dies ist schwierig festzustellen. \\
+\hline
+Heap Allocation & - Schneller Zugriff auf & - Löschen einer Entity schwierig, \\
+& \hspace{4pt} Teilmengen & \hspace{4pt} da diese in mehreren Listen steht. \\
+& - Movable$^\ast$ bleiben valide & - Weiterer Layer of Indirection\\
+\hline
+Map & - Schneller Zugriff auf & - Iterieren über alle Movables umständlich \\
+& \hspace{4pt} Teilmengen & - Weiterer Layer of Indiretion\\
+& - kein new/delete& - Movable kann nicht in mehreren \\
+& & \hspace{4pt} Gruppen sein \\
+\end{tabular}
+%}
+\captionsetup{justification=centering}
+\caption[Möglichkeiten des Memory Managements]{Möglichkeiten des Memory Managements}
+\end{table}
+\end{center} 
+\normalsize
+Für die Umsetzung des Prototypen wurde die Map gewählt, da deren Nachteile am wenigsten ins Gewicht fallen. Das Iterieren über alle Movables kann man mit einem eigenen Iterator vereinfachen und der Zugriff auf Teilmengen erfolgt schnell. Weiterhin müssen die Movables nicht einzeln referenziert werden (std::vector\textless Movable$^\ast$\textgreater), sondern der gesamte Vektor kann benutzt werden (std::vector\textless Movable\textgreater$^\ast$). Der Fakt, dass ein Movable auf diese Weise nicht in mehreren Gruppen sein kann, wird in Kauf genommen.
+
 \paragraph{Shapes}
-\paragraph{Entities}
+
 \paragraph{Movements}
 \paragraph{Creations}
 \paragraph{Queries}
