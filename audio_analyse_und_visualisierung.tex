@@ -19,6 +19,23 @@
 
 \overfullrule=0pt
 
+\definecolor{code_comment}{RGB}{180, 180, 180}
+\definecolor{code_keyword}{RGB}{0, 200, 00}
+\definecolor{code_background}{RGB}{40, 40, 40}
+
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,   
+  xleftmargin=15pt
+}
+
 \begin{document}
 
 \tableofcontents
@@ -128,6 +145,11 @@ Für die Umsetzung des Prototypen wurde die Bibliothek ``Essentia'' verwendet. E
 
 %\subsubsection{OpenGL}
 %TODO
+% Spezifikation, keine API, Khronos Group
+% GLFW
+% GLAD
+% core-profile vs immediate mode
+
 %\subsubsection{CMake}
 %TODO
 
@@ -450,18 +472,16 @@ Um die beiden unabhängigen Komponenten Visualizer und Audioanalyse zu verbinden
 \subsection{Visualizer}
 In diesem Kapitel soll die Funktionsweise und die Benutzung der Visualizer Bibliothek beschrieben werden. Dafür wird erst das System im Großen aufgezeigt, sowie die Möglichkeit auf dieses einzuwirken, um danach die einzelnen Funktionalitäten genauer zu erklären.
 
-\subsubsection{Aufbau}
+\subsubsection*{Aufbau}
 Der Visualizer ist die Implementierung des grafischen Anteils des Projektes. Er verwaltet die Objekte, aus denen die Animation besteht und bietet eine Schnittstelle, die es erlaubt, auf das Verhalten dieser Objekte einzuwirken.\\
 Um die Funktionalität der Visualisierung zu definieren, wurde eine ``Visualizer'' Klasse geschrieben. Diese Klasse ruft bei ihrer Instanziierung die Initialisierungsfunktionen für OpenGL auf, erzeugt ein Fenster mit einer gegebenen Breite und Höhe und kompiliert die ``Shader''. Um den Stand der Visualisierung zu verändern existiert eine ``tick()'' Funktion, die jeden Frame aufgerufen werden sollte. Um den Ablauf der Visualisierung auf unterschiedlichen Systemen stabil zu halten, wird eine delta-Time berechnet, um die Geschwindigkeit der Objekte so zu skalieren, dass die Visualisierung auch auf langsamen Systemen mit gleicher Geschwindigkeit abläuft. Weiterhin speichert die Visualizer Klasse die Objekte mit der die Animation umgesetzt wurde.\\
 Die Animation der Musik wird über viele kleine Objekte, die sogenannten Entities, umgesetzt. Das Verhalten von Entities wird über ``Movements'' realisiert. Movements können einer Entity oder einer Gruppe von Entities zugeordnet werden, um das Verhalten dieser Entities zu verändern, wobei vor allem die Bewegungen und die Farbe der Entities modifiziert werden.\\
-Weiterhin wird die Form der Entities über sogenannte ``Shapes'' definiert. Das Shape einer Entity wird über die ``Vertices'' umgesetzt, die später noch genauer behandelt werden. Jede Entity hat genau einen Shape.\\
+Weiterhin wird die Form der Entities über sogenannte ``Shapes'' definiert. Das Shape einer Entity wird über deren ``Vertices'' umgesetzt, die später noch genauer behandelt werden. Jede Entity hat genau einen Shape.\\
 Um neue Entities erzeugen zu können, wurde die ``Creation'' Klasse geschrieben, die alle nötigen Informationen enthält, die für die Erstellung einer Gruppe von Entities nötig sind. Mit ihr ist es möglich mit nur einem Funktionsaufruf viele unterschiedliche Entities zu erzeugen, die sich jeweils in Position, Shape, Größe und Farbe unterscheiden.\\
 Um auch nach der Erstellung auf Entities einwirken zu können, kann man im Visualizer nach Entities mit definierten Eigenschaften suchen. Dazu existiert die ``Query''-Klasse.
 
-%\subsubsection{OpenGL}
-
 %\newpage
-\subsubsection{Speicherung der Objekte}
+\subsubsection*{Speicherung der Objekte}
 Die Objekte oder Partikel, mit denen die Visualisierung erzeugt wird, werden durch eine ``Entity'' Klasse beschrieben. Diese Entity Klasse enthält alle Informationen, die für das Rendern des Objektes benötigt werden. Diese Attribute sind eine Beschreibung des Shapes, also die Form der Oberfläche, eine Position, eine Größe, sowie eine Farbe.\\
 Diese Entity Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine ``Movable'' Klasse, die eine Entity Instanz enthält. Die Movable Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Movable ausgeführt werden sollen, sowie eine Liste von ``Tags'', die benutzt werden kann, um Movables zu identifizieren. Weiterhin existiert eine ``Beschleunigung'' für die Farbe des Objektes, da auch die Farbe keine schlagartigen Änderungen erfahren soll. Im Folgenden sollen unterschiedliche Möglichkeiten untersucht werden, eine Menge dieser Movable Instanzen zu speichern.
 \paragraph{EntityBuffer}
@@ -505,20 +525,119 @@ Map & - Schneller Zugriff auf & - Iterieren über alle Movables umständlich \\
 \normalsize
 Für die Umsetzung des Prototypen wurde die Map gewählt, da deren Nachteile am wenigsten ins Gewicht fallen. Das Iterieren über alle Movables kann man mit einem eigenen Iterator vereinfachen und der Zugriff auf Teilmengen erfolgt schnell. Weiterhin müssen die Movables nicht einzeln referenziert werden (std::vector\textless Movable$^\ast$\textgreater), sondern der gesamte Vektor kann benutzt werden (std::vector\textless Movable\textgreater$^\ast$). Der Fakt, dass ein Movable auf diese Weise nicht in mehreren Gruppen sein kann, wird in Kauf genommen.
 
-\paragraph{Shapes}
+\subsubsection*{OpenGL}
+Für die Erzeugung der Grafiken wurde OpenGL verwendet. In diesem Abschnitt soll beschrieben werden, wie OpenGL's ``core-profile'' benutzt wird, um dann in den folgenden Abschnitten erklären zu können, wie OpenGL in das System integriert wurde. Dabei wird bewusst nur aufgezeigt, wie OpenGL benutzt wird, ohne dabei in die Tiefe zu gehen, da eine ausführliche Erklärung der Funktionsweise von OpenGL nicht das Ziel dieser Arbeit ist. Meine Informationen habe ich vor allem aus diesem Tutorial \cite{LearnOpenGL}.\\
+Um Grafiken mit OpenGL erzeugen zu können, muss zuerst ein Fenster mit Hilfe von GLFW erzeugt werden. Dies wird über die Funktion \mbox{\textit{glfwCreateWindow()}} realisiert.
 
-\paragraph{Movements}
-\paragraph{Creations}
-\paragraph{Queries}
+\begin{lstlisting} [caption={Erzeugen eines Fensters mit GLFW}\label{lst:test123},captionpos=t,language=c++] 
+GLFWwindow* window = glfwCreateWindow(width, height,
+                                      "Visualizer",
+                                      NULL, NULL);
+glfwMakeContextCurrent(window);
+\end{lstlisting}
+\noindent
+Die Funktion \mbox{\textit{glfwCreateWindow()}} kann dabei einen Null-Pointer zurückgeben, falls das Fenster nicht erstellt werden konnte. Die ersten beiden Parameter sind die Breite und Höhe des Fensters. Das dritte Argument ist der Titel.\\
+In OpenGL werden Objekte grundlegend aus Dreiecken aufgebaut, die über die Position ihrer Ecken definiert werden. Zwar sind auch Linien  und Punkte möglich, diese können aber nicht für Flächen verwendet werden. Die lokalen Positionen der Ecken werden über Vertices festgelegt. Später werden diese lokalen Positionen im ``Vertex-Shader'' zu Positionen in einer 3D Szene umgerechnet.\\
+Vertices werden als Array von float Werten umgesetzt und über ``Vertex Buffer Objects'' auf der Grafikkarte verwaltet. Um ein Vertices Array an die Grafikkarte zu senden sind drei Schritte nötig. Zuerst muss ein Buffer generiert werden. Dies erfolgt über den Aufruf von \mbox{\textit{glGenBuffers()}}. Danach muss der generierte Buffer gebunden werden, um ihn daraufhin mit Daten zu füllen. Der Ablauf sieht aus wie folgt.
+
+
+\begin{lstlisting} [caption={Generierung eines Buffers und Laden der Vertices}\label{lst:test123},captionpos=t,language=c++] 
+unsigned int vbo;
+glGenBuffers(1, &vbo);
+glBindBuffer(GL_ARRAY_BUFFER, vbo);
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
+             vertices, GL_STATIC_DRAW);
+\end{lstlisting}
+\noindent
+Die Variable \textit{vbo} ist die ID für den generierten Buffer. Diese wird beim Aufruf von \mbox{\textit{glGenBuffers()}} gesetzt und wird ab hier dazu verwendet den Buffer anzusprechen. Dieser wird durch \mbox{\textit{glBindBuffer()}} gebunden, was dazu führt das weitere Funktionsaufrufe, wie beispielsweise \mbox{\textit{glBufferData()}} sich auf diesen Buffer beziehen. Die Funktion \mbox{\textit{glBufferData()}} wird dann benutzt, um die Daten, die sich im float Array \mbox{\textit{vertices}} befinden, in den durch \mbox{\textit{vbo}} identifizierten Buffer zu schreiben. Die Konstante \mbox{\textit{GL\_STATIC\_DRAW}} gibt an, dass die \mbox{\textit{vertices}} nicht für häufiges Überschreiben optimiert werden müssen. Als Alternativen existieren \mbox{\textit{GL\_DYNAMIC\_DRAW}}, sowie \mbox{\textit{GL\_STREAM\_DRAW}}, die für \mbox{\textit{vertices}} konzipiert sind, die sich häufig ändern. Bevor ein vbo erstellt werden kann, muss noch mbox{\textit{Vertex Array Object}} (VAO) auf ähnliche Weise erzeugt werden.\\
+Um diese Daten eine globale Position in der Welt zu geben und die 3D Szene auf einem 2D Bildschirm darzustellen, wird der ``Vertex-Shader'' benutzt. In Listing 2 ist der im Prototypen benutzte Vertex-Shader zu sehen.
+
+\begin{lstlisting} [caption={Vertex Shader}\label{lst:test123},captionpos=t,language=c++] 
+layout (location = 0) in vec3 aPos;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main()
+{
+	gl_Position = projection * view * model * vec4(aPos, 1.0);
+}
+
+\end{lstlisting}
+\noindent
+Um einen Shader benutzen zu können, muss dieser mit der Funktion \mbox{\textit{glCompileShader()}} kompiliert werden. Dies passiert zur Laufzeit des eigentlichen Programms und schlägt fehl, falls Fehler im Shadercode sind.\\
+Die Matrizen \mbox{\textit{model}}, \mbox{\textit{view}} und \mbox{\textit{projection}} werden verwendet, um die lokalen Koordinaten der \mbox{\textit{vertices}} in Koordinaten umzuwandeln, die zum Rendern auf einem 2D Bildschirm verwendet werden können. Die \mbox{\textit{model}} Matrix insbesondere verschiebt, rotiert und skaliert die Koordinate \mbox{\textit{aPos}} in ein globales Koordinatensystem, mit dessen Hilfe Positionen der Entities dargestellt werden. Die Variable \mbox{\textit{aPos}} nimmt dabei die Werte der Vertices an.\\
+Damit die \mbox{\textit{vertices}} richtig interpretiert werden, muss über sogenannte Attribute-Pointer definiert werden, welche Teile der \mbox{\textit{vertices}} welche Variablen des Vertex-Shaders definieren.
+
+\begin{lstlisting} [caption={Attribute Pointer}\label{lst:test123},captionpos=t,language=c++] 
+glVertexAttribPointer(0, 3,
+                      GL_FLOAT, GL_FALSE,
+                      3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);  
+\end{lstlisting}
+\noindent
+Mit dem hier zu sehenden Funktionsaufruf \mbox{\textit{glVertexAttribPointer()}} wird ein solcher Attribut-Pointer gesetzt. Er definiert, welcher Attribut-Pointer gesetzt werden soll, dessen Größe, einen Stride, sowie ein Offset. Der Stride definiert, wie weit der nächste Satz von \mbox{\textit{vertices}} entfernt ist. Mit \mbox{\textit{glEnableVertexAttribArray()}} wird der Attribut-Pointer aktiviert.\\
+Neben dem Vertex-Shader muss auch ein Fragment-Shader bereitgestellt werden, der vor allem die Textur und Farbe eines Objektes bestimmt. Zusammen mit dem Vertex Shader kann ein Shader-Programm mit \mbox{\textit{glLinkProgram()}} gelinkt werden.\\
+Um nun Objekte zu rendern muss das Shader-Programm mit \mbox{\textit{glUseProgram()}} aktiviert werden, ein \mbox{\textit{VAO}} gebunden und die in den Shadern definierten \mbox{\textit{uniforms}} festgelegt sein. Dann kann mit der Funktion \mbox{\textit{glDrawArrays()}} gerendert werden.
+
+\subsubsection*{Initialisierung und Callbacks}
+Bei der Erstellung einer \mbox{\textit{Visualizer}} Instanz wird das Fenster erstellt, sowie das Shader-Programm geladen, kompiliert und gelinkt. Da die Initialisierung des Fensters, sowie die Kompilierung der Shader fehlschlagen kann, werden diese Aufgaben nicht im Konstruktor des Visualizers abgearbeitet, sondern in einer \mbox{\textit{Visualizer::create()}} Funktion, die ein \mbox{\textit{std::optional<Visualizer>}} zurückgibt. Dieser Aufbau wurde gewählt, da der Konstruktor in der Fehlerbehandlung eingeschränkt ist, da er immer eine \mbox{\textit{Visualizer}} Instanz zurückgeben werden muss. Schlägt die Kompilierung eines Shaders fehl oder kann kein Fenster erzeugt werden, so wird ein leeres \mbox{\textit{optional}} zurückgegeben.\\
+Bei der Initialisierung musste ein weiteres Problem gelöst werden, dass kurz beschrieben werden soll. OpenGL informiert das eigene Programm über Mausbewegungen und Größenänderungen des Fensters. Dies geschieht über Callback-Funktionen, die vom Programmierer gesetzt werden können. Ein Callback für die Größenänderung des Fensters setzt man mit der Funktion \mbox{\textit{glfwSetFramebufferSizeCallback(window, callback\_function)}}, wobei \mbox{\textit{callback\_function()}} die vom Programmierer definierte Funktion ist, die bei einer Größenänderung ausgeführt wird. Ungünstiger weise ist es nicht möglich eine Member-Funktion zu registrieren, wodurch verhindert wird, dass der \mbox{\textit{Visualizer}} eine eigene Funktion registriert. Man könnte eine statische Funktion registrieren und in dieser einen globalen State verändern, der dann vom \mbox{\textit{Visualizer}} benutzt wird, um die Visualisierung anzupassen. Da aber globale Variablen ``Bad Practice'' sind und verhindern würden, mehrere Visualizer Instanzen zu benutzen, habe ich mich entschieden, einen \mbox{\textit{ResizeManager}}, sowie einen \mbox{\textit{MouseManager}} zu schreiben, bei dem sich der \mbox{\textit{Visualizer}} registrieren kann, um die OpenGL-Callbacks auf eigenen Member-Funktionen umleiten zu lassen.\\
+Dazu gibt der \mbox{\textit{Visualizer}} dem \mbox{\textit{ResizeManager}}, sowie dem \mbox{\textit{MouseManager}} eine Referenz von sich selbst, die von den Managern benutzt wird, um die Member-Funktion des \mbox{\textit{Visualizers}} aufzurufen. Im Destruktor des \mbox{\textit{Visualizers}} wird die Referenz wieder entfernt.
+
+\subsubsection*{Shapes}
+Die Form einer Entity wird im Visualizer über sogenannte ``Shapes'' identifiziert. Dabei definiert ein Shape die \mbox{\textit{vertices}} eines Objektes, beispielsweise die in Listing N zu sehenden \mbox{\textit{vertices}} eines einfachen Dreiecks \cite[Kap. ``Hello Tiangle'']{LearnOpenGL}.
+
+\begin{lstlisting} [caption={Vertices eines Dreiecks},captionpos=t,language=c++] 
+float vertices[] = {
+    -0.5f, -0.5f, 0.0f, // unten links
+     0.5f, -0.5f, 0.0f, // unten rechts
+     0.0f,  0.5f, 0.0f  // oben mitte
+};  
+\end{lstlisting}
+\noindent
+Möchte man einen Würfel definieren, so kann man diesen aus 12 Dreiecken zusammensetzen, von denen jeweils zwei eine Seite des Würfels bilden. Dies lässt sich noch per Hand umsetzen.\\
+Schwieriger sind die  \mbox{\textit{vertices}} einer Kugel zu berechnen, da man, um eine Kugel zu erzeugen, relativ viele  \mbox{\textit{vertices}} benötigt, da ansonsten Ecken der Kugeln zu sehen sind. Es existieren unterschiedliche Arten der Generierung von Kugel  \mbox{\textit{vertices}}. Im Prototypen wurde die Problematik wie folgt gelöst. Zuerst werden, wie in Abbildung 8 zu sehen, zwei aufeinander stehende Pyramiden erstellt, die aus jeweils vier Dreiecken bestehen.\\
+Nun wird jedes Dreieck der Pyramiden in vier weitere Dreiecke geteilt, indem die Mittelpunkte der Seiten verbunden werden (ebenfalls in Abbildung 8 zu sehen). Die so entstandenen Dreiecke können wieder auf die gleiche Weise unterteilt werden. Diesen Vorgang wiederholt man nun, bis eine ausreichende Feinheit erreicht wurde. Anschließend werden die Vektoren, die vom Mittelpunkt der Kugel zu den Eckpunkten der Vierecke verlaufen, normalisiert. Das Resultat ist eine Kugel.\\
+
+\begin{center}
+\begin{figure}[h!]
+\centering
+\vspace{20pt}
+\begin{tikzpicture}[scale=0.8]
+\draw(0,0) -- (2,2.3) -- (0, 5);
+\draw(0,0) -- (-2,2.3) -- (0, 5);
+\draw(-2,2.3) -- (-0.3, 1.8) -- (2, 2.3);
+\draw(0, 0) -- (-0.3, 1.8) -- (0, 5);
+\draw(-2,2.3) -- (0.3, 2.5) -- (2, 2.3);
+\draw(0,0) -- (0.3, 2.5) -- (0, 5);
+
+\draw(5,1) -- (6.8, 4) -- (8.6, 1) -- (5,1);
+\draw[dashed](5.9, 2.5) -- (7.7, 2.5) -- (6.8, 1) -- (5.9, 2.5);
+\end{tikzpicture}
+\caption[Ausgangsstatus Kugelberechnung und Dreiecksteilung]{Ausgangsstatus Kugelberechnung und Dreiecksteilung}
+\end{figure}
+\end{center}
+\noindent
+Will man mit OpenGL unterschiedliche Objekte rendern, die aber die gleiche Form annehmen, so ist es deutlich effizienter, die \textit{vertices} nicht für jedes Objekt neu auf die Grafikkarte zu laden, sondern diese wiederzuverwenden.\\
+Um dies umzusetzen, wurde der \textit{ShapeHeap} entwickelt, der die schon erstellten Shapes und damit die hoch geladenen \textit{vertices} verwaltet. Dieser bildet mit Hilfe einer Map sogenannte \textit{ShapeSpecifications} auf konkrete Shapes ab. Eine \textit{ShapeSpecification} definiert exakt, wie ein Shape aussehen soll. Die Spezifikation einer Kugel enthält beispielsweise, wie oft die Dreiecke in Folge geteilt werden sollen, um zu definieren, wie genau die Kugel gezeichnet werden soll.\\
+Will man eine Kugel mit einer gegebenen \textit{ShapeSpecification} erzeugen, so ruft man die Funktion \mbox{\textit{get\_shape()}} des \mbox{\textit{ShapeHeaps}} auf, die eine \textit{ShapeSpecification} als Argument akzeptiert. Diese überprüft, ob ein \textit{Shape} mit der gegebenen \textit{ShapeSpecification} schon erstellt wurde und falls ja gibt es dieses zurück. Andernfalls wird das \textit{Shape} neu erstellt und zurück gegeben. Auf diese Weise wird sichergestellt, dass gleiche \textit{vertices} nicht mehrmals auf die Grafikkarte hoch geladen werden.
+
+\newpage
+
+\subsubsection*{Movements}
+\subsubsection*{Creations}
+\subsubsection*{Queries}
 \subsection{AudioVisualizer}
-\paragraph{DataGenerators}
-\subparagraph{Die implementierten DataGenerators}
-\paragraph{EventGenerators}
-\paragraph{Dependencies}
-\paragraph{Handler}
-\paragraph{EventSystem}
-\paragraph{Essentia}
-\paragraph{Compositor}
+\subsubsection*{DataGenerators}
+\paragraph{implementierten DataGenerators}
+\subsubsection*{EventGenerators}
+\subsubsection*{Dependencies}
+\subsubsection*{Handler}
+\subsubsection*{EventSystem}
+\subsubsection*{Essentia}
+\subsubsection*{Compositor}
 
 \section{Fazit}
 Auf Anforderungen eingehen
