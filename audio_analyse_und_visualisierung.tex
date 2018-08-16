@@ -651,7 +651,7 @@ Ein \textit{GroupMovement} behält durch die Verwendung des Variants die Typenin
 
 \paragraph{Flow Fields} % Do
 Die grundlegenden Möglichkeiten Flow Fields umzusetzen, wurden schon in der Konzeptphase beschrieben. An dieser Stelle soll vor allem darauf eingegangen werden, wie sich die Implementation und das Konzept unterscheiden und wie die Perlin Noise Funktion umgesetzt wurde.\\
-Anders als im Konzept geplant, wurden die Flow Fields nicht umgesetzt, indem der Raum in Würfel eingeteilt wurde und ein Beschleunigungsvektor $v$ für jeden Würfel berechnet wurde. Stattdessen wurde die Position der Entities direkt als Eingabe der Perlin Noise Funktion verwendet. Dies hat folgende Vorteile. Erstens ist der Raum, in dem die Beschleunigung der Entities definiert ist, dadurch nicht mehr begrenzt. Würde man Beschleunigungsvektoren für eine endliche Anzahl von Würfeln berechnen, so würde der durch die Würfel beschriebene Raum immer endlich sein und es wäre schwierig die Bewegungen der Entities außerhalb dieses Raumes zu beschreiben. Zweitens ist die Beschleunigung der Entities dadurch stetig, da nicht die diskreten Positionen der Würfel, sondern die stetigen Positionen der Entities als Eingabe der PerlinNoise Funktion verwendet werden. Wichtig hierbei war, dass die Performanz der Perlin Noise Funktion ausreicht, um Beschleunigungen, für eine ausreichend große Menge von Entities, berechnen zu können.\\
+Anders als im Konzept geplant, wurden die Flow Fields nicht umgesetzt, indem der Raum in Würfel eingeteilt wurde und ein Beschleunigungsvektor $v$ für jeden Würfel berechnet wurde. Stattdessen wurde die Position der Entities direkt als Eingabe der Perlin Noise Funktion verwendet. Dies hat folgende Vorteile. Erstens ist der Raum, in dem die Beschleunigung der Entities definiert ist, dadurch nicht mehr begrenzt. Würde man Beschleunigungsvektoren für eine endliche Anzahl von Würfeln berechnen, so würde der durch die Würfel beschriebene Raum immer endlich sein und es wäre schwierig die Bewegungen der Entities außerhalb dieses Raumes zu beschreiben. Zweitens ist die Beschleunigung der Entities dadurch stetig, da nicht die diskreten Positionen der Würfel, sondern die stetigen Positionen der Entities als Eingabe der PerlinNoise Funktion verwendet werden. Wichtig hierbei war, dass die Performanz der Perlin Noise Funktion ausreicht, um Beschleunigungen, für eine ausreichend große Menge von Entities, berechnen zu können.
 \subparagraph{Perlin Noise}
 Die Standard Bibliothek von C++ bietet keinen Algorithmus, der Perlin Noise berechnet, weshalb erst der Perlin Noise Algorithmus implementiert werden musste. Dabei war es nicht wichtig, dass der originale Algorithmus umgesetzt wurde, sondern vielmehr mussten nur die in der Konzeptphase beschriebenen Anforderungen erfüllt sein. Die \textit{noise()} Funktion musste $n$ Argumente akzeptieren und sicherstellen, dass eine kleine Änderung der Argumente auch nur eine kleine Änderung der \textit{noise()} Funktion bewirkt.\\
 Grundlegend wurde vorgegangen, indem eine zufällige Folge $\left(f_i\right)_{i \in \mathbb{N}}$ definiert wird, die auf die Zahlen $[-1, 1]$ abbildet.
@@ -784,7 +784,8 @@ Interpoliert man erst über $x_1$, so muss zwischen den Wertepaaren $f_{3, 1} = 
 \end{figure}
 \end{center}
 Setzt man nun $x_1 - floor(x_1) = 3.3 - 3.0 = 0.3$ in $I^\prime(x)$ ein, so erhält man den ersten Interpolationswert $-0.0532$. Die gleiche Prozedur durchläuft man mit $f_{3, 2} = 0.4$ und $f_{4, 2} = -0.5$ und erhält $0.2532$. Nun interpoliert man auf gleiche Weise für $x_2$, mit den errechneten Werten $-0.0532$ und $0.2532$ und erhält $0.2032$, wobei man nun $0.7$ in die Interpolationsfunktion geben muss, da $x_2 - floor(x_2) = 1.7 - floor(1.7) = 0.7$. Somit ist unser Endresultat $0.2032$ für die erste Octave.\\
-Für die Implementierung der Zufallsfolge $(f_i)$ wurde eine Abwandlung vom XOR-Shift RNG verwendet, wie sie von George Marsaglia \cite{ac8e278bab88e59aa3a147bef7b113350a723aa4547b89da74bdcadaf0244f1b} vorgestellt wurden. Diese haben den Vorteil, dass sie extrem schnell arbeiten, da sie nur auf dem binären XOR und Shiftoperationen aufbauen. Die Funktion wurde so abgewandelt, sodass Fließkommazahlen zwischen -1 und 1 produziert werden.\\
+Für die Implementierung der Zufallsfolge $(f_i)$ wurde eine Abwandlung vom XOR-Shift RNG verwendet, wie sie von George Marsaglia \cite{ac8e278bab88e59aa3a147bef7b113350a723aa4547b89da74bdcadaf0244f1b} vorgestellt wurden. Diese haben den Vorteil, dass sie extrem schnell arbeiten, da sie nur auf dem binären XOR und Shiftoperationen aufbauen. Die Funktion wurde so abgewandelt, sodass Fließkommazahlen zwischen -1 und 1 produziert werden.
+\newpage
 
 \begin{lstlisting} [caption={Xorshift RNG},captionpos=t,language=c++]
 float random(unsigned int x) {
@@ -813,12 +814,21 @@ noise(x \cdot f + 3a + time, y \cdot f + 3a + time)
 \end{align}
 \noindent
 Die Variablen $x, y, z$ sind die Position der zu beschleunigenden Entity, wobei zu beachten ist, dass die x-Koordinate nicht in die Beschleunigung auf der x-Achse eingeht, sowie die $y$ und $z$ Position nicht in ihre Beschleunigungen eingehen. Einerseits verbessert es die Performanz, da eine Dimension weniger berechnet wird, andererseits wird so einem Effekt entgegengewirkt, der dafür sorgte, dass sich die Entities auf einer Position häuften.\\
-Die Konstante $f$, im Prototypen auf $0.2$ gesetzt, wird, wie schon im Konzept erläutert, benutzt, um zu definieren, wie schnell sich die wirkenden Kräfte von Position zu Position unterscheiden. Ist $f$ sehr klein, unterscheiden sich die Kräfte für auseinander liegende Entities kaum, ist $f$ groß so können große Unterschiede auch bei eng aneinanderliegenden Entities vorkommen. Als weiterer Faktor wurde die Zeit mit einbezogen, sodass sich die Visualisierung über die Zeit verändert. Dadurch, dass sich die Zeit ähnlich wie die Position der Entity auf die berechnete Kraft auswirkt, entstehen Wellenbewegungen, da eine Entity, die sich zum Zeitpunkt $t$ an der Position $x, y, z$ befindet die gleiche Kraft erfährt, wie eine Entity an der Position $x+\delta, y+\delta, z+\delta$ und dem Zeitpunkt $t-(\delta \cdot f)$.
-% genaue Interaktion mit Perlin Noise
-% einbeziehen der Zeit
+Die Konstante $f$, im Prototypen auf $0.2$ gesetzt, wird, wie schon im Konzept erläutert, benutzt, um zu definieren, wie schnell sich die wirkenden Kräfte von Position zu Position unterscheiden. Ist $f$ sehr klein, unterscheiden sich die Kräfte für auseinander liegende Entities kaum, ist $f$ groß so können große Unterschiede auch bei eng aneinanderliegenden Entities vorkommen. Als weiterer Faktor wurde die Zeit mit einbezogen, sodass sich die Visualisierung über die Zeit verändert. Dadurch, dass sich die Zeit ähnlich wie die Position der Entity auf die berechnete Kraft auswirkt, entstehen Wellenbewegungen, da eine Entity, die sich zum Zeitpunkt $t$ an der Position $x, y, z$ befindet die gleiche Kraft erfährt, wie eine Entity an der Position $x+\delta, y+\delta, z+\delta$ und dem Zeitpunkt $t-(\delta \cdot f)$.\\
+Der Parameter der Geschwindigkeit wurde über eine Skalierung der berechneten Kraft umgesetzt. So führen beispielsweise rhythmische Element dazu, dass die Stärke der Bewegungen kurzzeitig zunimmt.
 
-% _force und Einwirkung von BeatEvents
-% PlainForce
+\paragraph{Plain Force}
+Der visuelle Effekt der Flow Fields konnte verbessert werden, indem man eine weitere Kraft hinzufügte, die die Entities in Richtung der xz-Ebene drückte, also die y-Koordinate Richtung 0 beschleunigte. Dies wurde implementiert, indem die y-Koordinate negativ auf die Beschleunigung addiert wurde:
+\begin{lstlisting} [caption={Plain Force},captionpos=t,language=c++]
+	acceleration += vec3(0.f,
+		entity.position.y * -strength,
+		0.f));
+\end{lstlisting}
+\noindent
+Der Parameter $strength$ gibt dabei an, wie stark diese Kraft wirkt.\\
+Weiterhin wurde eine Reibungskraft für die Geschwindigkeit, sowie eine Reibung für die Veränderungen der Farbe implementiert, die unverändert aus dem Konzept übernommen wurde.
+
+\newpage
 
 \subsubsection*{Creations}
 % Do
