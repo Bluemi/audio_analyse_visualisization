@@ -14,14 +14,16 @@
 \usepackage{colortbl}
 \usepackage{sidecap}
 \usepackage{wrapfig}
-\usepackage[T1]{fontenc}   
+\usepackage[T1]{fontenc}
 \usepackage{listings}
+\usetikzlibrary{decorations.pathreplacing}
 
 \overfullrule=0pt
 
 \definecolor{code_comment}{RGB}{180, 180, 180}
 \definecolor{code_keyword}{RGB}{0, 200, 00}
 \definecolor{code_background}{RGB}{40, 40, 40}
+\definecolor{dark_red}{RGB}{230, 40, 40}
 
 \lstset{
   backgroundcolor=\color{code_background},
@@ -32,7 +34,7 @@
   emph={comment},
   showstringspaces=false,
   flexiblecolumns=false,
-  tabsize=4,   
+  tabsize=4,
   xleftmargin=15pt
 }
 
@@ -111,7 +113,7 @@ Wie lassen sich Stimmungen oder Emotionen in digitalen Systemen darstellen und w
 % Wie kann man sie visualisieren?
 Wenn man diese Fragestellungen gelöst hat, so ist weiter zu klären, welche Visualisierung für die ermittelten Daten als passend empfunden wird und wie man diese umsetzt.\\
 % Wie kann man testen, ob die Visualisierung als passend empfunden wird?
-Als Letztes möchte ich herausstellen, dass auch das Testen der Visualisierung eine Herausforderung darstellt, da die Subjektivität des Hörers ein einheitliches Ergebnis erschwert und die Problematik nicht formal erfassbar zu seien scheint. Die Beantwortung dieser Fragen soll Thema dieser Arbeit sein, sowie die Beschreibung einer prototypischen Umsetzung. 
+Als Letztes möchte ich herausstellen, dass auch das Testen der Visualisierung eine Herausforderung darstellt, da die Subjektivität des Hörers ein einheitliches Ergebnis erschwert und die Problematik nicht formal erfassbar zu seien scheint. Die Beantwortung dieser Fragen soll Thema dieser Arbeit sein, sowie die Beschreibung einer prototypischen Umsetzung.
 
 \subsection{Anforderungen}
 Im folgenden werden Anforderungen beschrieben, die an den Quelltext des Prototypen, sowie dessen Resultat gestellt werden.
@@ -257,7 +259,7 @@ romantic &          & strong   &     & jittery  & tender\\
 \end{table}
 \end{center}
 
-Wie weiter oben beschrieben besteht neben der Möglichkeit auf Klassen abzubilden auch die Möglichkeit auf ein Modell abzubilden. Das für MER am häufigsten benutzte Modell ist das ``Circumplex Model of Affect'' (kurz. CMA) \cite[S. 158 f.]{lerch2012introduction}. Es wird auch ``Russels two dimensional Emotion Space'' genannt. Dieses Modell hat zwei Dimensionen, namentlich den ``Arousal''-Wert (Aktiviertheit) und den ``Valence''-Wert (Wohlbefinden). Wie in Abbildung 4 gezeigt, wird der Arousal-Wert meist auf der Y-Achse und der Valence-Wert auf der X-Achse abgebildet. 
+Wie weiter oben beschrieben besteht neben der Möglichkeit auf Klassen abzubilden auch die Möglichkeit auf ein Modell abzubilden. Das für MER am häufigsten benutzte Modell ist das ``Circumplex Model of Affect'' (kurz. CMA) \cite[S. 158 f.]{lerch2012introduction}. Es wird auch ``Russels two dimensional Emotion Space'' genannt. Dieses Modell hat zwei Dimensionen, namentlich den ``Arousal''-Wert (Aktiviertheit) und den ``Valence''-Wert (Wohlbefinden). Wie in Abbildung 4 gezeigt, wird der Arousal-Wert meist auf der Y-Achse und der Valence-Wert auf der X-Achse abgebildet.
 \begin{center}
 \begin{figure}[h!]
 \centering
@@ -309,7 +311,7 @@ Um die Informationen in der Musik speichern zu können, wird eine passende Darst
 Für die Einteilung in Frames bietet Essentia den ``FrameCutter'' Algorithmus \cite{EssentiaFrameCutter}. Von diesem lässt sich die Größe (FrameSize) als auch die Sprungweite (HopSize) konfigurieren. Alle weiteren kontinuierlichen Berechnungen bauen auf den so gewonnenen Frames auf.
 
 \subsection{Visualisierung}
-Will man eine 3D-Visualisierung umsetzen, so bietet es sich an Objekte zu benutzen, die passend zur Musik Eigenschaften 
+Will man eine 3D-Visualisierung umsetzen, so bietet es sich an Objekte zu benutzen, die passend zur Musik Eigenschaften
 und damit ihr Aussehen verändern. Position, Farbe und Form sind solche Eigenschaften. Über die Position selbst lassen sich wenig Informationen zum Betrachter transportieren, weshalb hier eher die Veränderung der Position, also die Bewegung, eine entscheidende Rolle spielt. Im Folgenden werden die einzelnen Attribute und ihre Verbindung zur Musik behandelt. Dadurch werden Möglichkeiten entwickelt, wie eine Visualisierung der vorher gewonnenen Daten umgesetzt werden kann.
 
 \subsubsection{Farbe}
@@ -524,7 +526,7 @@ Map & - Schneller Zugriff auf & - Iterieren über alle Movables umständlich \\
 \captionsetup{justification=centering}
 \caption[Möglichkeiten des Memory Managements]{Möglichkeiten des Memory Managements}
 \end{table}
-\end{center} 
+\end{center}
 \normalsize
 Für die Umsetzung des Prototypen wurde die Map gewählt, da deren Nachteile am wenigsten ins Gewicht fallen. Das Iterieren über alle Movables kann man mit einem eigenen Iterator vereinfachen und der Zugriff auf Teilmengen erfolgt schnell. Weiterhin müssen die Movables nicht einzeln referenziert werden (std::vector\textless Movable$^\ast$\textgreater), sondern der gesamte Vektor kann benutzt werden (std::vector\textless Movable\textgreater$^\ast$). Der Fakt, dass ein Movable auf diese Weise nicht in mehreren Gruppen sein kann, wird in Kauf genommen.
 
@@ -532,7 +534,7 @@ Für die Umsetzung des Prototypen wurde die Map gewählt, da deren Nachteile am 
 Für die Erzeugung der Grafiken wurde OpenGL verwendet. In diesem Abschnitt soll beschrieben werden, wie OpenGL's ``core-profile'' benutzt wird, um dann in den folgenden Abschnitten erklären zu können, wie OpenGL in das System integriert wurde. Dabei wird bewusst nur aufgezeigt, wie OpenGL benutzt wird, ohne dabei in die Tiefe zu gehen, da eine ausführliche Erklärung der Funktionsweise von OpenGL nicht das Ziel dieser Arbeit ist. Meine Informationen habe ich vor allem aus diesem Tutorial \cite{LearnOpenGL}.\\
 Um Grafiken mit OpenGL erzeugen zu können, muss zuerst ein Fenster mit Hilfe von GLFW erzeugt werden. Dies wird über die Funktion \mbox{\textit{glfwCreateWindow()}} realisiert.
 
-\begin{lstlisting} [caption={Erzeugen eines Fensters mit GLFW}\label{lst:test123},captionpos=t,language=c++] 
+\begin{lstlisting} [caption={Erzeugen eines Fensters mit GLFW}\label{lst:test123},captionpos=t,language=c++]
 GLFWwindow* window = glfwCreateWindow(width, height,
                                       "Visualizer",
                                       NULL, NULL);
@@ -544,7 +546,7 @@ In OpenGL werden Objekte grundlegend aus Dreiecken aufgebaut, die über die Posi
 Vertices werden als Array von float Werten umgesetzt und über ``Vertex Buffer Objects'' auf der Grafikkarte verwaltet. Um ein Vertices Array an die Grafikkarte zu senden sind drei Schritte nötig. Zuerst muss ein Buffer generiert werden. Dies erfolgt über den Aufruf von \mbox{\textit{glGenBuffers()}}. Danach muss der generierte Buffer gebunden werden, um ihn daraufhin mit Daten zu füllen. Der Ablauf sieht aus wie folgt.
 
 
-\begin{lstlisting} [caption={Generierung eines Buffers und Laden der Vertices}\label{lst:test123},captionpos=t,language=c++] 
+\begin{lstlisting} [caption={Generierung eines Buffers und Laden der Vertices}\label{lst:test123},captionpos=t,language=c++]
 unsigned int vbo;
 glGenBuffers(1, &vbo);
 glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -555,7 +557,7 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
 Die Variable \textit{vbo} ist die ID für den generierten Buffer. Diese wird beim Aufruf von \mbox{\textit{glGenBuffers()}} gesetzt und wird ab hier dazu verwendet den Buffer anzusprechen. Dieser wird durch \mbox{\textit{glBindBuffer()}} gebunden, was dazu führt das weitere Funktionsaufrufe, wie beispielsweise \mbox{\textit{glBufferData()}} sich auf diesen Buffer beziehen. Die Funktion \mbox{\textit{glBufferData()}} wird dann benutzt, um die Daten, die sich im float Array \mbox{\textit{vertices}} befinden, in den durch \mbox{\textit{vbo}} identifizierten Buffer zu schreiben. Die Konstante \mbox{\textit{GL\_STATIC\_DRAW}} gibt an, dass die \mbox{\textit{vertices}} nicht für häufiges Überschreiben optimiert werden müssen. Als Alternativen existieren \mbox{\textit{GL\_DYNAMIC\_DRAW}}, sowie \mbox{\textit{GL\_STREAM\_DRAW}}, die für \mbox{\textit{vertices}} konzipiert sind, die sich häufig ändern. Bevor ein vbo erstellt werden kann, muss noch mbox{\textit{Vertex Array Object}} (VAO) auf ähnliche Weise erzeugt werden.\\
 Um diese Daten eine globale Position in der Welt zu geben und die 3D Szene auf einem 2D Bildschirm darzustellen, wird der ``Vertex-Shader'' benutzt. In Listing 2 ist der im Prototypen benutzte Vertex-Shader zu sehen.
 
-\begin{lstlisting} [caption={Vertex Shader}\label{lst:test123},captionpos=t,language=c++] 
+\begin{lstlisting} [caption={Vertex Shader}\label{lst:test123},captionpos=t,language=c++]
 layout (location = 0) in vec3 aPos;
 
 uniform mat4 model;
@@ -573,11 +575,11 @@ Um einen Shader benutzen zu können, muss dieser mit der Funktion \mbox{\textit{
 Die Matrizen \mbox{\textit{model}}, \mbox{\textit{view}} und \mbox{\textit{projection}} werden verwendet, um die lokalen Koordinaten der \mbox{\textit{vertices}} in Koordinaten umzuwandeln, die zum Rendern auf einem 2D Bildschirm verwendet werden können. Die \mbox{\textit{model}} Matrix insbesondere verschiebt, rotiert und skaliert die Koordinate \mbox{\textit{aPos}} in ein globales Koordinatensystem, mit dessen Hilfe Positionen der Entities dargestellt werden. Die Variable \mbox{\textit{aPos}} nimmt dabei die Werte der Vertices an.\\
 Damit die \mbox{\textit{vertices}} richtig interpretiert werden, muss über sogenannte Attribute-Pointer definiert werden, welche Teile der \mbox{\textit{vertices}} welche Variablen des Vertex-Shaders definieren.
 
-\begin{lstlisting} [caption={Attribute Pointer}\label{lst:test123},captionpos=t,language=c++] 
+\begin{lstlisting} [caption={Attribute Pointer}\label{lst:test123},captionpos=t,language=c++]
 glVertexAttribPointer(0, 3,
                       GL_FLOAT, GL_FALSE,
                       3 * sizeof(float), (void*)0);
-glEnableVertexAttribArray(0);  
+glEnableVertexAttribArray(0);
 \end{lstlisting}
 \noindent
 Mit dem hier zu sehenden Funktionsaufruf \mbox{\textit{glVertexAttribPointer()}} wird ein solcher Attribut-Pointer gesetzt. Er definiert, welcher Attribut-Pointer gesetzt werden soll, dessen Größe, einen Stride, sowie ein Offset. Der Stride definiert, wie weit der nächste Satz von \mbox{\textit{vertices}} entfernt ist. Mit \mbox{\textit{glEnableVertexAttribArray()}} wird der Attribut-Pointer aktiviert.\\
@@ -592,12 +594,12 @@ Dazu gibt der \mbox{\textit{Visualizer}} dem \mbox{\textit{ResizeManager}}, sowi
 \subsubsection*{Shapes}
 Die Form einer Entity wird im Visualizer über sogenannte ``Shapes'' identifiziert. Dabei definiert ein Shape die \mbox{\textit{vertices}} eines Objektes, beispielsweise die in Listing N zu sehenden \mbox{\textit{vertices}} eines einfachen Dreiecks \cite[Kap. ``Hello Tiangle'']{LearnOpenGL}.
 
-\begin{lstlisting} [caption={Vertices eines Dreiecks},captionpos=t,language=c++] 
+\begin{lstlisting} [caption={Vertices eines Dreiecks},captionpos=t,language=c++]
 float vertices[] = {
     -0.5f, -0.5f, 0.0f, // unten links
      0.5f, -0.5f, 0.0f, // unten rechts
      0.0f,  0.5f, 0.0f  // oben mitte
-};  
+};
 \end{lstlisting}
 \noindent
 Möchte man einen Würfel definieren, so kann man diesen aus 12 Dreiecken zusammensetzen, von denen jeweils zwei eine Seite des Würfels bilden. Dies lässt sich noch per Hand umsetzen.\\
@@ -650,9 +652,10 @@ Ein \textit{GroupMovement} behält durch die Verwendung des Variants die Typenin
 \paragraph{Flow Fields} % Do
 Die grundlegenden Möglichkeiten Flow Fields umzusetzen, wurden schon in der Konzeptphase beschrieben. An dieser Stelle soll vor allem darauf eingegangen werden, wie sich die Implementation und das Konzept unterscheiden und wie die Perlin Noise Funktion umgesetzt wurde.\\
 Anders als im Konzept geplant, wurden die Flow Fields nicht umgesetzt, indem der Raum in Würfel eingeteilt wurde und ein Beschleunigungsvektor $v$ für jeden Würfel berechnet wurde. Stattdessen wurde die Position der Entities direkt als Eingabe der Perlin Noise Funktion verwendet. Dies hat folgende Vorteile. Erstens ist der Raum, in dem die Beschleunigung der Entities definiert ist, dadurch nicht mehr begrenzt. Würde man Beschleunigungsvektoren für eine endliche Anzahl von Würfeln berechnen, so würde der durch die Würfel beschriebene Raum immer endlich sein und es wäre schwierig die Bewegungen der Entities außerhalb dieses Raumes zu beschreiben. Zweitens ist die Beschleunigung der Entities dadurch stetig, da nicht die diskreten Positionen der Würfel, sondern die stetigen Positionen der Entities als Eingabe der PerlinNoise Funktion verwendet werden. Wichtig hierbei war, dass die Performanz der Perlin Noise Funktion ausreicht, um Beschleunigungen, für eine ausreichend große Menge von Entities, berechnen zu können.\\
+\subparagraph{Perlin Noise}
 Die Standard Bibliothek von C++ bietet keinen Algorithmus, der Perlin Noise berechnet, weshalb erst der Perlin Noise Algorithmus implementiert werden musste. Dabei war es nicht wichtig, dass der originale Algorithmus umgesetzt wurde, sondern vielmehr mussten nur die in der Konzeptphase beschriebenen Anforderungen erfüllt sein. Die \textit{noise()} Funktion musste $n$ Argumente akzeptieren und sicherstellen, dass eine kleine Änderung der Argumente auch nur eine kleine Änderung der \textit{noise()} Funktion bewirkt.\\
-Grundlegend wurde vorgegangen, indem eine zufällige Folge $\left(f_i\right)_{i \in \mathbb{N}}$ definiert wird, die auf die Zahlen $[-1, 1]$ abbildet. 
-Anschließend wird zwischen den Werten der Folge mit dem Polynom $6x^5-15x^4+10x^3$ interpoliert. Abbildung 9 zeigt eine Veranschaulichung der Zufallsfolge mit Interpolation, sowie einen Plot des Polynoms. Die blauen Punkte befinden sich an den Punkten $\left(i, \left(f_i\right)\right)$ einer möglichen Zufallsfolge, zwischen denen mit der schwarzen dünnen Linie interpoliert wird. Auf der rechten Seite befindet sich der Plot des Interpolationspolynoms.
+Grundlegend wurde vorgegangen, indem eine zufällige Folge $\left(f_i\right)_{i \in \mathbb{N}}$ definiert wird, die auf die Zahlen $[-1, 1]$ abbildet.
+Anschließend wird zwischen den Werten der Folge mit dem Polynom $6x^5-15x^4+10x^3$ interpoliert. Abbildung 9 zeigt eine Veranschaulichung der Zufallsfolge mit Interpolation, sowie einen Plot des Polynoms. Die blauen Punkte befinden sich an den Punkten $\left(i, \left(f_i\right)\right)$ einer möglichen Zufallsfolge, zwischen denen mit der schwarzen dünnen Linie interpoliert wird. Auf der rechten Seite befindet sich der Plot des Interpolationspolynoms $I(x) = 6x^5-15x^4+10x^3$.
 
 \begin{center}
 \begin{figure}[h!]
@@ -664,6 +667,7 @@ Anschließend wird zwischen den Werten der Folge mit dem Polynom $6x^5-15x^4+10x
 
 \draw [domain=0:2, thin] plot (\x, {-0.65+1.95*(6*\x^5*0.03125-15*\x^4*0.0625+10*\x^3*0.125)});
 \draw [domain=0:2, thin] plot (\x+2, {1.3-1.07*(6*\x^5*0.03125-15*\x^4*0.0625+10*\x^3*0.125)});
+\draw [domain=0:1.2, thin, dashed] plot (\x+4, {0.23-0.87*(6*\x^5*0.03125-15*\x^4*0.0625+10*\x^3*0.125)});
 
 \filldraw [blue](0, -0.63) circle (2pt);
 \filldraw [blue](2, 1.3) circle (2pt);
@@ -675,12 +679,17 @@ Anschließend wird zwischen den Werten der Folge mit dem Polynom $6x^5-15x^4+10x
 \foreach \y/\ytext in {-1, 0, 1}
   \draw (1pt,\y*2) -- (-3pt,\y*2) node[anchor=east] {$\ytext$};
 
+\filldraw [white](3, -1.8) circle (4pt);
+
+\draw [very thick, decorate,decoration={brace,amplitude=10pt,mirror,raise=4pt},yshift=0pt] (2,-1) -- (4,-1);
+\node at (3, -1.8) {\textbf{d}};
+
 \end{tikzpicture}
 \hspace{50pt}
-\begin{tikzpicture}[scale=2.7]
+\begin{tikzpicture}[scale=2]
 \draw[thin, code_comment, step=0.5] (0, 0) grid (1.65,1.65);
 \draw[thin, gray, step=1] (0, 0) grid (1.65,1.65);
-\draw[thin, ->] (0, 0) -- (0, 1.7) node[above] {$f(x)$};
+\draw[thin, ->] (0, 0) -- (0, 1.7) node[above] {$I(x)$};
 \draw[thin, ->] (0, 0) -- (1.7, 0) node[right] {$x$};
 
 \draw [domain=0:1, ultra thick] plot (\x, {6*\x^5-15*\x^4+10*\x^3});
@@ -691,13 +700,120 @@ Anschließend wird zwischen den Werten der Folge mit dem Polynom $6x^5-15x^4+10x
 \foreach \y/\ytext in {0.5, 1}
   \draw (1pt,\y) -- (-3pt,\y) node[anchor=east] {$\ytext$};
 \end{tikzpicture}
-\caption[Zufallsfolge $\left(f_i\right)$ und Interpolation]{Zufallsfolge $\left(f_i\right)$ mit Interpolation und Interpolationspolynom $f(x)$}
+\caption[Zufallsfolge $\left(f_i\right)$ und Interpolation]{Zufallsfolge $\left(f_i\right)$ mit Interpolation und Interpolationspolynom $I(x)$}
 \end{figure}
 \end{center}
+\noindent
+Man könnte die in Abbildung 9 links gezeigten, interpolierten Werte als eine stetige Funktion $noise\_part_d\colon \mathbb{R} \rightarrow [-1, 1]$ auffassen, wobei $d$ den Abstand zwischen den Zufallswerten von $(f_i)$ angibt. Die Funktion $noise\_part_{0.5}(x)$ würde also an den Stellen $0, 0.5, 1, 1.5, ...$ einen durch $(f_i)$ definierten Wert annehmen und dazwischen interpolieren. Um Perlin Noise zu erzeugen, werden mehrere $noise\_part_d$ Funktionen mit unterschiedlichen Argumenten für $d$ verwendet und $m$ mal, gewichtet zusammen summiert, wobei $m \in \mathbb{N}\setminus\{0\}$ beliebig gewählt werden kann. Man nennt $m$ auch die Anzahl der ``Octaves'' \cite[Kap. Introduction]{nature_of_code}.
 
+\begin{align}
+noise(x) = \sum^{m}_{j=1} k \cdot noise\_part_{k}(x) \mid k = \frac{1}{j^2}
+\end{align}
+\noindent
+Dies kann umgesetzt werden, indem das Argument von $noise\_part_k$ mit $j$ multipliziert wird, da so eine Änderung von $x$ mit $j$ skaliert wird, was dazu führt, dass man nur noch die $noise\_part_1$ Funktion benötigt.
+\begin{align}
+noise(x) = \sum^{m}_{j=1}  \frac{1}{j^2} \cdot noise\_part_1(j^2 \cdot x)
+\end{align}
+\noindent
+Diese Funktion erfüllt die Eigenschaften, dass eine kleine Änderung von $x$ ebenfalls auch $noise(x)$ nur geringfügig ändert. Allerdings ist es noch nicht möglich mehrere $x$ anzugeben. Um dies zu erreichen, muss ebenfalls die Zufallsfolge $(f_i)$ $n$ viele Argumente auf einen Zufallswert abbilden, $f_{i_1, i_2, ..., i_n} \rightarrow \mathbb{R}$. Ist dies umgesetzt, so muss in der neuen Funktion $noise\_part(x_1, x_2, ..., x_n)$ über $n$ Dimensionen interpoliert werden. Dies soll kurz anhand eines zweidimensionalen Beispiels veranschaulicht werden.\\
+Gegeben seien die Eingabewerte der $noise(x_1, x_2)$ Funktion mit $x_1=3.3$ und $x_2 = 1.7$ (Der blaue Punkt in Abbildung 10). Gehen wir von $m = 1$ aus, was bedeutet, dass nur eine Octave berechnet wird. Da unsere Eingabewerte $x_1 = 3.3$ und $x_2 = 1.7$ sind, müssen wir in diesem Fall auf der $x_1$-Achse zwischen den Werten 3 und 4 und auf der $x_2$ Achse zwischen den Werten 1 und 2 interpolieren. Dazu benötigen wir zuerst die Werte von $(f_{i_1, i_2})$, zwischen denen interpoliert werden soll. Diese sind über $(f_{i_1, i_2})$ an den Stellen $(3, 1), (3, 2), (4, 1), (4, 2)$ (rote Punkte der Abbildung) definiert, also an allen Kombinationen von $(3,4)$ und $(1,2)$.\\
 
+\begin{center}
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\draw[thin, gray, step=1] (0, 0) grid (5.3,3.3);
+\draw[->] (0, 0) -- (0, 3.5) node[anchor=east] {$x_2$};
+\draw[->] (0, 0) -- (5.5, 0) node[anchor=north] {$x_1$};
 
-% Implementation Perlin Noise, Optimierung
+\filldraw[blue] (3.3, 1.7) circle (2pt);
+
+\filldraw[dark_red] (3, 1) circle (2pt);
+\filldraw[dark_red] (3, 2) circle (2pt);
+\filldraw[dark_red] (4, 1) circle (2pt);
+\filldraw[dark_red] (4, 2) circle (2pt);
+
+\draw[thin, gray] (0, -0.8) -- (3.3, -0.8);
+\draw[thin, gray] (0, -0.9) -- (0, -0.7);
+\draw[thin, gray] (3.3, -0.9) -- (3.3, -0.7);
+\node at(1.65, -1.2) {$x_1 = 3.3$};
+
+\draw[thin, gray] (-0.8, 0) -- (-0.8, 1.7);
+\draw[thin, gray] (-0.9, 0) -- (-0.7, 0);
+\draw[thin, gray] (-0.9, 1.7) -- (-0.7, 1.7);
+\node at(-1.7, 0.85) {$x_2 = 1.7$};
+
+\foreach \x in {0, 1, 2, 3, 4, 5}
+  \draw (\x,1pt) -- (\x,-3pt)
+    node[anchor=north,xshift=-0.15cm] {$\x$};
+\foreach \y/\ytext in {0, 1, 2, 3}
+  \draw (1pt,\y) -- (-3pt,\y) node[anchor=east] {$\ytext$};
+\end{tikzpicture}
+\caption[Beispiel 2D Interpolation]{Beispiel 2D Interpolation}
+\end{figure}
+\end{center}
+\noindent
+Um das Beispiel weiter rechnen zu können, sei die Folge $(f_{i_1, i_2})$ für die gefragten Stellen, wie folgt definiert:
+\begin{center}
+$f_{3, 1} = -0.2$ \hspace{10pt} $f_{3, 2} = 0.4$ \hspace{10pt} $f_{4, 1} = 0.7$ \hspace{10pt} $f_{4, 2} = -0.5$\\
+\end{center}
+\noindent
+Interpoliert man erst über $x_1$, so muss zwischen den Wertepaaren $f_{3, 1} = -0.2$ und $f_{4, 1} = 0.7$, sowie $f_{3, 2} = 0.4$ und $f_{4, 2} = -0.5$ interpoliert werden, wobei der Eingangswert $x_1$ mit einbezogen werden muss. Um zwischen den Werten $f_{3, 1} = -0.2$ und $f_{4, 1} = 0.7$ zu interpolieren, muss das Interpolationspolynom $I(x) = 6x^5-15x^4+10x^3$ an die umliegenden Werte angepasst werden. Dazu wird es um $-0.2$ nach unten verschoben und um $0.7 - (-0.2) = 0.9$ gestreckt, woraus $I^\prime(x) = 0.9 \cdot I(x) - 0.2$ resultiert.
+\begin{center}
+\begin{figure}[h!]
+\begin{tikzpicture}[scale=1]
+\draw[thin, code_comment, step=1] (0, -2.3) grid (4.3,2.3);
+\draw[thin, gray, step=2] (0, -2.3) grid (4.3,2.3);
+\draw[->] (0, -2.5) -- (0, 2.5) node[above] {$I^\prime(x)$};
+\draw[->] (0, 0) -- (4.5, 0) node[right] {$x$};
+
+\draw [domain=0:2, thin] plot (\x, {-0.4+1.8*(6*\x^5*0.03125-15*\x^4*0.0625+10*\x^3*0.125)});
+
+\filldraw [blue](0, -0.4) circle (2pt);
+\filldraw [blue](2, 1.4) circle (2pt);
+
+\foreach \x in {1,2}
+  \draw (\x*2,1pt) -- (\x*2,-3pt)
+    node[anchor=north,xshift=-0.15cm] {$\x$};
+\foreach \y/\ytext in {-1, 0, 1}
+  \draw (1pt,\y*2) -- (-3pt,\y*2) node[anchor=east] {$\ytext$};
+
+\filldraw [white](3, -1.8) circle (4pt);
+\end{tikzpicture}
+\caption[Interpolation]{Interpolation}
+\end{figure}
+\end{center}
+Setzt man nun $x_1 - floor(x_1) = 3.3 - 3.0 = 0.3$ in $I^\prime(x)$ ein, so erhält man den ersten Interpolationswert $-0.0532$. Die gleiche Prozedur durchläuft man mit $f_{3, 2} = 0.4$ und $f_{4, 2} = -0.5$ und erhält $0.2532$. Nun interpoliert man auf gleiche Weise für $x_2$, mit den errechneten Werten $-0.0532$ und $0.2532$ und erhält $0.2032$, wobei man nun $0.7$ in die Interpolationsfunktion geben muss, da $x_2 - floor(x_2) = 1.7 - floor(1.7) = 0.7$. Somit ist unser Endresultat $0.2032$ für die erste Octave.\\
+Für die Implementierung der Zufallsfolge $(f_i)$ wurde eine Abwandlung vom XOR-Shift RNG verwendet, wie sie von George Marsaglia \cite{ac8e278bab88e59aa3a147bef7b113350a723aa4547b89da74bdcadaf0244f1b} vorgestellt wurden. Diese haben den Vorteil, dass sie extrem schnell arbeiten, da sie nur auf dem binären XOR und Shiftoperationen aufbauen. Die Funktion wurde so abgewandelt, sodass Fließkommazahlen zwischen -1 und 1 produziert werden.\\
+
+\begin{lstlisting} [caption={Xorshift RNG},captionpos=t,language=c++]
+float random(unsigned int x) {
+	x ^= x >> 12;
+	x ^= x << 25;
+	x ^= x >> 27;
+	return (static_cast<float>(x % (_accuracy*2+1)) -
+		static_cast<float>(_accuracy)) /
+		static_cast<float>(_accuracy);
+}
+\end{lstlisting}
+\noindent
+Damit mehrere Eingabewerte verarbeitet werden können, wurden diese zusammengefasst, indem sie aufsummiert wurden. Dabei wurde jeder Eingabewert $x_i$ mit $10^i$ multipliziert, damit beispielsweise die Eingabewerte $(a, b)$ und $(b, a)$ nicht dasselbe Ergebnis produzieren. An dieser Methode sollte man kritisieren, dass die Eingaben $(a, b)$ und $(b\cdot 10, \frac{a}{10})$ die selben Ergebnisse produzieren. Dies fällt in der Visualisierung aber nicht auf und wurde deshalb vernachlässigt.
+
+\vspace{10pt}
+\noindent
+Mit der beschriebenen n-dimensionalen Perlin Noise Funktion, konnten nun Flow Fields umgesetzt werden, wie sie im Konzept schon beschrieben wurden. Dabei wurde die Perlin Noise Funktion verwendet, indem die Kraft, die auf eine Entity wirkt, ähnlich wie schon in der Konzeptphase, mit folgender Formel berechnet wird:
+\begin{align}
+force_{x,y,z} = \left(
+\begin{array}{c}
+noise(y \cdot f + a + time, z \cdot f + a + time) \\
+noise(x \cdot f + 2a + time, z \cdot f + 2a + time) \\
+noise(x \cdot f + 3a + time, y \cdot f + 3a + time)
+\end{array}
+\right)
+\end{align}
+\noindent
+Die Variablen $x, y, z$ sind die Position der zu beschleunigenden Entity, wobei zu beachten ist, dass die x-Koordinate nicht in die Beschleunigung auf der x-Achse eingeht, sowie die $y$ und $z$ Position nicht in ihre Beschleunigungen eingehen. Einerseits verbessert es die Performanz, da eine Dimension weniger berechnet wird, andererseits wird so einem Effekt entgegengewirkt, der dafür sorgte, dass sich die Entities auf einer Position häuften.\\
+Die Konstante $f$, im Prototypen auf $0.2$ gesetzt, wird, wie schon im Konzept erläutert, benutzt, um zu definieren, wie schnell sich die wirkenden Kräfte von Position zu Position unterscheiden. Ist $f$ sehr klein, unterscheiden sich die Kräfte für auseinander liegende Entities kaum, ist $f$ groß so können große Unterschiede auch bei eng aneinanderliegenden Entities vorkommen. Als weiterer Faktor wurde die Zeit mit einbezogen, sodass sich die Visualisierung über die Zeit verändert. Dadurch, dass sich die Zeit ähnlich wie die Position der Entity auf die berechnete Kraft auswirkt, entstehen Wellenbewegungen, da eine Entity, die sich zum Zeitpunkt $t$ an der Position $x, y, z$ befindet die gleiche Kraft erfährt, wie eine Entity an der Position $x+\delta, y+\delta, z+\delta$ und dem Zeitpunkt $t-(\delta \cdot f)$.
 % genaue Interaktion mit Perlin Noise
 % einbeziehen der Zeit
 
