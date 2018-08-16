@@ -477,7 +477,7 @@ Um die beiden unabhängigen Komponenten Visualizer und Audioanalyse zu verbinden
 \subsection{Visualizer}
 In diesem Kapitel soll die Funktionsweise und die Benutzung der Visualizer Bibliothek beschrieben werden. Dafür wird erst das System im Großen aufgezeigt, sowie die Möglichkeit auf dieses einzuwirken, um danach die einzelnen Funktionalitäten genauer zu erklären.
 
-\subsubsection*{Aufbau}
+\subsubsection{Aufbau}
 Der Visualizer ist die Implementierung des grafischen Anteils des Projektes. Er verwaltet die Objekte, aus denen die Animation besteht und bietet eine Schnittstelle, die es erlaubt, auf das Verhalten dieser Objekte einzuwirken.\\
 Um die Funktionalität der Visualisierung zu definieren, wurde eine ``Visualizer'' Klasse geschrieben. Diese Klasse ruft bei ihrer Instanziierung die Initialisierungsfunktionen für OpenGL auf, erzeugt ein Fenster mit einer gegebenen Breite und Höhe und kompiliert die ``Shader''. Um den Stand der Visualisierung zu verändern existiert eine ``tick()'' Funktion, die jeden Frame aufgerufen werden sollte. Um den Ablauf der Visualisierung auf unterschiedlichen Systemen stabil zu halten, wird eine delta-Time berechnet, um die Geschwindigkeit der Objekte so zu skalieren, dass die Visualisierung auch auf langsamen Systemen mit gleicher Geschwindigkeit abläuft. Weiterhin speichert die Visualizer Klasse die Objekte mit der die Animation umgesetzt wird.\\
 Die Animation der Musik wird über viele kleine Objekte, die sogenannten Entities, umgesetzt. Das Verhalten von Entities wird über ``Movements'' realisiert. Movements können einer Entity oder einer Gruppe von Entities zugeordnet werden, um das Verhalten dieser Entities zu verändern, wobei vor allem die Bewegungen und die Farbe der Entities modifiziert werden.\\
@@ -486,7 +486,7 @@ Um neue Entities erzeugen zu können, wurde die ``Creation'' Klasse geschrieben,
 Um auch nach der Erstellung auf Entities einwirken zu können, kann man im Visualizer nach Entities mit definierten Eigenschaften suchen. Dazu existiert die ``Query''-Klasse.
 
 %\newpage
-\subsubsection*{Speicherung der Objekte}
+\subsubsection{Speicherung der Objekte}
 Die Objekte oder Partikel, mit denen die Visualisierung erzeugt wird, werden durch eine ``Entity'' Klasse beschrieben. Diese Entity Klasse enthält alle Informationen, die für das Rendern des Objektes benötigt werden. Diese Attribute sind eine Beschreibung des Shapes, also die Form der Oberfläche, eine Position, eine Größe, sowie eine Farbe.\\
 Diese Entity Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine ``Movable'' Klasse, die eine Entity Instanz enthält. Die Movable Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Movable ausgeführt werden sollen, sowie eine Liste von ``Tags'', die benutzt werden kann, um Movables zu identifizieren. Weiterhin existiert eine ``Geschwindigkeit für die Farbe''  des Objektes, da auch die Farbe keine schlagartigen Änderungen erfahren soll. Im Folgenden sollen unterschiedliche Möglichkeiten untersucht werden, eine Menge dieser Movable Instanzen zu speichern.
 \paragraph{EntityBuffer}
@@ -530,7 +530,7 @@ Map & - Schneller Zugriff auf & - Iterieren über alle Movables umständlich \\
 \normalsize
 Für die Umsetzung des Prototypen wurde die Map gewählt, da deren Nachteile am wenigsten ins Gewicht fallen. Das Iterieren über alle Movables kann man mit einem eigenen Iterator vereinfachen und der Zugriff auf Teilmengen erfolgt schnell. Weiterhin müssen die Movables nicht einzeln referenziert werden (std::vector\textless Movable$^\ast$\textgreater), sondern der gesamte Vektor kann benutzt werden (std::vector\textless Movable\textgreater$^\ast$). Der Fakt, dass ein Movable auf diese Weise nicht in mehreren Gruppen sein kann, wird in Kauf genommen.
 
-\subsubsection*{OpenGL}
+\subsubsection{OpenGL}
 Für die Erzeugung der Grafiken wurde OpenGL verwendet. In diesem Abschnitt soll beschrieben werden, wie OpenGL's ``core-profile'' benutzt wird, um dann in den folgenden Abschnitten erklären zu können, wie OpenGL in das System integriert wurde. Dabei wird bewusst nur aufgezeigt, wie OpenGL benutzt wird, ohne dabei in die Tiefe zu gehen, da eine ausführliche Erklärung der Funktionsweise von OpenGL nicht das Ziel dieser Arbeit ist. Meine Informationen habe ich vor allem aus diesem Tutorial \cite{LearnOpenGL}.\\
 Um Grafiken mit OpenGL erzeugen zu können, muss zuerst ein Fenster mit Hilfe von GLFW erzeugt werden. Dies wird über die Funktion \mbox{\textit{glfwCreateWindow()}} realisiert.
 
@@ -586,12 +586,12 @@ Mit dem hier zu sehenden Funktionsaufruf \mbox{\textit{glVertexAttribPointer()}}
 Neben dem Vertex-Shader muss auch ein Fragment-Shader bereitgestellt werden, der vor allem die Textur und Farbe eines Objektes bestimmt. Zusammen mit dem Vertex Shader kann ein Shader-Programm mit \mbox{\textit{glLinkProgram()}} gelinkt werden.\\
 Um nun Objekte zu rendern muss das Shader-Programm mit \mbox{\textit{glUseProgram()}} aktiviert werden, ein \mbox{\textit{VAO}} gebunden und die in den Shadern definierten \mbox{\textit{uniforms}} festgelegt sein. Dann kann mit der Funktion \mbox{\textit{glDrawArrays()}} gerendert werden.
 
-\subsubsection*{Initialisierung und Callbacks}
+\subsubsection{Initialisierung und Callbacks}
 Bei der Erstellung einer \mbox{\textit{Visualizer}} Instanz wird das Fenster erstellt, sowie das Shader-Programm geladen, kompiliert und gelinkt. Da die Initialisierung des Fensters, sowie die Kompilierung der Shader fehlschlagen kann, werden diese Aufgaben nicht im Konstruktor des Visualizers abgearbeitet, sondern in einer \mbox{\textit{Visualizer::create()}} Funktion, die ein \mbox{\textit{std::optional<Visualizer>}} zurückgibt. Dieser Aufbau wurde gewählt, da der Konstruktor in der Fehlerbehandlung eingeschränkt ist, da er immer eine \mbox{\textit{Visualizer}} Instanz zurückgeben werden muss. Schlägt die Kompilierung eines Shaders fehl oder kann kein Fenster erzeugt werden, so wird ein leeres \mbox{\textit{optional}} zurückgegeben.\\
 Bei der Initialisierung musste ein weiteres Problem gelöst werden, dass kurz beschrieben werden soll. OpenGL informiert das eigene Programm über Mausbewegungen und Größenänderungen des Fensters. Dies geschieht über Callback-Funktionen, die vom Programmierer gesetzt werden können. Ein Callback für die Größenänderung des Fensters setzt man mit der Funktion \mbox{\textit{glfwSetFramebufferSizeCallback(window, callback\_function)}}, wobei \mbox{\textit{callback\_function()}} die vom Programmierer definierte Funktion ist, die bei einer Größenänderung ausgeführt wird. Ungünstiger weise ist es nicht möglich eine Member-Funktion zu registrieren, wodurch verhindert wird, dass der \mbox{\textit{Visualizer}} eine eigene Funktion registriert. Man könnte eine statische Funktion registrieren und in dieser einen globalen State verändern, der dann vom \mbox{\textit{Visualizer}} benutzt wird, um die Visualisierung anzupassen. Da aber globale Variablen ``Bad Practice'' sind und verhindern würden, mehrere Visualizer Instanzen zu benutzen, habe ich mich entschieden, einen \mbox{\textit{ResizeManager}}, sowie einen \mbox{\textit{MouseManager}} zu schreiben, bei dem sich der \mbox{\textit{Visualizer}} registrieren kann, um die OpenGL-Callbacks auf eigenen Member-Funktionen umleiten zu lassen.\\
 Dazu gibt der \mbox{\textit{Visualizer}} dem \mbox{\textit{ResizeManager}}, sowie dem \mbox{\textit{MouseManager}} eine Referenz von sich selbst, die von den Managern benutzt wird, um die Member-Funktion des \mbox{\textit{Visualizers}} aufzurufen. Im Destruktor des \mbox{\textit{Visualizers}} wird die Referenz wieder entfernt.
 
-\subsubsection*{Shapes}
+\subsubsection{Shapes}
 Die Form einer Entity wird im Visualizer über sogenannte ``Shapes'' identifiziert. Dabei definiert ein Shape die \mbox{\textit{vertices}} eines Objektes, beispielsweise die in Listing N zu sehenden \mbox{\textit{vertices}} eines einfachen Dreiecks \cite[Kap. ``Hello Tiangle'']{LearnOpenGL}.
 
 \begin{lstlisting} [caption={Vertices eines Dreiecks},captionpos=t,language=c++]
@@ -631,7 +631,7 @@ Will man eine Kugel mit einer gegebenen \textit{ShapeSpecification} erzeugen, so
 
 \newpage
 %\subsubsection*{Kamera}
-\subsubsection*{Movements}
+\subsubsection{Movements}
 Um die Bewegung von Entities lenken zu können, wurden Movements entwickelt, die sich in zwei Arten unterscheiden. Es gibt Einzelbewegungen oder \textit{Movements}, die immer einzelnen Entities zugeordnet werden und Gruppenbewegungen oder \mbox{\textit{GroupMovements}}, die nur auf Gruppen von Entities angewendet werden können.
 
 \paragraph{Einzelbewegungen}
@@ -830,10 +830,10 @@ Weiterhin wurde eine Reibungskraft für die Geschwindigkeit, sowie eine Reibung 
 
 \newpage
 
-\subsubsection*{Creations}
+\subsubsection{Creations}
 % Do
 
-\subsubsection*{Queries}
+\subsubsection{Queries}
 % Do
 
 \subsection{AudioVisualizer}
