@@ -554,7 +554,7 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
              vertices, GL_STATIC_DRAW);
 \end{lstlisting}
 \noindent
-Die Variable \textit{vbo} ist die ID für den generierten Buffer. Diese wird beim Aufruf von \mbox{\textit{glGenBuffers()}} gesetzt und wird ab hier dazu verwendet den Buffer anzusprechen. Dieser wird durch \mbox{\textit{glBindBuffer()}} gebunden, was dazu führt das weitere Funktionsaufrufe, wie beispielsweise \mbox{\textit{glBufferData()}} sich auf diesen Buffer beziehen. Die Funktion \mbox{\textit{glBufferData()}} wird dann benutzt, um die Daten, die sich im float Array \mbox{\textit{vertices}} befinden, in den durch \mbox{\textit{vbo}} identifizierten Buffer zu schreiben. Die Konstante \mbox{\textit{GL\_STATIC\_DRAW}} gibt an, dass die \mbox{\textit{vertices}} nicht für häufiges Überschreiben optimiert werden müssen. Als Alternativen existieren \mbox{\textit{GL\_DYNAMIC\_DRAW}}, sowie \mbox{\textit{GL\_STREAM\_DRAW}}, die für \mbox{\textit{vertices}} konzipiert sind, die sich häufig ändern. Bevor ein vbo erstellt werden kann, muss noch mbox{\textit{Vertex Array Object}} (VAO) auf ähnliche Weise erzeugt werden.\\
+Die Variable \textit{vbo} ist die ID für den generierten Buffer. Diese wird beim Aufruf von \mbox{\textit{glGenBuffers()}} gesetzt und wird ab hier dazu verwendet den Buffer anzusprechen. Dieser wird durch \mbox{\textit{glBindBuffer()}} gebunden, was dazu führt das weitere Funktionsaufrufe, wie beispielsweise \mbox{\textit{glBufferData()}} sich auf diesen Buffer beziehen. Die Funktion \mbox{\textit{glBufferData()}} wird dann benutzt, um die Daten, die sich im float Array \mbox{\textit{vertices}} befinden, in den durch \mbox{\textit{vbo}} identifizierten Buffer zu schreiben. Die Konstante \mbox{\textit{GL\_STATIC\_DRAW}} gibt an, dass die \mbox{\textit{vertices}} nicht für häufiges Überschreiben optimiert werden müssen. Als Alternativen existieren \mbox{\textit{GL\_DYNAMIC\_DRAW}}, sowie \mbox{\textit{GL\_STREAM\_DRAW}}, die für \mbox{\textit{vertices}} konzipiert sind, die sich häufig ändern. Bevor ein vbo erstellt werden kann, muss noch ein \mbox{\textit{Vertex Array Object}} (VAO) auf ähnliche Weise erzeugt werden.\\
 Um diese Daten eine globale Position in der Welt zu geben und die 3D Szene auf einem 2D Bildschirm darzustellen, wird der ``Vertex-Shader'' benutzt. In Listing 2 ist der im Prototypen benutzte Vertex-Shader zu sehen.
 
 \begin{lstlisting} [caption={Vertex Shader}\label{lst:test123},captionpos=t,language=c++]
@@ -592,7 +592,7 @@ Bei der Initialisierung musste ein weiteres Problem gelöst werden, dass kurz be
 Dazu gibt der \mbox{\textit{Visualizer}} dem \mbox{\textit{ResizeManager}}, sowie dem \mbox{\textit{MouseManager}} eine Referenz von sich selbst, die von den Managern benutzt wird, um die Member-Funktion des \mbox{\textit{Visualizers}} aufzurufen. Im Destruktor des \mbox{\textit{Visualizers}} wird die Referenz wieder entfernt.
 
 \subsubsection{Shapes}
-Die Form einer Entity wird im Visualizer über sogenannte ``Shapes'' identifiziert. Dabei definiert ein Shape die \mbox{\textit{vertices}} eines Objektes, beispielsweise die in Listing N zu sehenden \mbox{\textit{vertices}} eines einfachen Dreiecks \cite[Kap. ``Hello Tiangle'']{LearnOpenGL}.
+Die Form einer Entity wird im Visualizer über sogenannte ``Shapes'' identifiziert. Dabei definiert ein Shape die \mbox{\textit{vertices}} eines Objektes, beispielsweise die in Listing 5 zu sehenden \mbox{\textit{vertices}} eines einfachen Dreiecks \cite[Kap. ``Hello Tiangle'']{LearnOpenGL}.
 
 \begin{lstlisting} [caption={Vertices eines Dreiecks},captionpos=t,language=c++]
 float vertices[] = {
@@ -603,7 +603,7 @@ float vertices[] = {
 \end{lstlisting}
 \noindent
 Möchte man einen Würfel definieren, so kann man diesen aus 12 Dreiecken zusammensetzen, von denen jeweils zwei eine Seite des Würfels bilden. Dies lässt sich noch per Hand umsetzen.\\
-Schwieriger sind die  \mbox{\textit{vertices}} einer Kugel zu berechnen, da man, um eine Kugel zu erzeugen, relativ viele  \mbox{\textit{vertices}} benötigt, da ansonsten Ecken der Kugeln zu sehen sind. Es existieren unterschiedliche Arten der Generierung von Kugel  \mbox{\textit{vertices}}. Im Prototypen wurde die Problematik wie folgt gelöst. Zuerst werden, wie in Abbildung 8 zu sehen, zwei aufeinander stehende Pyramiden erstellt, die aus jeweils vier Dreiecken bestehen.\\
+Schwieriger sind die  \mbox{\textit{vertices}} einer Kugel zu berechnen, da man, um eine Kugel zu erzeugen, relativ viele  \mbox{\textit{vertices}} benötigt, da ansonsten Ecken der Kugeln zu sehen sind. Es existieren unterschiedliche Arten der Generierung von Kugel-\mbox{\textit{vertices}}. Im Prototypen wurde die Problematik wie folgt gelöst. Zuerst werden, wie in Abbildung 8 zu sehen, zwei aufeinander stehende Pyramiden erstellt, die aus jeweils vier Dreiecken bestehen.\\
 Nun wird jedes Dreieck der Pyramiden in vier weitere Dreiecke geteilt, indem die Mittelpunkte der Seiten verbunden werden (ebenfalls in Abbildung 8 zu sehen). Die so entstandenen Dreiecke können wieder auf die gleiche Weise unterteilt werden. Diesen Vorgang wiederholt man nun, bis eine ausreichende Feinheit erreicht wurde. Anschließend werden die Vektoren, die vom Mittelpunkt der Kugel zu den Eckpunkten der Vierecke verlaufen, normalisiert. Das Resultat ist eine Approximation einer Kugel.\\
 
 \begin{center}
@@ -761,6 +761,7 @@ $f_{3, 1} = -0.2$ \hspace{10pt} $f_{3, 2} = 0.4$ \hspace{10pt} $f_{4, 1} = 0.7$ 
 Interpoliert man erst über $x_1$, so muss zwischen den Wertepaaren $f_{3, 1} = -0.2$ und $f_{4, 1} = 0.7$, sowie $f_{3, 2} = 0.4$ und $f_{4, 2} = -0.5$ interpoliert werden, wobei der Eingangswert $x_1$ mit einbezogen werden muss. Um zwischen den Werten $f_{3, 1} = -0.2$ und $f_{4, 1} = 0.7$ zu interpolieren, muss das Interpolationspolynom $I(x) = 6x^5-15x^4+10x^3$ an die umliegenden Werte angepasst werden. Dazu wird es um $-0.2$ nach unten verschoben und um $0.7 - (-0.2) = 0.9$ gestreckt, woraus $I^\prime(x) = 0.9 \cdot I(x) - 0.2$ resultiert.
 \begin{center}
 \begin{figure}[h!]
+\centering
 \begin{tikzpicture}[scale=1]
 \draw[thin, code_comment, step=1] (0, -2.3) grid (4.3,2.3);
 \draw[thin, gray, step=2] (0, -2.3) grid (4.3,2.3);
@@ -778,7 +779,6 @@ Interpoliert man erst über $x_1$, so muss zwischen den Wertepaaren $f_{3, 1} = 
 \foreach \y/\ytext in {-1, 0, 1}
   \draw (1pt,\y*2) -- (-3pt,\y*2) node[anchor=east] {$\ytext$};
 
-\filldraw [white](3, -1.8) circle (4pt);
 \end{tikzpicture}
 \caption[Interpolation]{Interpolation}
 \end{figure}
@@ -814,7 +814,7 @@ noise(x \cdot f + 3a + time, y \cdot f + 3a + time)
 \end{align}
 \noindent
 Die Variablen $x, y, z$ sind die Position der zu beschleunigenden Entity, wobei zu beachten ist, dass die x-Koordinate nicht in die Beschleunigung auf der x-Achse eingeht, sowie die $y$ und $z$ Position nicht in ihre Beschleunigungen eingehen. Einerseits verbessert es die Performanz, da eine Dimension weniger berechnet wird, andererseits wird so einem Effekt entgegengewirkt, der dafür sorgte, dass sich die Entities auf einer Position häuften.\\
-Die Konstante $f$, im Prototypen auf $0.2$ gesetzt, wird, wie schon im Konzept erläutert, benutzt, um zu definieren, wie schnell sich die wirkenden Kräfte von Position zu Position unterscheiden. Ist $f$ sehr klein, unterscheiden sich die Kräfte für auseinander liegende Entities kaum, ist $f$ groß so können große Unterschiede auch bei eng aneinanderliegenden Entities vorkommen. Als weiterer Faktor wurde die Zeit mit einbezogen, sodass sich die Visualisierung über die Zeit verändert. Dadurch, dass sich die Zeit ähnlich wie die Position der Entity auf die berechnete Kraft auswirkt, entstehen Wellenbewegungen, da eine Entity, die sich zum Zeitpunkt $t$ an der Position $x, y, z$ befindet die gleiche Kraft erfährt, wie eine Entity an der Position $x+\delta, y+\delta, z+\delta$ und dem Zeitpunkt $t-(\delta \cdot f)$.\\
+Die Konstante $f$, im Prototypen auf $0.2$ gesetzt, wird, wie schon im Konzept erläutert, benutzt, um zu definieren, wie schnell sich die wirkenden Kräfte von Position zu Position unterscheiden. Ist $f$ sehr klein, unterscheiden sich die Kräfte für auseinander liegende Entities kaum, ist $f$ groß so können große Unterschiede auch bei eng aneinanderliegenden Entities vorkommen. Als weiterer Faktor wurde die Zeit mit einbezogen, sodass sich die Visualisierung über die Zeit verändert. Dadurch, dass sich die Zeit ähnlich wie die Position der Entity auf die berechnete Kraft auswirkt, entstehen Wellenbewegungen, da eine Entity, die sich zum Zeitpunkt $t$ an der Position $(x, y, z)$ befindet die gleiche Kraft erfährt, wie eine Entity an der Position $(x+\delta, y+\delta, z+\delta)$ und dem Zeitpunkt $t-(\delta \cdot f)$.\\
 Der Parameter der Geschwindigkeit wurde über eine Skalierung der berechneten Kraft umgesetzt. So führen beispielsweise rhythmische Element dazu, dass die Stärke der Bewegungen kurzzeitig zunimmt.
 
 \paragraph{Plain Force}
@@ -826,50 +826,107 @@ Der visuelle Effekt der Flow Fields konnte verbessert werden, indem man eine wei
 \end{lstlisting}
 \noindent
 Der Parameter $strength$ gibt dabei an, wie stark diese Kraft wirkt.\\
-Weiterhin wurde eine Reibungskraft für die Geschwindigkeit, sowie eine Reibung für die Veränderungen der Farbe implementiert, die unverändert aus dem Konzept übernommen wurde.
+
+\noindent
+Weiterhin wurde eine Reibungskraft für die Geschwindigkeit, sowie eine Reibung für die Veränderungen der Farbe implementiert, die unverändert aus dem Konzept übernommen wurden.
 
 \newpage
 
 \subsubsection{Creations}
-% Do
+Um neue Gruppen von Entities in die EntityMap einzufügen, wurde die Klasse \textit{Creation} eingeführt. Diese erlaubt es eine bestimmbare Anzahl von Entities mit einstellbaren Eigenschaften zu erzeugen. Dabei erlaubt sie es vor allem die Eigenschaften der erzeugten Entities auch zufällig zu bestimmen.\\
+Zwei Eigenschaften der Creation müssen zu Beginn definiert werden, da sie keine sinnvollen Standartwerte besitzen. Diese Eigenschaften sind eine Definition des Shapes, sowie eine String, der den Gruppennamen definiert. Dieser wird später als Key der EntityMap verwendet. Damit diese Eigenschaften nicht ausgelassen werden dürfen, sind sie im Konstruktor einer \textit{Creation} gefordert.\\
+Weitere Eigenschaften, die bestimmt werden können sind die Anzahl der zu erzeugenden Entities, deren Position, Größe, Startgeschwindigkeit und Shape. Diese werden über \textit{with\_}-Funktionen gesetzt, beispielsweise \textit{with\_position()}, die eine Referenz auf die Creation zurückgeben, sodass diese aneinander gereiht werden können. Weiterhin können String-\textit{Tags} der erzeugten Entities gesetzt werden, die später zur Identifikation dieser benutzt werden können.\\
+Häufig ist es sinnvoll die Entities mit zufälligen Werten zu initialisieren, um diese beispielsweise an unterschiedlichen Positionen zu erzeugen. Dazu wurden Generator-Klassen geschrieben, deren Erwartungswert und Standartabweichung konfigurierbar sind und deren \textit{get()}-Funktion ein neues zufälliges Objekt, beispielsweise einen Vektor oder ein Shape, zurückgibt. Die \textit{with\_}-Funktionen der \textit{Creation}-Klasse nehmen diese Generator-Klassen entgegen und rufen bei der Erzeugung der Entities deren \textit{get()}-Funktion auf. Die tatsächliche Erzeugung der Entities wird in der \textit{create()}-Funktion der \textit{Creation} vollzogen.
 
 \subsubsection{Queries}
-% Do
+Durch die Einführung der EntityMap ist die Notwendigkeit von \textit{Queries} gesunken, da nun direkt auf bestimmte Gruppen zugegriffen werden kann, weshalb sie nur kurz erwähnt werden.\\
+Sie dienten dazu nach Entities in einem EntityBuffer suchen zu können, indem bestimmte Attribute der Entities überprüft werden. Zu diesen Attributen zählen das Shape, die Position, sowie die Tags. In der Umsetzung des Prototypen wurden Queries nicht mehr verwendet.
 
 \subsection{AudioVisualizer}
-% Do
+% Was ist der AudioVisualizer?
+Der \textit{AudioVisualizer} verbindet die beiden Parts der Audioanalyse und der Visualisierung. Im Gegensatz zu Essentia und dem Visualizer ist es keine Bibliothek, sondern eine ausführbare Datei, die den Pfad der zu visualisierenden Datei als Command Line Argument entgegennimmt.\\
+In den folgenden Abschnitten wird zuerst der grobe Ablauf aufgezeigt, sowie die sich daraus ergebenden Anforderungen an das System, um dann zu erläutern, wie das System aufgebaut wurde. Anschließend werden einzelne Algorithmen näher beleuchtet.
 
-\subsubsection*{DataGenerators}
-% Fr
+\subsubsection{Ablauf}
+Beim Start des AudioVisualizers wird zuerst die Audioanalyse durchgeführt, die noch vor Beginn der Visualisierung abgeschlossen wird. Die Audioanalyse lässt sich gut in mehrere aufeinander aufbauende Verarbeitungsschritte einteilen. Abbildung 12 zeigt die einzelnen Verarbeitungsschritte und deren Abhängigkeiten, sowie generierte Events.
 
-\paragraph{implementierten DataGenerators}
-% Fr
+\begin{wrapfigure}{r}{0.4\linewidth}
+\begin{tikzpicture}[scale=1]
+\small
+\node (rect) at (0,0) [draw] {AudioFile};
+\draw[->] (0, -0.25) -- (2, -0.75);
+\node (rect) at (2, -1)[draw, dashed] {TickEvents};
+\draw[->] (0, -0.25) -- (-0.5, -0.75);
+\node (rect) at (-0.5,-1) [draw] {Frames};
+\draw[->] (-0.5, -1.25) -- (0, -1.75);
+\node (rect) at (0,-2) [draw] {Spectrum};
+\draw[->] (0, -2.27) -- (-1, -2.75);
+\node (rect) at (-1,-3) [draw] {BarkBands};
+\draw[->] (-1, -3.25) -- (-1, -3.75);
+\node (rect) at (-1,-4) [draw] {BarkBandDifferences};
+\draw[->] (-1, -4.25) -- (-2, -4.75);
+\node (rect) at (-2,-5) [draw] {Arousal};
+\draw[->] (-2, -5.25) -- (-2, -5.75);
+\node (rect) at (-2,-6) [draw] {Parts};
+\draw[->] (-1, -4.25) -- (0, -4.75);
+\node (rect) at (0,-5) [draw, dashed] {BeatEvents};
+\draw[->] (0, -2.27) -- (2.5, -2.7);
+\node (rect) at (2.5,-3) [draw] {SpectrumPeaks};
+\draw[->] (2.5, -3.25) -- (2.5, -3.75);
+\node (rect) at (2.5,-4) [draw] {PitchClassProfiles};
+\draw[->] (2.5, -4.25) -- (2, -4.75);
+\node (rect) at (2,-5) [draw] {Chords};
+\draw[->] (2, -5.25) -- (3.5, -5.75);
+\draw[->] (2.5, -4.25) -- (3.5, -5.75);
+\node (rect) at (3.5,-6) [draw] {Valence};
+\end{tikzpicture}
+\captionsetup{justification=centering}
+\caption[Daten und Event Abhängigkeiten]{Daten und Event Abhängigkeiten}
+\end{wrapfigure}
+\noindent
+Die genaue Umsetzung und Begründung der Verarbeitungsschritte wird nicht in diesem Kapitel behandelt, sondern nur eine grobe Übersicht gegeben, um danach die entwickelte Architektur zu begründen.\\
+Wie man erkennen kann, wird zuerst die Audiodatei geladen. Direkt daraus gehen die Frames hervor, sowie die Tick-Events. Das Audiomaterial in Frames, also in sich überlappende Abschnitte definierter Länge, zu teilen, wurde schon im Konzept besprochen und ist Voraussetzung für weitere Bearbeitungsschritte. Die Zeiten der Tick-Events werden mit dem dafür vorgesehenen Algorithmus ``RhythmExtractor'' von Essentia berechnet, der die Grundschläge oder Zählzeiten extrahiert. Für die weitere Analyse wird das Spektrum jedes Frames generiert, indem eine diskrete Fourier Transformation durchgeführt wird. Die Einteilung in sogenannte \textit{Bark Bands} hat eine Datenreduktion zur Folge, bei der Frequenzbänder zusammengefasst werden. Dadurch werden die weiteren Berechnungen beschleunigt, wichtige Informationen bleiben aber erhalten, da Bark Bands dem menschlichen Hören nachempfunden sind \cite[S. 80]{lerch2012introduction}. Für die Arousaldaten und die Beat-Events war es, wie schon im Konzept erläutert, sinnvoll, nicht die Lautstärke der einzelnen Frequenzbänder zu betrachten, sondern die Unterschiede benachbarter Frames zu analysieren. Aus diesem Grund werden im nächsten Schritt die Lautstärkedifferenzen der Werte der einzelnen Frequenzbänder ermittelt. Aus diesen gehen die Arousalwerte, sowie die Beat-Events hervor, von denen die Arousalwerte gruppiert werden, um den Song in mehrere Parts zu untergliedern. Mit dem Ziel einen Valence Wert zu bestimmen, werden auch tonale Features, wie Pitch-Class-Profiles und Akkorde (Chords) extrahiert.\\
+Ist die Audioanalyse abgeschlossen, wird eine \textit{Visualizer}-Instanz erstellt, deren Objekte über eine \textit{Creation} erstellt und \textit{Movements} initialisiert. Die \textit{Movements} werden dabei passend zu den ermittelten Daten angepasst.
 
-%\subsubsection*{Colors}
+\subsubsection{Aufbau}
+Prinzipiell wurde die Arbeit des AudioVisualizers in zwei Teile gebrochen, nämlich die Audioanalyse und die Visualisierung dieser. Für die Audioanalyse wurde eine \textit{InformationBuilder}-Klasse entwickelt, die den Ablauf der Analyse steuert. Für die Organisation der Visualisierung wurde die Klasse \textit{AudioVisualizer} entwickelt.
+\paragraph{Audioanalyse}
+Der InformationBuilder bekommt den Pfad einer Audiodatei übergeben. Weiterhin wird definiert, welche Daten und Events generiert werden sollen. Ruft man nun die \textit{build()} Funktion auf, so werden die spezifizierten Daten generiert und in einem \textit{InformationContainer} zurück gegeben, der die generierten Daten und Events enthält.\\
+Wie eben gezeigt wurde, gibt es bei der Audioanalyse mehrere Teilaufgaben, die nacheinander abgearbeitet werden müssen. Diese Aufgaben haben Abhängigkeiten untereinander und können daher nicht in einer beliebigen Reihenfolge bearbeitet werden. Auch wäre es ungünstig mehrmals benötigte Daten, wie das Spektrum, für jede Anwendung neu zu berechnen.\\
+Die Abarbeitung der einzelnen Aufgaben wurde über \textit{DataGenerator} gelöst, die jeweils einen der eben genannten Schritte bearbeiten. Dazu implementieren sie eine \textit{compute()}-Funktion. Ähnlich wie für die Shapes gibt es \textit{DataSpecifications}, die dazu benutzt werden können, einen \textit{DataGenerator} zu erstellen. Dies hat den Vorteil, dass die einfach zu erzeugenden Spezifikationen benutzt werden können, um die schwieriger zu initialisierenden DataGeneratoren zu erstellen. Die Spezifikationen haben simple Konstruktoren, deren Argumente einfach zu definieren sind. Die Generatoren andererseits benötigen Zugriff auf die vorher generierten Daten und einige auch auf eine \textit{AlgorithmFactory} von Essentia. Der InformationBuilder sorgt dafür, dass die Generatoren in der richtigen Reihenfolge aufgerufen werden und das sie den Zugriff auf die benötigten Daten bekommen.\\
+Die Reihenfolge wird dabei über Abhängigkeiten gelöst. Jeder DataGenerator kann angeben, welche Daten er benötigt, indem er entsprechende Spezifikationen erstellt. Diese Abhängigkeiten werden dann im InformationBuilder rekursiv abgefragt und sortiert. Sollen nun bestimmte Daten nicht generiert werden, so werden auch deren Abhängigkeiten nicht mehr berechnet, sofern diese nicht anderweitig gebraucht werden.\\
+Sind alle notwendigen Daten generiert, so werden diese verwendet, um Events zu generieren. Dies geschieht über \textit{EventGenerators}, die wiederum \textit{EventSpecifications} besitzen. Im Gegensatz zu den kontinuierlichen Daten, haben Events keinen Zugriff auf andere Events. Sie können als Abhängigkeiten ebenfalls DataSpecifications angegeben.
 
-\subsubsection*{EventGenerators}
+\paragraph{Visualisierung}
+Die Visualisierung baut auf den Daten des InformationContainers auf, die in der Audioanalyse berechnet wurden. Hier findet die Umwandlung dieser Daten in Veränderungen der Entities statt, wobei vor allem die Bewegungen und die Farben der Entities verändert werden.\\
+Die Visualisierung startet man, indem die \textit{run()}-Funktion der AudioVisualizer Klasse aufgerufen wird. Diese erwartet die analysierten Daten in Form eines InformationContainers, der zuvor mit dem InformationBuilder generiert wurde. In der \textit{run()}-Funktion wird zuerst eine Instanz des \textit{Visualizers} erzeugt und geprüft, ob die Erstellung erfolgreich war. Falls nicht, wird eine Fehlermeldung ausgegeben und das Programm schließt sich. Ist die Erstellung der Visualizer Instanz ohne Probleme verlaufen, so werden Entities erstellt. Damit die erstellten Entities nicht stehenbleiben, werden auch Bewegungen initialisiert. An dieser Stelle wird auch die Musik über einen Systemcall abgespielt, indem die Command Line Version des ``VLC Players'' gestartet wird. Dies ist sicherlich keine schöne Lösung, da das Programm so nur mit einer installierten Version des VLC-Players funktioniert, wurde aber aus Zeitgründen in Kauf genommen.\\
+Die Bewegungen der Entities werden über \textit{Handler} gesteuert, welche die Informationen des InformationContainers verarbeiten und in Parameter der Bewegungen umsetzen. Dabei können alle Handler gleichzeitig mit allen Daten arbeiten. Jeder Handler steht für einen Bewegungsablauf oder eine Bewegungsform. Um die Visualisierung abwechslungsreich zu gestalten, werden unterschiedliche Handler aktiviert und deaktiviert. Dies geschieht im \textit{Compositor}, der ebenfalls Zugriff auf die Informationen der Audioanalyse hat.
+
+\subsubsection{DataGenerators}
+% Essentia Funktionsweise
+% Pool
+% Essentia DataGenerators: AudioDataGenerator, FrameDataGenerator, WindowedFrameDataGenerator, SpectrumDataGenerator, BarkBandsDataGenerator, SpectrumPeakDataGenerator, PitchClassProfileDataGenerator, ChordDataGenerator, TickDataGenerator, WriteDataGenerator
+
+% Eigene DataGenerators: BarkBandsDifferenceDataGenerator, ArousalDataGenerator, ValenceDataGenerator, PartsDataGenerator
+
+
+\subsubsection{EventGenerators}
 % Sa
 
-\subsubsection*{Dependencies}
-% Sa
-
-\subsubsection*{Handler}
-% Sa
-
-\subsubsection*{EventSystem}
+\subsubsection{Handler}
 % So
+\subsubsection*{ColorHandler}
 
-\subsubsection*{Essentia}
-% So
-
-\subsubsection*{Compositor}
+\subsubsection{Compositor}
 % So
 
 \section{Fazit}
-% Mo und Di
+% Mo, Di
 
-Auf Anforderungen eingehen
+% Auf Anforderungen eingehen
+% Kritik Overengineering + Systemcall
 \subsection{Erlebnis}
+\subsection{Ausblicke}
 
 \newpage
 
