@@ -83,6 +83,7 @@ C Dur & \hspace{15pt} C Reines Moll & \hspace{15pt} C Harmonisches Moll \\
 
 Der Grundton dieser Tonleitern ist das C. Es befindet sich ganz links auf der Klaviatur. Entscheidend für die Wirkung einer Tonleiter ist der Abstand der Tonleitertöne zum Grundton. Wie man sieht ist der dritte Ton (die Terz) über dem Grundton bei beiden Moll-Tonleitern einen Halbtonschritt niedriger, sowie der sechste Ton (die Sexte). Man spricht hierbei von der kleinen Terz und der kleinen Sexte. Der siebte Ton (die Septime oder Septe) ist beim reinen Moll eine kleine Septime, während sie beim harmonischen Moll eine große Septime ist, gleich der Dur-Tonleiter. Die große Septime wird auch Leitton genannt.\\
 Neben dem reinen und dem harmonischen Moll existiert noch das melodische Moll, das sich beim aufwärts und abwärts spielen unterscheidet. Beim aufwärts spielen wird die Sexte und die Septime wie in der Dur-Tonleiter gespielt, beim abwärts spielen wie im reinen Moll. Diese Tonleiter wird im Folgenden nicht weiter behandelt. Weiterhin existieren noch die sogenannten Kirchentonleitern, sowie zahlreiche Blues und Jazz Tonleitern, die meistens ``Scalen'' genannt werden und in denen häufig die kleine Septime wie im reinen Moll gespielt wird.\\
+Die chromatische Tonleiter enthält alle zwölf Töne der Klaviatur und hat keinen Grundton. Sie wird vor allem bei atonaler Musik verwendet.\\
 Da das reine Moll und das Harmonische Moll sich von der Dur Tonleiter in der Terz und in der Sexte unterscheiden, könnte man diese Töne in die Approximation der Stimmung des Musikstückes mit einfließen lassen. Die Septime ist weniger gut zu verwenden, da sie im harmonischen Moll als große Septime (wie in der Dur-Tonleiter) und im reinen Moll als kleine Septime vorkommt. Auch wird die kleine Septime sehr häufig in eher positiv freudigen Blues Stücken verwendet.
 
 %\subsubsection{Loudness of Music / Decibel}
@@ -94,8 +95,12 @@ Die Diskrete Kosinus Transformation (engl. Discrete Cosine Transformation; kurz 
 Von der DCT gibt es die Varianten I - VIII von denen die Varianten I - IV praktischen Einsatz finden. Neben der DCT existiert auch die Diskrete Fourier Transformation (kurz DFT), die Frequenzen als Koeffizienten von Kosinus und Sinusfunktionen darstellt. Für die DFT gibt es eine optimierte Implementierung, die sogenannte Schnelle Fourier Transformation (engl. Fast Fourier Transformation; kurz FFT), die es erlaubt eine DFT mit logarithmischer Komplexität durchzuführen.\\
 % Anwendungsgebiete
 Anwendung findet die DCT bei der verlustbehafteten Audio- und Bildkompression. Für die Analyse des Spektrums eines Musikausschnittes bietet sich vor allem, dank ihrer besseren Laufzeit, die FFT an \cite[S. 20 f.]{lerch2012introduction}.
+% TODO Fensterfunktion
 
 %\subsubsection{Lautstärke}
+% TODO
+
+%\subsubsection{Bark Scale}
 % TODO
 
 \section{Analyse}
@@ -900,18 +905,47 @@ Sind alle notwendigen Daten generiert, so werden diese verwendet, um Events zu g
 \paragraph{Visualisierung}
 Die Visualisierung baut auf den Daten des InformationContainers auf, die in der Audioanalyse berechnet wurden. Hier findet die Umwandlung dieser Daten in Veränderungen der Entities statt, wobei vor allem die Bewegungen und die Farben der Entities verändert werden.\\
 Die Visualisierung startet man, indem die \textit{run()}-Funktion der AudioVisualizer Klasse aufgerufen wird. Diese erwartet die analysierten Daten in Form eines InformationContainers, der zuvor mit dem InformationBuilder generiert wurde. In der \textit{run()}-Funktion wird zuerst eine Instanz des \textit{Visualizers} erzeugt und geprüft, ob die Erstellung erfolgreich war. Falls nicht, wird eine Fehlermeldung ausgegeben und das Programm schließt sich. Ist die Erstellung der Visualizer Instanz ohne Probleme verlaufen, so werden Entities erstellt. Damit die erstellten Entities nicht stehenbleiben, werden auch Bewegungen initialisiert. An dieser Stelle wird auch die Musik über einen Systemcall abgespielt, indem die Command Line Version des ``VLC Players'' gestartet wird. Dies ist sicherlich keine schöne Lösung, da das Programm so nur mit einer installierten Version des VLC-Players funktioniert, wurde aber aus Zeitgründen in Kauf genommen.\\
-Die Bewegungen der Entities werden über \textit{Handler} gesteuert, welche die Informationen des InformationContainers verarbeiten und in Parameter der Bewegungen umsetzen. Dabei können alle Handler gleichzeitig mit allen Daten arbeiten. Jeder Handler steht für einen Bewegungsablauf oder eine Bewegungsform. Um die Visualisierung abwechslungsreich zu gestalten, werden unterschiedliche Handler aktiviert und deaktiviert. Dies geschieht im \textit{Compositor}, der ebenfalls Zugriff auf die Informationen der Audioanalyse hat.
+Die Bewegungen der Entities werden über \textit{Handler} gesteuert, welche die Informationen des InformationContainers verarbeiten und in Parameter der Bewegungen umsetzen. Dabei haben alle Handler Zugriff auf alle Daten und Events. Jeder Handler steht für einen Bewegungsablauf oder eine Bewegungsform. Um die Visualisierung abwechslungsreich zu gestalten, werden unterschiedliche Handler aktiviert und deaktiviert. Dies geschieht im \textit{Compositor}, der ebenfalls Zugriff auf die Informationen der Audioanalyse hat.
 
 \subsubsection{DataGenerators}
 % Essentia Funktionsweise
-% Pool
-% Essentia DataGenerators: AudioDataGenerator, FrameDataGenerator, WindowedFrameDataGenerator, SpectrumDataGenerator, BarkBandsDataGenerator, SpectrumPeakDataGenerator, PitchClassProfileDataGenerator, ChordDataGenerator, TickDataGenerator, WriteDataGenerator
+Die meisten DataGenerator sind einfache Wrapper von Essentia Algorithmen. In diesem Abschnitt soll daher erst die Benutzung von Essentia erklärt werden. Aufbauend darauf werden die Generatoren näher beleuchtet und für einige begründet, weshalb sie für die Visualisierung wichtig sind.\\
+Wichtig ist an dieser Stelle auch die Datenstruktur \textit{Pool} von Essentia \cite{EssentiaPool}. Ein Pool ist ein Container, ähnlich wie eine std::map, die benutzt werden kann, um Daten zu speichern. Dabei werden als Keys Strings verwendet, während unterschiedliche Value-Types verwendet werden können. Um Daten hinzuzufügen, kann die Funktion \textit{add()} oder \textit{set()} benutzt werden. Mit der \textit{value()} Funktion werden Daten abgefragt.\\
+Die DataGenerator funktionieren meist so, dass sie Daten aus dem Pool abfragen, indem sie die \textit{value()}-Funktion benutzen, diese Daten dann verarbeiten und die Ergebnisse zurück in den Pool schreiben. Der nächste Generator kann dann auf diese Daten zugreifen.
+\paragraph{Benutzung von Essentia}
+Essentia ist eine Sammlung von Algorithmen, die zur Analyse von Audiomaterial verwendet werden kann. Um einen Algorithmus zu benutzen, muss dieser erst erzeugt werden. Für diesen Zweck gibt es die \textit{AlgorithmFactory} von Essentia. Deren \textit{create()}-Funktion gibt einen \textit{Algorithm}-Pointer zurück. Die Algorithmen von Essentia haben Inputs und Outputs, die gesetzt werden müssen bevor der Algorithmus ausgeführt wird. Listing 8 zeigt schematisch den Ablauf eines typischen Generators.
+\begin{lstlisting} [caption={Generator Ablauf},captionpos=t,language=c++]
+Algorithm* algorithm = factory->create("AlgorithmName")
+std::vector<float> input;
+input = pool->value<std::vector<float>>("InputDataName");
+algorithm->input("InputName").set(input);
+std::vector<float> output;
+algorithm->output("OutputName").set(output);
+algorithm->compute();
+pool->add("OutputDataName", output);
+delete algorithm;
+\end{lstlisting}
+\noindent
+Zuerst wird eine Algorithmus erstellt, indem die AlgorithmFactory benutzt wird. An dieser Stelle können auch Parameter für den Algorithmus gesetzt werden, indem diese mit in der \textit{create()}-Funktion angegeben werden. Anschließend werden die Inputdaten des Algorithmus aus dem Pool geladen und dem Algorithmus übergeben. Ein Output Vektor wird erstellt und ebenfalls dem Algorithmus übergeben. Ein Algorithmus kann beliebig viele Inputs und Outputs haben. Sind alle Inputs und Outputs gesetzt kann der Algorithmus ausgeführt werden, indem die \textit{compute()} Funktion ausgeführt wird. Zum Schluss werden die neuen Daten in den Pool geschrieben, um weiter verwertet werden zu können und der Algorithmus Destruktor wird aufgerufen.
+\paragraph{Essentia benutzende Generatoren}
+In diesem Absatz werden DataGenerator behandelt, die einen Essentia Algorithmus benutzen. Es wird gezeigt, in welcher Form die Daten gespeichert werden, wie diese Daten zu interpretieren sind, sowie für einige begründet, weshalb dieser Verarbeitungsschritt nutzbringend ist.\\
+Grundlage für jede Analyse ist es, die Daten von der Festplatte zu laden. Dazu wurde der \textit{AudioDataGenerator} entwickelt, der den Essentia-Algorithmus \textit{MonoLoader} verwendet. Der MonoLoader erwartet den Dateinamen als Parameter, sowie eine \textit{Samplerate}. Stimmt die Samplerate der Datei nicht mit der angegebenen überein, so werden die geladenen Daten in die angegebene Samplerate konvertiert. Ein Großteil der heutigen Musik ist Stereo abgemischt. Dies wird \textit{gedownmixt}, also zu einer Monospur zusammengeführt. Als Samplerate wurde konstant der Standartwert 44100 Hz verwendet. Der Output ist std::vector\textless float\textgreater , der die encodierten Daten des Audiofiles enthält.\\
+Anschließend werden die Audiodaten in Frames unterteilt, die eine Länge von 2048 Samples haben und sich jeweils zur Hälfte überlappen. An dieser Stelle ist noch wichtig, dass eine Fensterfunktion angewendet wird. Dies geschieht mit dem \textit{Windowing}-Algorithmus von Essentia. Das Resultat ist ein std::vector\textless std::vector\textless float\textgreater\text{}\textgreater . Der erste Vektor enthält die einzelnen Frames, die wiederum die Samples enthalten, auf die die Fensterfunktion angewendet wurde.\\
+% SpectrumDataGenerator
+Daraufhin wird das Spektrum berechnet. Das Spektrum gibt vor allem Auskunft über die Klangfarbe des Stückes \cite[S. 41]{lerch2012introduction}. Es wird aber auch für \textit{ChordDetection} als Akkorderkennung benutzt. Es gibt Auskunft über die Lautstärken einzelner Frequenzen. Da dies eine genauere Untersuchung der Musik ermöglicht und durch das breite Anwendungsfeld des Spektrums habe ich mich dafür entschieden, dieses zur Analyse mit zu verwenden. Umgesetzt wird es durch den Essentia Algorithmus \textit{Spectrum}, der als Input die Frames erhält und für jeden Frame einen std::vector\textless float\textgreater als Output generiert. Fast man die Spektren aller Frames wieder zusammen in einen Vektor, so erhält man erneut einen std::vector\textless std::vector\textless float\textgreater\text{}\textgreater .\\
+Für weitere Berechnungen ist es sinnvoll die Menge der Informationen zu reduzieren. Aus diesem Grund wird das Spektrum anschließend in 24 Bark Bands eingeteilt. Bark Bands sind Gruppen von Frequenzen. Die Randwerte der Bänder sind nach \cite[S. 3]{smith1999bark} [0, 100, 200, 300, 400, 510, 630, 770, 920, 1080, 1270, 1480, 1720, 2000, 2320, 2700, 3150, 3700, 4400, 5300, 6400, 7700, 9500, 12 000, 15 500] gegeben in Hertz. Liegen zwei Töne innerhalb des selben Bandes, so beeinflussen sie gegenseitig die menschliche Wahrnehmung des jeweils anderen Tones. Für die Umsetzung wurde der Essentia-Algorithmus \textit{BarkBands} verwendet. Das Resultat ist wieder ein std::vector<std::vector<float>\text{}>, der die Lautstärken der Bänder für jeden Frame enthält.\\
+Wie im Kapitel ``Zeit in der Musik'' schon erläutert, ist es meist günstig die gemessenen Werte nicht direkt zu interpretieren, sondern deren Veränderung über die Zeit zu betrachten. Daher werden im nächsten Schritt die Differenzen der BarkBands berechnet. In diesem Zusammenhang muss berücksichtigt werden, dass die Lautstärke eines Bandes mit der Lautstärke des gleichen Bandes aus dem letzten Frame verrechnet wird und nicht die Lautstärke unterschiedlicher Bänder im selben Frame.\\
+Neben den Bark Bands gehen aus dem Spektrum auch die spektralen Spitzen (Spectral Peaks) hervor. Das Spektrum wird dabei auf besonders laute Frequenzen untersucht. Die Ausgabe beinhaltet eine Angabe der gefundenen Frequenzen, sowie deren Amplituden. Diese Werte können verwendet werden, um ein Pitch-Class-Profile des Frames zu erstellen. Ein Pitch-Class-Profile enthält einen Wert für jeden Ton der chromatischen Tonleiter, also einen Wert für jeden Ton der Klaviatur. Der Wert des Tones ist die Intensität mit der der Ton in diesem Frame wahrzunehmen ist. Für die Umsetzung wurden die Essentia Algorithmen \textit{SpectralPeaks} und \textit{HPCP} (Harmonic Pitch Class Profile) verwendet.\\
+Mit Hilfe der Pitch-Class-Profiles kann der Algorithmus \textit{ChordsDetection} benutzt werden. Dieser wertet ein Pitch-Class-Profile aus und entscheidet welcher Akkord die größte Übereinstimmung ergibt. Finden sich also vor allem die Töne eines C-Dur-Akkordes, so wird der String ``C'' als Output erzeugt. Töne mit Vorzeichen werden mit einem ``\#'' versehen und Mollakkorde mit einem ``m''. Der Fis-Moll Akkord beispielsweise erzeugt den Output ``F\#m''. Neben diesem String wird eine \textit{strength} bestimmt, die angibt, wie stark der gefundene Akkord dem Pitch-Class-Profile entspricht. Unglücklicherweise funktioniert die Vorhersage der ChordDetection nicht zuverlässig und erzeugt öfters falsche Angaben. Vor allem bei der Unterscheidung zwischen Moll und Dur treten häufig Fehler auf.
 
-% Eigene DataGenerators: BarkBandsDifferenceDataGenerator, ArousalDataGenerator, ValenceDataGenerator, PartsDataGenerator
+\paragraph{Spezielle DataGenerator}
+% ArousalDataGenerator
+% ValenceDataGenerator
+% PartsDataGenerator
 
 
 \subsubsection{EventGenerators}
-% Sa
+% TickEventGenerator
 
 \subsubsection{Handler}
 % So
