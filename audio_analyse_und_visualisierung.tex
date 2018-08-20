@@ -907,7 +907,7 @@ Die Visualisierung baut auf den Daten des InformationContainers auf, die in der 
 Die Visualisierung startet man, indem die \textit{run()}-Funktion der AudioVisualizer Klasse aufgerufen wird. Diese erwartet die analysierten Daten in Form eines InformationContainers, der zuvor mit dem InformationBuilder generiert wurde. In der \textit{run()}-Funktion wird zuerst eine Instanz des \textit{Visualizers} erzeugt und geprüft, ob die Erstellung erfolgreich war. Falls nicht, wird eine Fehlermeldung ausgegeben und das Programm schließt sich. Ist die Erstellung der Visualizer Instanz ohne Probleme verlaufen, so werden Entities erstellt. Damit die erstellten Entities nicht stehenbleiben, werden auch Bewegungen initialisiert. An dieser Stelle wird auch die Musik über einen Systemcall abgespielt, indem die Command Line Version des ``VLC Players'' gestartet wird. Dies ist sicherlich keine schöne Lösung, da das Programm so nur mit einer installierten Version des VLC-Players funktioniert, wurde aber aus Zeitgründen in Kauf genommen.\\
 Die Bewegungen der Entities werden über \textit{Handler} gesteuert, welche die Informationen des InformationContainers verarbeiten und in Parameter der Bewegungen umsetzen. Dabei haben alle Handler Zugriff auf alle Daten und Events. Jeder Handler steht für einen Bewegungsablauf oder eine Bewegungsform. Um die Visualisierung abwechslungsreich zu gestalten, werden unterschiedliche Handler aktiviert und deaktiviert. Dies geschieht im \textit{Compositor}, der ebenfalls Zugriff auf die Informationen der Audioanalyse hat.
 
-\subsubsection{DataGenerators}
+\subsubsection{DataGenerator}
 % Essentia Funktionsweise
 Die meisten DataGenerator sind einfache Wrapper von Essentia Algorithmen. In diesem Abschnitt soll daher erst die Benutzung von Essentia erklärt werden. Aufbauend darauf werden die Generatoren näher beleuchtet und für einige begründet, weshalb sie für die Visualisierung wichtig sind.\\
 Wichtig ist an dieser Stelle auch die Datenstruktur \textit{Pool} von Essentia \cite{EssentiaPool}. Ein Pool ist ein Container, ähnlich wie eine std::map, die benutzt werden kann, um Daten zu speichern. Dabei werden als Keys Strings verwendet, während unterschiedliche Value-Types verwendet werden können. Um Daten hinzuzufügen, kann die Funktion \textit{add()} oder \textit{set()} benutzt werden. Mit der \textit{value()} Funktion werden Daten abgefragt.\\
@@ -989,31 +989,39 @@ dur\_third\_ratio\ = dur\_third\_ratio \cdot max(big\_third\_intensity, little\_
 \end{align}
 \noindent
 Das Ergebnis ist nun umso näher der Null, umso kleiner das Maximum der Moll und Dur Varianten ist. Anschließend werden die $ratios$ gewichtet zusammen addiert. Da die kleine (große) Terz im Moll-Dreiklang (Dur-Dreiklang) enthalten ist und damit einen klareren Moll (Dur) Klang erzeugt, wird die Terz höher gewichtet, als die Sexte.\\
-So ergeben sich Werte für jeden Frame, die wieder in das Interval $[0, 1]$ verschoben werden. Erzeugt der ChordDetection Algorithmus keine Ausgabe, was beispielsweise bei Stille vorkommt, so wird der Wert $0.5$ als erzeugter Wert angenommen, da dieser Wert eine weder neutrale Stimmung bedeutet.
-\newpage
+So ergeben sich Werte für jeden Frame, die wieder in das Interval $[0, 1]$ verschoben werden. Erzeugt der ChordDetection Algorithmus keine Ausgabe, was beispielsweise bei Stille vorkommt, so wird der Wert $0.5$ als erzeugter Wert angenommen, da dieser Wert als eine neutrale Stimmung interpretiert werden kann.
 
-% PartsDataGenerator
+\paragraph{PartsDataGenerator}
+Die meisten Musikstücke bestehen aus mehreren Teilen, die unterschieden werden können. Schafft man es diese Teile zu identifizieren, so lässt sich die Visualisierung sinnvoll anpassen. Vor allem die Bewegungsabläufe der Entities zu ändern, wenn ein neuer Abschnitt des Liedes beginnt, erscheint sinnvoll.\\
+Für die Umsetzung dieser Einteilung werden einfachheitshalber ausschließlich die Arousalwerte betrachtet. Diese Werte werden nun als Gruppen aufgefasst. Eine Gruppe ist über einen zeitlichen Beginn, eine Dauer, sowie einen Wert definiert. Zwei anliegende Gruppen lassen sich zusammenführen, indem der Beginn der früheren Gruppe übernommen wird und die Dauer sich aus der Summe der Dauer beider Eingangsgruppen ergibt. Der Wert der größeren Gruppe wird aus Wert der neueren Gruppe übernommen.\\
+Beginnen tut der Algorithmus, indem sämtliche Arousalwerte, als eigenständige Gruppe aufgefasst werden. Der Beginn ergibt sich aus der Position im Song und die Dauer ist konstant eins. Der Wert wird übernommen von den Arousalwerten. Nun wird bestimmt, welche Gruppen sich am besten vereinigen lassen. Die $20\%$, die sich am besten vereinigen lassen, werden zu neuen Gruppen zusammengeführt. Dies wird solange wiederholt bis nur noch eine gewisse Anzahl von Gruppen existiert.\\
+Zwei Gruppen lassen sich gut zusammenführen, wenn sie ähnliche Werte besitzen. Weiterhin lassen sich kleine Gruppen besser zusammenführen als große.\\
+Dies führt dazu, dass kleine Gruppen sich früh mit größeren vereinigen, sowie Gruppen mit ähnlichen Werten. Das Resultat ist eine definierte Anzahl von relativ großen Gruppen, die sich stark in ihren Werten unterscheiden. Die Anfangszeitpunkte der Gruppen werden als Übergänge des Musikstückes interpretiert.
 
-% Resume
-% Annahmen treffen nicht immer zu -> Fehler
-
-\subsubsection{EventGenerators}
-% TickEventGenerator
-
+\subsubsection{EventGenerator}
+Ähnlich wie die DataGenerator überladen ebenfalls die \textit{EventGenerator} eine \textit{compute()}-Funktion. Die \textit{compute()}-Funktion der EventGenerator allerdings erwartet einen Pool als Argument und gibt einen std::vector<Event> zurück.\\
+Ein Event definiert einen Zeitpunkt in Sekunden und kann weitere Eigenschaften enthalten, die sich zwischen den einzelnen Eventtypen unterscheiden können. Implementiert wurden \textit{BeatEvents}, sowie \textit{TickEvents}.\\
+Die TickEvents werden mithilfe von Essentia generiert. Der \textit{RhythmExtractor}-Algorithmus generiert dabei die Zeitpunkte an denen sich die Grundschläge der Musik befinden. Diese werden daraufhin in einer Liste von Events gespeichert.\\
+Weiterhin wurden BeatEvents extrahiert. BeatEvents definieren Zeitpunkte an denen plötzliche Änderungen der Lautstärke auftreten, wie beispielsweise beim Anschlag eines Schlagzeugs.\\
+Um die BeatEvents zu extrahieren, werden erneut die Lautstärkeunterschiede der einzelnen Bark Bands betrachtet. Eine erste Implementation wurde umgesetzt, indem ein BeatEvent generiert wurde, sobald der Unterschied der Lautstärke eine gewisse Schwelle überbot. Dies funktionierte nicht ausreichend gut, da lautere Stücke ununterbrochen BeatEvents generierten, während für leisere Musik keine BeatEvents generiert wurden.\\
+Um dieses Problem zu lösen, wurde eine variable Schwelle eingesetzt. Diese Schwelle ist ein veränderbares Limit, das sich an die Vergleichswerte anpasst. Das Limit wird höher gesetzt, sobald es überschritten wird. Über Zeit fällt das Limit wieder ab. Zusätzlich besitzt die Schwelle eine feste \textit{reset\_rate}. Übersteigt der Vergleichswert des letzten Frames multipliziert mit der \textit{reset\_rate}, das aktuelle Limit der Schwelle, so wird das Limit der Schwelle auf den Vergleichswert multipliziert mit der \textit{reset\_rate} gesetzt. Übersteigt der aktuelle Vergleichswert das aktuelle Limit, so wird ein BeatEvent generiert.\\
+Da auf diese Weise für jedes Bark Band BeatEvents generiert werden, müssen diese im Nachhinein zusammengefasst werden. Dabei werden auch zeitlich direkt aufeinander folgende Events zusammengefasst.
 \subsubsection{Handler}
-% So
+Die Aufgabe der Handler ist es, die analysierten Informationen aus der Audioanalyse umzusetzen in eine Visualisierung.
 \subsubsection*{ColorHandler}
 
 \subsubsection{Compositor}
 % So
 
 \section{Fazit}
-% Mo, Di
+% Di, Mi
 
 % Auf Anforderungen eingehen
 % Kritik Overengineering + Systemcall
-\subsection{Erlebnis}
-\subsection{Ausblicke}
+% Kritik Arousal/Valence/Part Berechnung
+
+%\subsection{Erlebnis}
+%\subsection{Ausblicke}
 
 \newpage
 
