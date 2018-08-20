@@ -938,11 +938,64 @@ Wie im Kapitel ``Zeit in der Musik'' schon erläutert, ist es meist günstig die
 Neben den Bark Bands gehen aus dem Spektrum auch die spektralen Spitzen (Spectral Peaks) hervor. Das Spektrum wird dabei auf besonders laute Frequenzen untersucht. Die Ausgabe beinhaltet eine Angabe der gefundenen Frequenzen, sowie deren Amplituden. Diese Werte können verwendet werden, um ein Pitch-Class-Profile des Frames zu erstellen. Ein Pitch-Class-Profile enthält einen Wert für jeden Ton der chromatischen Tonleiter, also einen Wert für jeden Ton der Klaviatur. Der Wert des Tones ist die Intensität mit der der Ton in diesem Frame wahrzunehmen ist. Für die Umsetzung wurden die Essentia Algorithmen \textit{SpectralPeaks} und \textit{HPCP} (Harmonic Pitch Class Profile) verwendet.\\
 Mit Hilfe der Pitch-Class-Profiles kann der Algorithmus \textit{ChordsDetection} benutzt werden. Dieser wertet ein Pitch-Class-Profile aus und entscheidet welcher Akkord die größte Übereinstimmung ergibt. Finden sich also vor allem die Töne eines C-Dur-Akkordes, so wird der String ``C'' als Output erzeugt. Töne mit Vorzeichen werden mit einem ``\#'' versehen und Mollakkorde mit einem ``m''. Der Fis-Moll Akkord beispielsweise erzeugt den Output ``F\#m''. Neben diesem String wird eine \textit{strength} bestimmt, die angibt, wie stark der gefundene Akkord dem Pitch-Class-Profile entspricht. Unglücklicherweise funktioniert die Vorhersage der ChordDetection nicht zuverlässig und erzeugt öfters falsche Angaben. Vor allem bei der Unterscheidung zwischen Moll und Dur treten häufig Fehler auf.
 
-\paragraph{Spezielle DataGenerator}
-% ArousalDataGenerator
-% ValenceDataGenerator
+\paragraph{Arousal-Valence DataGenerator}
+Für eine Visualisierung, die auf die Emotionen der Musik eingeht, wäre ein MER-Algorithmus hilfreich. Essentia stellt keinen Algorithmus bereit, der auf Valence oder Arousaldaten abbildet, wie sie im Circumplex Model of Affect beschrieben sind.\\
+Es lassen sich viele Paper finden, in denen unterschiedliche Herangehensweisen für Music Emotion Recognition beschrieben werden. Größtenteils werden spektrale Features auf Klassen abgebildet \cite[S. 159]{lerch2012introduction}.\\
+Aus diesem Grund entschied ich mich ein neuronales Netz zu erstellen und zu trainieren. Für das Training des Netzes musste ein geeigneter Datensatz gefunden werden. Das DEAM-Dataset (The MediaEval Database for Emotional Analysis of Music) bietet eine große Menge an annotierten Musikstücken und ist frei zugänglich für nicht kommerzielle Nutzung \cite{AlajankiEmoInMusicAnalysis} und wurde aus diesen Gründen gewählt. Positiv an diesem Datensatz war auch, dass die Musikstücke nicht mit einem einzelnen Wert annotiert waren, sondern Annotationen für mehrere Zeitpunkte existierten. Er bestand aus den annotierten Musikstücken im MP3 Format, den Annotationen im CSV Format, sowie schon extrahierte Features ebenfalls im CSV Format. Die Features wurde nicht benutzt.\\
+Als Features wurden die ``Mel Frequency Cepstral Coefficients'' für einen ersten Prototypen gewählt. Um diese zu extrahieren, wurde mit Hilfe von Essentia ein Programm geschrieben, dass eine Audiodatei einließt und die daraus gewonnenen MFCC-Values in in eine YAML Datei schreibt. Die MFCCs können mit dem Essentia Algorithmus \textit{MFCC} direkt aus dem Spektrum berechnet werden.\\
+Die Annotationen im CSV Format wurden mit \textit{Pandas} eingelesen und organisiert. Für die Umsetzung des Models wurde die Python Bibliothek \textit{Keras} verwendet. Im Folgenden wird kurz die Architektur erläutert, ohne jedoch tiefer auf das Thema eingehen zu wollen. Für eine umfangreiche Einführung verweise ich auf das Buch ``Theorie der neuronalen Netze'' von Rojas \cite{rojas2013theorie}, sie ist aber für das Verständnis des AudioVisualizers nicht notwendig.\\
+Da der MFCC Algorithmus dreizehn Werte erzeugt, hat auch das neuronale Netz einen Input Layer mit 13 Neuronen. Danach folgt ein Fully-Connected-Layer auch Dense-Layer genannt mit 50 Neuronen. Alle Neuronen eines Dense Layers sind mit allen Neuronen des vorhergehenden Layers verbunden. Um Overfitting zu vermeiden wird ein DropoutLayer eingefügt, der die Funktion hat eine bestimmte Prozentzahl von Neuronen aus der Rechnung zu entfernen, um die Wichtigkeit anderer Neuronen zu fördern. Anschließend folgen zwei weitere Dense Layer mit 30 Units und 2 Units. Die Aktivierung der letzten beiden Neuronen entsprechen den Valence-Arousal Werten.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l | l}
+\textbf{Layer} & \textbf{Units}\\
+\hline
+Input Layer & 13\\
+Dense Layer 1 & 50\\
+Dropout & -\\
+Dense Layer 2 & 30\\
+Output Layer & 2\\
+\end{tabular}
+\caption[Architektur]{Architektur}
+\end{table}
+\noindent
+Nachdem ich einige Tests durchgeführt und unterschiedliche Netze ausprobiert hatte, gab es bei den Arousalwerten richtige Tendenzen, während die Valencewerte keine gute Vorhersage ergaben. Da die Optimierung von Machine Learning Algorithmen zeitaufwendig ist, entschied ich mich diesen Versuch nicht weiter zu verfolgen. Stattdessen wurden Algorithmen geschrieben, die die Musik auf ein Valence-Arousal Koordinatensystem abbilden.
+
+\paragraph{ArousalDataGenerator}
+Der erste implementierte Algorithmus extrahiert einen Arousalwert. Dazu werden die berechneten Differenzen der Bark Bands verwendet. Die Funktionsweise des Generators basierte auf folgenden Annahmen. Der Arousalwert wird umso höher, je stärker sich die Lautstärke über die Zeit ändert. Vor allem kurze laute Töne bewirken eine aktive Grundstimmung der Musik. Langgezogene gleichbleibende Töne erzeugen eine eher ruhige Stimmung. Eine weitere Annahme, die gemacht werden kann ist, dass besonders leise Stücke eher ruhige Stücke sind. Darüber hinaus verändert sich der Arousalwert eines Stückes nicht schlagartig, sondern entwickelt sich über die Zeit.\\
+Grundlegend wird vorgegangen, indem die Änderungen der Lautstärke zu einem Arousalwert summiert werden. Ändert ein Stück seine Lautstärke häufig, so erzeugt dies einen hohen Arousalwert. Die Betrachtung der Lautstärkenänderungen findet allerdings nicht auf der Gesamtlautstärke statt, sondern auf den einzelnen Bark Bands. Stücke, die sich häufig in ihrer Tonhöhe ändern, erzeugen damit ebenfalls einen höheren Arousalwert.\\
+Um zu verhindern, dass lautere Stücke automatisch als hektischer gedeutet werden, wird zu Beginn eine Normalisierung durchgeführt.\\
+Aufgrund der Annahme, dass kurze Töne eine hektische Stimmung erzeugen, werden negative Lautstärkeänderungen umso stärker bewertet, je kürzer der Abstand zur vorhergehenden positiven Lautstärkeänderung ist. Das Resultat ist ein Arousalwert, für jeden Frame des Stückes. Diese können sich von Frame zu Frame stark unterscheiden.\\
+Da permanente und schlagartige Wechsel im Arousalwert nicht den empfundenen Emotionen eines Menschen entsprechen, werden die Werte anschließend geglättet. Dazu wird ein anfänglicher Arousalwert definiert, der anschließend, durch die nachfolgenden Arousalwerte, verändert wird. Dadurch ergibt sich eine Entwicklung des Arousalwerts über die Zeit.
+
+\paragraph{ValenceDataGenerator}
+% Valence Wert erklären
+Der Valencewert kann interpretiert werden, als das empfundene Wohlbefinden. Niedrige Valencewerte bedeuten negative Emotionen, hohe Valencewerte hingegen positive. Die Moll-Tonleiter und ihre Akkorde werden gemeinhin eher mit negativen Emotionen verbunden, während die Dur-Tonleiter eher mit positiven Emotionen in Verbindung gebracht wird.\\
+Ausgehend davon wurde eine erste einfache Version des Algorithmus implementiert, die die erfassten Akkorde des \textit{ChordDetection} Algorithmus verwendete. Dazu wurde, wie auch beim ArousalDataGenerator, über die Frames des Stückes iteriert und ein Wert in Richtung des aktuellen Valencewertes verändert. Wird ein Dur-Akkord erkannt, so wird der Wert erhöht, wird ein Moll-Akkord erkannt, so wird er verringert. Die Stärke der Veränderung wurde skaliert mit der Sicherheit, dass der erkannte Akkord richtig erkannt wurde. Die Information, wie sicher der Akkord richtig erkannt wurde, stellte der ChordDetection-Algorithmus bereit.\\
+Wie sich schnell zeigte, waren die Ergebnisse des \textit{ChordDetection}-Algorithmus nicht ausreichend belastbar, um auf diese Weise auf einen Valencewert zu schließen. Vorrangig die Unterscheidung zwischen Moll und Dur Akkorden war fehleranfällig, während der Grundton häufig stimmte. Vor allem wird der Wert, der die Sicherheit des Akkordes beschreibt, nicht angepasst, wenn nur knapp zwischen Moll und Dur unterschieden wird.\\
+Mit dem Ziel den Algorithmus zu verbessern, wurden die Pitch-Class-Profiles mit einbezogen. Ein Pitch-Class-Profile repräsentiert die Intensitäten aller Töne der chromatischen Tonleiter. Wie in den Grundlagen bereits behandelt, unterscheiden sich die Moll und Dur-Tonleitern vor allem über die Terz und die Sexte. Während die kleine Terz und die kleine Sexte in der Moll-Tonleiter vorkommen, werden die große Terz und die große Sexte in der Dur-Tonleiter verwendet. Ausgehend vom Grundton wird nun die Intensität der kleinen Terz und die Intensität der großen Terz ins Verhältnis gesetzt, sowie die Intensitäten der Sexten.
+\begin{align}
+dur\_third\_ratio = 2 \cdot \frac{big\_third\_intensity}{big\_third\_intensity + little\_third\_intensity} - 1
+\end{align}
+\begin{align}
+dur\_sixth\_ratio = 2 \cdot \frac{big\_sixth\_intensity}{big\_sixth\_intensity + little\_sixth\_intensity}- 1
+\end{align}
+\noindent
+Die Multiplikation mit zwei und das Subtrahieren der eins, schiebt den Wertebereich von $[0, 1]$ auf $[-1, 1]$. Das Ergebnis sind folglich zwei Zahlen zwischen $[-1, 1]$, die angeben wie intensiv die Dur-Terz und die Dur-Sexte im Verhältnis zu ihren Moll Varianten ermittelt wurden. Sind die Moll und die Dur Varianten gleich intensiv, so ergibt sich der Wert null. Ist nur die Dur-Variante vorhanden so ergibt sich eine eins.\\
+Problematisch hierbei ist, dass eine leise Dur Variante immer noch eine sehr große $ratio$ erzeugen kann, falls die Moll Variante deutlich leiser ist. Aus diesem Grund werden die $dur\_ratios$ anschließend mit dem Maximum aus der Dur und Moll Intensität multipliziert.
+\begin{align}
+dur\_third\_ratio\ = dur\_third\_ratio \cdot max(big\_third\_intensity, little\_third\_intensity)
+\end{align}
+\noindent
+Das Ergebnis ist nun umso näher der Null, umso kleiner das Maximum der Moll und Dur Varianten ist. Anschließend werden die $ratios$ gewichtet zusammen addiert. Da die kleine (große) Terz im Moll-Dreiklang (Dur-Dreiklang) enthalten ist und damit einen klareren Moll (Dur) Klang erzeugt, wird die Terz höher gewichtet, als die Sexte.\\
+So ergeben sich Werte für jeden Frame, die wieder in das Interval $[0, 1]$ verschoben werden. Erzeugt der ChordDetection Algorithmus keine Ausgabe, was beispielsweise bei Stille vorkommt, so wird der Wert $0.5$ als erzeugter Wert angenommen, da dieser Wert eine weder neutrale Stimmung bedeutet.
+\newpage
+
 % PartsDataGenerator
 
+% Resume
+% Annahmen treffen nicht immer zu -> Fehler
 
 \subsubsection{EventGenerators}
 % TickEventGenerator
