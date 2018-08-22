@@ -244,12 +244,11 @@ romantic &          & strong   &     & jittery  & tender\\
 Auch andere Klasseneinteilungen sind möglich, so erarbeiteten J. Skowronek, M. McKinney und S. Par  \cite{7cd5f337a4b030e3fafd0b4bc7e0976ff7cc1ec8c28d583c5dab695e0ee78941} 12 Klassen, die in Tabelle \ref{tab:altclasses} gezeigt werden.\\
 Sie verfolgen ein anderes Konzept bei dem ein Musikstück zu mehr als einer Klasse gehören kann, die Klassen also nicht mutually exclusive sind.\\
 
-
 Wie weiter oben beschrieben besteht neben der Möglichkeit auf Klassen abzubilden auch die Möglichkeit auf ein Modell abzubilden. Ein Modell wird nicht durch eine definierte Anzahl von Rubriken beschrieben, sondern durch verschiedene Größen oder Dimensionen. Das für MER am häufigsten benutzte Modell ist das ``Circumplex Model of Affect'' (kurz. CMA) \cite[S. 158 f.]{lerch2012introduction}. Es wird auch ``Russels two dimensional Emotion Space'' genannt. Dieses Modell hat zwei Dimensionen. Die erste Dimension wird als ``Arousal''-Wert (Aktiviertheit) bezeichnet und die zweite Dimension als ``Valence''-Wert (Wohlbefinden). Wie in Abbildung \ref{fig:CMA} gezeigt, wird der Arousal-Wert meist auf der Y-Achse und der Valence-Wert auf der X-Achse abgebildet.
 \begin{center}
 \begin{figure}[!ht]
 \centering
-\begin{tikzpicture}[scale=0.9]
+\begin{tikzpicture}
 \large
 \draw[thick,->] (3,0) -- (3,6) node[anchor=north east] {};
 \draw[thick,->] (0,3) -- (6,3) node[anchor=north west] {};
@@ -292,6 +291,12 @@ Weiterhin sind Emotionen zu lesen, die an der entsprechenden Stelle im Valence-A
 Der Hauptvorteil eines Modells liegt darin, dass sich Werte kontinuierlich abbilden lassen. Die zeitlichen Veränderungen in der Musik, auf die M. Caetano and F. Wiering
  \cite{8a02f9c512933d46fbea928d23ac65e38b61b88caba9b38319a5d4952b5a6667} aufmerksam machen, lassen sich nicht über Klassen darstellen, da keine Möglichkeit besteht Werte zwischen den Klassen zu modellieren. Diese Veränderungen sind leicht über ein Modell zu realisieren, da zwischen zwei Punkten im Valence-Arousal-Raum beliebig viele weitere Punkte existieren.
  
+ \paragraph{Abschnitte der Musik}
+% Musik hat meist mehrere Parts
+% Warun gewinnbringend?
+Die meisten Musikstücke lassen sich in zeitliche Abschnitte unterteilen. So gibt es in der Musik die ``Formenlehre'', die sich nur mit dem Aufbau und der Geschichte klassischer Musik beschäftigt.\\
+Umgesetzt werden kann dieser Algorithmus, indem berechnete Werte nach Ähnlichkeiten gruppiert werden, um so ähnliche Teile zusammenzuführen. Die so generierten Informationen können benutzt werden, um an den Übergängen der musikalischen Abschnitte neue Visualisierungen zu beginnen.
+ 
 \paragraph{Liste der ``Features''}
 % Lautstärke
 \begin{itemize}
@@ -303,6 +308,8 @@ Die Konsonanz bzw. Dissonanz der Musik kann dazu verwendet werden, wie angenehm 
 Die Information über die genutzten Akkorde ist hilfreich für die Interpretation der Stimmung, da Mollakkorde einen eher ``traurigen'' Klang innehaben und Durakkorde einen eher ``fröhlichen'' Charakter besitzen. Wegen ihrer großen Nützlichkeit werden sie, trotz nicht zuverlässiger Berechnung, umgesetzt.
 \item \textbf{Emotionen:}
 Da Techniken existieren, die die Analyse von Emotionen in Musik extrahieren, werden Emotionen mit in die Analyse einbezogen. Abgebildet werden sie dabei in ``Circumplex Model of Affect'', da so kontinuierliche Werte dargestellt werden können.
+\item \textbf{Abschnitte:}
+Zuvor berechnete ``Features'' zu untersuchen, um ähnliche Teile zusammenzufassen, kann benutzt werden, um unterschiedliche Abschnitte der Musik unterschiedlich zu visualisieren.
 \end{itemize}
 
 \subsection{Visualisierung}
@@ -360,7 +367,7 @@ Trägt man die Farben entsprechend den Beschreibungen in ein Valence Arousal Koo
 \noindent
 Jedem Punkt im Arousal Valence Koordinatensystem ist eine entsprechende Farbe zugeordnet. Bei niedrigen Arousal Werten, also bei ruhiger Musik, gehen die Farben ins Blaue beziehungsweise ins Graue für kleine Valence Werte oder ins Grüne für hohe Valence Werte. Gelbe Farben werden bei aktiven fröhlichen (hohe Valence und hohe Arousal Werte) erzeugt und rote Farben, wenn die Musik weniger fröhlich, aber immer noch aktiv ist. Wird die Musik noch trauriger wird Schwarz erzeugt. In der Mitte befindet sich ein Orange-Braun. Dies ist nur eine mögliche Anordnung von Farben und es würde sich eventuell anbieten, weitere kompatible Farbverläufe zu kreieren, um Farbkombinationen zu ermöglichen. Die Umsetzung der Stimmung$ \rightarrow $Farbe-Zuordnung wird im Kapitel Implementierung behandelt.
 
-\subsubsection{Bewegung}
+\subsubsection*{Bewegung}
 Bewegung und Musik sind eng miteinander verbunden. Rolf Inge God{\o}y und Alexander Refsum Jensenius meinen: ``Performers produce sound through movements, and listeners very often move to music, as can be seen in dance and innumerable everyday listening situations.'' \cite[S. 1]{905eee055abaf2a4f198ce11f35362a8963f61d552297a02dfc8fbc0c4f78679}.\\
 In diesem Abschnitt werden erst Grundprinzipien für realistische Bewegungen untersucht. Anschließend werden unterschiedliche Formen der Bewegung betrachtet und deren Zusammenhang mit der Musik herausgestellt.
 \paragraph{Grundprinzipien}
@@ -392,46 +399,28 @@ Sie werden mit Hilfe eines in Würfel eingeteilten Raumes umgesetzt. Für jeden 
 Bezug zu den ``Features'' wird über die Geschwindigkeit der Partikel umgesetzt. Skaliert man die Beschleunigungen der Partikel mit dem Arousalwert der Audioanalyse, so wird aktivere Musik über schnellere Bewegungen der Partikel visualisiert. Auch werden rhythmische Events durch eine kurzzeitige Erhöhung der Geschwindigkeit interpretiert.
 
 \paragraph{Random Acceleration}
-Objekte in eine zufällige Richtung zu beschleunigen, kann vor allem dafür verwendet werden, rhythmische Elemente zu visualisieren. Wird eine Gruppe von dicht zusammenstehenden Objekten gleichzeitig in unterschiedliche Richtungen beschleunigt, wird eine pulsierende Bewegung erzeugt. Erweitert werden kann dies, indem alle betroffenen Objekte zu einem gemeinsamen Punkt hin beschleunigt werden oder von diesem weg. 
+Objekte in eine zufällige Richtung zu beschleunigen, kann vor allem dafür verwendet werden, rhythmische Elemente zu visualisieren. Wird eine Gruppe von dicht zusammenstehenden Objekten gleichzeitig in unterschiedliche Richtungen beschleunigt, wird eine pulsierende Bewegung erzeugt. Erweitert werden kann dies, indem alle betroffenen Objekte zu einem gemeinsamen Punkt hin beschleunigt werden oder von diesem weg.\\
+Bezug auf die ``Features'' wird auch hier über die 
 
 \paragraph{Formationen}
-Um eine Alternative zu den Flow Fields zu haben, bieten sich viele unterschiedliche Formationen an, in denen die Partikel bewegt werden. Eine einfach zu implementierende Variante ist es, die Partikel in Kreisen parallel zum Horizont fliegen zu lassen. Dazu wird der Mittelpunkt $m \in \mathbb{R}^3$ des Kreises bei der Erstellung definiert, sowie sein Radius $r \in \mathbb{R}$.
-Will man ein Partikel mit der Position $p \in \mathbb{R}^3$ kreisen lassen, so kann wie folgt vorgegangen werden.\\
-Man projiziert den Vektor $p - m$, also den Vektor der von $m$ auf $p$ zeigt, auf die Ebene, die parallel zum Horizont verläuft und durch m geht, indem man die y-Koordinate von $p - m$ auf die y-Koordinate von $m$ setzt. Diesen Vektor nennen wir $p_0$. Man bildet jetzt das Kreuzprodukt zwischen $p_0$ und dem Up-Vektor $(0, 1, 0)$. Daraus entsteht ein parallel zum Horizont verlaufender Vektor $t$.
-\begin{center}
-\begin{figure}[!ht]
-\centering
-\vspace{20pt}
-\begin{tikzpicture}[scale=0.8]
-\draw (0,0) ellipse (120pt and 30pt);
-\filldraw[white] (2.17, 0.9) circle (3pt);
-\draw[thick,->] (0,0.05) -- (5,2);
-\node[darkgray] at (2.8,1.5) {$p-m$};
-\node[darkgray] at (-0.3,0.1) {$m$};
-\node[darkgray] at (5.3,1.8) {$p$};
-\draw[thick,->] (0,0.05) -- (5,-0.5);
-\node[darkgray] at (1.8,-0.5) {$p_0$};
-\draw[darkgray,thick,->] (5,-0.5) -- (5,0.7);
-\draw[darkgray,thick,->] (5,-0.5) -- (3.9,-1.4);
-\node[darkgray] at (4.7,-1.3) {$t$};
-\end{tikzpicture}
-\caption[Kreisbewegung]{Kreisbewegung}
-\end{figure}
-\end{center}
-\noindent
-Nimmt man jetzt $p_0+t$ und setzt die Länge des resultierenden Vektors auf $r$, so erhält man einen Punkt, der vom Partikel angesteuert werden kann (Steering Behaviour), um den Partikel in eine Kreisbahn zu bringen. Über die Länge von $t$ lässt sich die Geschwindigkeit der Partikel bestimmen.
+Um eine Alternative zu den Flow Fields zu entwickeln, bieten sich unterschiedliche Formationen an, in denen die Partikel bewegt werden. Eine einfach zu implementierende Variante ist es, die Partikel in Kreisen parallel zum Horizont fliegen zu lassen.\\
+Bezug zur Musik kann wieder über die Arousalwerte genommen werden, die die Geschwindigkeit der Objekte skaliert. Wird eine Kreisbewegung mit ``Random Accelerations'' verbunden, so entstehen pulsierende Kreise.
+
+\paragraph{Random Paths}
+% Beschreibung der Bewegung
+Eine weitere Möglichkeit die Bewegungen der Partikel zu steuern ist es, diese in Gruppen einzuteilen und in zufälligen Bahnen zu bewegen. Auch diese Bewegung lässt sich mit ``Random Accelerations'' verbinden, um rhythmische Events zu visualisieren. Zusätzlich zu der Anpassung der Geschwindigkeit über den Arousalwert, kann die Anzahl der Gruppen über den Valencewert bestimmt werden. Liegt ein hoher Valencewert vor, so werden viele Gruppen erzeugt, was zu einer netzartigen Struktur führt. Ist der Valencewert niedrig, so werden nur wenige Gruppen erzeugt, wodurch gröbere Strukturen erzeugt werden.
 
 \subsection{Funktionale Anforderungen}
-Da der Fokus dieser Arbeit eher auf der Umsetzung von einer Visualisierung liegt, als auf der Interaktion mit dem User gibt es nur wenige funktionale Anforderungen. So wurde beispielsweise auf die Implementierung einer GUI, mit der man die Visualisierung steuern könnte, verzichtet. Im Folgenden soll trotzdem die Funktionsweise des Prototypen beschrieben sein.\\
-Die Visualisierung sollte sich mit Angabe einer Audiodatei starten lassen. Dabei sollten unterschiedliche gängige Audioformate, wie wav oder mp3, unterstützt werden, die automatisch erkannt und richtig geladen werden.\\
-Als optionale Interaktionsmöglichkeit mit dem Programm könnte die Perspektive beziehungsweise die Kameraposition durch Tastatureingaben und Mausbewegungen des Benutzers verändert werden. Wichtig ist auch, das sich der Prototyp während der Visualisierung beenden lässt.\\
+\paragraph{Funktionale Anforderungen an die Bedienbarkeit}
+Die Visualisierung soll sich mit Angabe einer Audiodatei als ``Command Line Argument'' starten lassen. Dabei sollen unterschiedliche gängige Audioformate unterstützt werden, die ohne weitere Angaben des Benutzers erkannt und richtig geladen werden. Der Prototyp soll sich während der Visualisierung beenden lassen. Als optionale Interaktionsmöglichkeit mit dem Programm könnte die Perspektive bzw. die Kameraposition durch Tastatureingaben und Mausbewegungen des Benutzers verändert werden. Weiterhin sollen Programmabstürze, beispielsweise durch fehlende/fehlerhafte Audiodateien, abgefangen und durch verständliche Fehlermeldungen ersetzt werden.\\
+
+\paragraph{Anforderungen an die Visualisierung}
+Für die Umsetzung der Visualisierung soll eine Analyse der zugrundeliegenden Musik durchgeführt werden. Das Resultat dieser Analyse soll eine Repräsentation von rhythmischen Events beinhalten. Weiterhin sollen die Emotionen der Musik über das Circumplex Modell of Affect abgebildet werden, indem Arousal- und Valencewerte ermittelt werden. Diese Informationen sollen sich kontinuierlich über den Song entwickeln.\\
+Weiterhin kann eine Unterteilung in mehrere Abschnitte der Musik erfolgen, die dann benutzt werden kann, um unterschiedliche Visualisierungen einzuleiten.\\
+Für die Visualisierung der so generierten Informationen sollen mindestens zwei Bewegungen implementiert werden. Neben den Bewegungen soll die Farbe der Partikel an die aktuelle Stimmung der Musik angepasst werden. Diese soll sich über den Verlauf des Stückes ändern können. Bei Unterteilung der Parts der Musik, kann ein automatischer Wechsel der Bewegungen erfolgen, sobald ein neuer Teil der Musik erfolgt. Wurde die Musik nicht in unterschiedliche Abschnitte geteilt, so soll sich die Bewegung der Partikel an zufälligen Zeitpunkten ändern.
 
 \subsection{Nicht funktionale Anforderungen}
-Wie in der Zielsetzung schon behandelt, soll die Visualisierung die durch die Musik empfundenen Emotionen bekräftigen. Dazu soll die Musik analysiert werden.\\
-Die Analyse der Musik sollte performant implementiert sein, sodass kein längeres Warten auf die Ergebnisse zu spüren ist. Dazu sollen aufwendige Berechnungen, wie beispielsweise eine Spektrumsanalyse nicht mehrfach durchgeführt werden, die Algorithmen effizient implementiert werden und wo dies schwierig ist sollte auf optimierte Software-Bibliotheken zurückgegriffen werden. Auf Optimierung durch Multithreading oder Multiprocessing wird aus Zeitgründen verzichtet.\\
-Weiterhin sollten Programmabstürze abgefangen und durch verständliche Fehlermeldungen ersetzt werden. Beispielsweise durch fehlende oder fehlerhafte Audiodateien.\\
-Neben den Anforderungen an die Bedienbarkeit des Prototypen existieren Anforderungen, die die Programmierung direkt betreffen. Um unterschiedliche Visualisierungen zu generieren, ist es sinnvoll ein modulares System zu konstruieren, indem unterschiedliche Visualisierungen austauschbar realisiert werden können. Auch andere Bereiche, wie die Analyse der Musik kann man gut mit unabhängigen Modulen realisieren, die die einzelnen Verarbeitungsschritte der Analyse umsetzen. Ein weiterer Vorteil eines modularen Systems ist, dass es einfach erweitert werden kann, indem neue Module hinzugefügt werden.
-Als weniger wichtig wird angesehen, dass der Prototyp für unterschiedliche Betriebssysteme kompatibel ist. Er wird für die Linux Umgebung entwickelt.
+Die Analyse der Musik soll performant implementiert sein, sodass höchstens zwei Sekunden nach Start des Programms die Visualisierung beginnt. Hat die Visualisierung begonnen, so soll diese flüssig laufen und eine Framerate von mindestens 24 Frames pro Sekunde halten. Weiterhin kann der Prototyp für unterschiedliche Betriebssysteme entwickelt werden.
 
 \subsection{Bibliotheken für die Audioanalyse}
 Um zu klären welche Bibliothek für die Audioanalyse genutzt wird, werden im Folgenden Anforderungen erhoben, die diese Bibliothek erfüllen muss.\\
@@ -884,6 +873,33 @@ Der Parameter $strength$ gibt dabei an, wie stark diese Kraft wirkt.\\
 
 \noindent
 Weiterhin wurde eine Reibungskraft für die Geschwindigkeit, sowie eine Reibung für die Veränderungen der Farbe implementiert, die unverändert aus dem Konzept übernommen wurden.
+
+\paragraph{Kreise}
+Dazu wird der Mittelpunkt $m \in \mathbb{R}^3$ des Kreises bei der Erstellung definiert, sowie sein Radius $r \in \mathbb{R}$.
+Will man ein Partikel mit der Position $p \in \mathbb{R}^3$ kreisen lassen, so kann wie folgt vorgegangen werden.\\
+Man projiziert den Vektor $p - m$, also den Vektor der von $m$ auf $p$ zeigt, auf die Ebene, die parallel zum Horizont verläuft und durch m geht, indem man die y-Koordinate von $p - m$ auf die y-Koordinate von $m$ setzt. Diesen Vektor nennen wir $p_0$. Man bildet jetzt das Kreuzprodukt zwischen $p_0$ und dem Up-Vektor $(0, 1, 0)$. Daraus entsteht ein parallel zum Horizont verlaufender Vektor $t$.
+\begin{center}
+\begin{figure}[!ht]
+\centering
+\vspace{20pt}
+\begin{tikzpicture}[scale=0.8]
+\draw (0,0) ellipse (120pt and 30pt);
+\filldraw[white] (2.17, 0.9) circle (3pt);
+\draw[thick,->] (0,0.05) -- (5,2);
+\node[darkgray] at (2.8,1.5) {$p-m$};
+\node[darkgray] at (-0.3,0.1) {$m$};
+\node[darkgray] at (5.3,1.8) {$p$};
+\draw[thick,->] (0,0.05) -- (5,-0.5);
+\node[darkgray] at (1.8,-0.5) {$p_0$};
+\draw[darkgray,thick,->] (5,-0.5) -- (5,0.7);
+\draw[darkgray,thick,->] (5,-0.5) -- (3.9,-1.4);
+\node[darkgray] at (4.7,-1.3) {$t$};
+\end{tikzpicture}
+\caption[Kreisbewegung]{Kreisbewegung}
+\end{figure}
+\end{center}
+\noindent
+Nimmt man jetzt $p_0+t$ und setzt die Länge des resultierenden Vektors auf $r$, so erhält man einen Punkt, der vom Partikel angesteuert werden kann (Steering Behaviour), um den Partikel in eine Kreisbahn zu bringen. Über die Länge von $t$ lässt sich die Geschwindigkeit der Partikel bestimmen.
 
 \newpage
 
