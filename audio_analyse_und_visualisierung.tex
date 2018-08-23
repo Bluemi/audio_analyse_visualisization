@@ -136,7 +136,7 @@ Eine mögliche Transformation ist die ``diskrete Kosinustransformation'', die in
 \end{tikzpicture}
 \hspace{20pt}
 \begin{tikzpicture}
-\draw[thin, ->] (0, -1.3) -- (0, 1.7) node[above] {$a(t)$};
+\draw[thin, ->] (0, -1.3) -- (0, 1.7) node[above] {$a(f)$};
 \draw[thin, ->] (0, 0) -- (2.8, 0) node[below] {$f$};
 
 \draw (1.4, 0) -- (1.4, 1.2);
@@ -151,14 +151,14 @@ Die Werte im Frequenzbereich werden als Koeffizienten von Kosinusfunktionen darg
 Neben der diskreten Kosinustransformation existiert auch die diskrete Fourier Transformation (kurz DFT), die Frequenzen als Koeffizienten von Kosinus und Sinusfunktionen darstellt \cite[S. 185]{lerch2012introduction}. Nach K. Kammeyer und K. Kroschel \cite[S. 283]{kammeyer2013digitale} gibt es für die DFT eine optimierte Implementierung, die sogenannte schnelle Fourier Transformation (engl. Fast Fourier Transformation; kurz FFT), die es erlaubt eine DFT mit logarithmischer Komplexität durchzuführen.\\
 Anwendung findet die DCT bei der verlustbehafteten Audio- und Bildkompression. Für die Analyse des Spektrums eines Musikausschnittes bietet sich vor allem, dank ihrer besseren Laufzeit, die FFT an.
 
-\subsubsection{Bark Scale und Bark Bands}
+\subsection{Bark Scale und Bark Bands}
 Die ``Bark Scale'' ist eine Maß für subjektiv empfundene Tonhöhe und wurde empirisch ermittelt. Dik J. Hermes beschreibt die Bark Scale als: ``a frequency scale on which equal distances correspond with perceptually equal distances.'' \cite{BBands}. Ein Bark entspricht 100 Hertz. Die Bark Scale ist definiert bis 24 Bark, was mit 15500 Hertz übereinstimmt.\\
 Bark Bands sind Gruppen von Frequenzen, deren Randwerte den Barkwerten entsprechen. Die Randwerte der Bänder sind nach \cite[S. 3]{smith1999bark}:
 \[0, 100, 200, 300, 400, 510, 630, 770, 920, 1080, 1270, 1480, 1720, 2000, \]
 \[2320, 2700, 3150, 3700, 4400, 5300, 6400, 7700, 9500, 12 000, 15 500\]
 gegeben in Hertz. Liegen zwei Töne innerhalb des selben Bandes, so beeinflussen sie gegenseitig die menschliche Wahrnehmung des jeweils anderen Tones.
 
-\subsection{Spektrum}
+\subsection{Spektrale Features}
 Das Spektrum ist die Frequenzdarstellung eines Signals und gibt nach A. Lerch \cite[S. 41]{lerch2012introduction} Aufschluss über die Klangfarbe. Für die Audioanalyse sind statistische Eigenschaften des Spektrums interessant, weshalb diese hier aufgeführt werden.
 
 \begin{itemize}
