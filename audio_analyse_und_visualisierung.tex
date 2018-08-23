@@ -18,7 +18,7 @@
 \usepackage{listings}
 \usetikzlibrary{decorations.pathreplacing}
 \usepackage{hyperref}
- \usepackage[figure]{hypcap}
+\usepackage[figure]{hypcap}
 
 \overfullrule=0pt
 
@@ -83,63 +83,100 @@ Als Letztes soll herausstellen werden, dass auch das Testen der Visualisierung e
 
 \newpage
 \section{Grundlagen}
-Im Folgenden sollen kurz Grundlagen erläutert werden, die helfen sollen die implementierten Algorithmen zu verstehen.
-
-\subsection{Intervalle}
+Im Folgenden sollen Grundlagen erläutert werden, die helfen sollen die implementierten Algorithmen zu verstehen.
+%TODO Aufzählen der Dinge, die besprochen werden.
 
 \subsection{Tonleitern}
-Um zu verstehen, welche Musik positive, freudige  oder negative, traurige Emotionen hervorruft, soll an dieser Stelle kurz auf die musikalischen Grundlagen der Tonleitern eingegangen werden.
-Eine Tonleiter ist eine Menge von Tönen, die einen Grundton besitzt. Es gibt unterschiedliche Tonleitern, mit denen unterschiedliche Emotionen verbunden werden. In den folgenden Bildern sind Klaviaturen zu sehen, auf denen die Töne der C Tonleitern markiert sind.
+Um zu verstehen, welche Musik positive, freudige  oder negative, traurige Emotionen hervorruft, soll an dieser Stelle auf die musikalischen Grundlagen der Tonleitern eingegangen werden. Dazu werden unterschiedliche Tonleitern geschildert und besondere Töne hervorgehoben, die für eine Analyse interessant sind.\\
+Eine Tonleiter ist eine Menge von Tönen, die einen Grundton besitzt. Es gibt unterschiedliche Tonleitern, mit denen unterschiedliche Emotionen verbunden werden. In Abbildung \ref{fig:Tonleitern} sind Klaviaturen zu sehen, auf denen die Töne der C Tonleitern markiert sind.
+
 \begin{figure}[ht]
 \begin{center}
 \begin{tabular}{c c c}
 C Dur & \hspace{15pt} C Reines Moll & \hspace{15pt} C Harmonisches Moll \\
 \includegraphics[scale=1.2]{res/images/keyboard_dur} & \hspace{15pt} \includegraphics[scale=1.2]{res/images/keyboard_rein_moll} & \hspace{15pt} \includegraphics[scale=1.2]{res/images/keyboard_harm_moll}
 \end{tabular}
-\caption[C Tonleitern]{Die C Tonleitern}
-
+\caption[C Tonleitern]{Die C Tonleitern (in Anlehnung an \cite{Klaviatur})}
+\label{fig:Tonleitern}
 \end{center}
 \end{figure}
+\noindent
+Der Grundton dieser Tonleitern ist das C. Es befindet sich ganz links auf der Klaviatur. Entscheidend für die Wirkung einer Tonleiter ist der Abstand der Tonleitertöne zum Grundton \cite{MusiklehreTonleitern}. Der dritte Ton (die Terz) über dem Grundton ist bei beiden Moll-Tonleitern einen Halbtonschritt niedriger sowie der sechste Ton (die Sexte). Man spricht hierbei von der kleinen Terz und der kleinen Sexte. Der siebte Ton (die Septime oder Septe) ist beim reinen Moll einen Halbtonschritt niedriger, als beim harmonischen Moll. Damit hat das harmonische Moll und die Dur-Tonleiter den gleichen siebten Ton.\\
+Wie man aus dieser Zusammenstellung erkennen kann, unterscheiden sich die Moll-Tonleitern und die Dur-Tonleiter immer im dritten Ton (der Terz) und dem sechsten Ton (der Sexte).\\
+Als Letztes sei noch die chromatische Tonleiter erwähnt, die alle zwölf Töne der Klaviatur enthält. Sie wird vor allem bei atonaler Musik verwendet.
 
-Der Grundton dieser Tonleitern ist das C. Es befindet sich ganz links auf der Klaviatur. Entscheidend für die Wirkung einer Tonleiter ist der Abstand der Tonleitertöne zum Grundton. Wie man sieht ist der dritte Ton (die Terz) über dem Grundton bei beiden Moll-Tonleitern einen Halbtonschritt niedriger, sowie der sechste Ton (die Sexte). Man spricht hierbei von der kleinen Terz und der kleinen Sexte. Der siebte Ton (die Septime oder Septe) ist beim reinen Moll eine kleine Septime, während sie beim harmonischen Moll eine große Septime ist, gleich der Dur-Tonleiter. Die große Septime wird auch Leitton genannt.\\
-Neben dem reinen und dem harmonischen Moll existiert noch das melodische Moll, das sich beim aufwärts und abwärts spielen unterscheidet. Beim aufwärts spielen wird die Sexte und die Septime wie in der Dur-Tonleiter gespielt, beim abwärts spielen wie im reinen Moll. Diese Tonleiter wird im Folgenden nicht weiter behandelt. Weiterhin existieren noch die sogenannten Kirchentonleitern, sowie zahlreiche Blues und Jazz Tonleitern, die meistens ``Scalen'' genannt werden und in denen häufig die kleine Septime wie im reinen Moll gespielt wird.\\
-Die chromatische Tonleiter enthält alle zwölf Töne der Klaviatur und hat keinen Grundton. Sie wird vor allem bei atonaler Musik verwendet.\\
-Da das reine Moll und das Harmonische Moll sich von der Dur Tonleiter in der Terz und in der Sexte unterscheiden, könnte man diese Töne in die Approximation der Stimmung des Musikstückes mit einfließen lassen. Die Septime ist weniger gut zu verwenden, da sie im harmonischen Moll als große Septime (wie in der Dur-Tonleiter) und im reinen Moll als kleine Septime vorkommt. Auch wird die kleine Septime sehr häufig in eher positiv freudigen Blues Stücken verwendet.
+\subsection{Digitale Darstellung von Audio}
+Der Mensch nimmt Schall als Unterschiede im Luftdruck wahr. Der Schalldruck ist zeitkontinuierlich und nimmt für jeden Zeitpunkt in einem Beobachtungszeitraum einen definierten und beliebig genauen Wert an. Nach A. Lerch \cite[S. 9]{lerch2012introduction} können digitale Systeme nicht mit zeitkontinuierlichen Werten arbeiten, da dies eine unbegrenzte Anzahl von Messwerten erfordern würde.\\
+Aus diesem Grund werden Audiosignale in digitalen Systemen aufgezeichnet, indem die physikalische Größe an diskreten Zeitpunkten gemessen wird. Die ``Abtastrate'' oder ``Samplerate'' definiert wie oft das Signal pro Sekunde gemessen wird. Ein Standartwert für die Abtastrate ist 44100 Hertz (CD-Qualität) \cite[S. 4]{lerch2012introduction}.  Ein Signal, das auf diese Weise beschrieben ist, wird ``zeitdiskret'' genannt.\\
+``Quantisierung'' bezeichnet das Runden der gemessenen Werte auf digital darstellbare Werte. Die ``Bittiefe'' gibt an, wie viele Bits für die Speicherung eines Abtastung benutzt werden. Für CDs wird eine Bittiefe von 16 Bit pro Sample verwendet. Ist ein Signal zeitdiskret und wurde einer Quantisierung unterzogen, so ist es ein ``Digitalsignal'' \cite{ZeitdiskretesSignalWiki}.
 
-%\subsubsection{Loudness of Music / Decibel}
+\subsection{Frequenz-Transformationen}
+Die Betrachtung der diskreten Werte gibt wenig Aufschluss über die Frequenzen der zu hörenden Musik. Um die Frequenzen eines Signals zu ermitteln, existieren unterschiedliche Transformationen, die ein zeitdiskretes Signal in den ``Frequenzraum'' überführen. Das Resultat ist eine Folge von Zahlen, von denen jede für die Intensität einer Frequenz steht.\\
+Eine mögliche Transformation ist die ``diskrete Kosinustransformation'', die in Abbildung \ref{fig:KosinusTransformation} gezeigt wird.
 
-\subsection{DCT/DFT/FFT}
-% Was ist die DCT / FFT
-Die Diskrete Kosinus Transformation (engl. Discrete Cosine Transformation; kurz DCT) ist eine Transformation, die es erlaubt, Werte, die zeitdiskret kodiert sind, in den Frequenzbereich zu transformieren. Wird beispielsweise eine Sinusschwingung mit 440 Hertz in den Frequenzbereich transformiert, so ist der einzige Ausschlag im Frequenzbereich die Frequenz von 440 Hertz. Die Werte im Frequenzbereich werden als Koeffizienten von Kosinusfunktionen dargestellt. Diese Kosinusfunktionen sind unterschiedlich gestreckt, um die verschiedenen Frequenzen abbilden zu können.\\
-% Varianten von DCT / FFT
-Von der DCT gibt es die Varianten I - VIII von denen die Varianten I - IV praktischen Einsatz finden. Neben der DCT existiert auch die Diskrete Fourier Transformation (kurz DFT), die Frequenzen als Koeffizienten von Kosinus und Sinusfunktionen darstellt. Für die DFT gibt es eine optimierte Implementierung, die sogenannte Schnelle Fourier Transformation (engl. Fast Fourier Transformation; kurz FFT), die es erlaubt eine DFT mit logarithmischer Komplexität durchzuführen.\\
-% Anwendungsgebiete
-Anwendung findet die DCT bei der verlustbehafteten Audio- und Bildkompression. Für die Analyse des Spektrums eines Musikausschnittes bietet sich vor allem, dank ihrer besseren Laufzeit, die FFT an \cite[S. 20 f.]{lerch2012introduction}.
-% TODO Fensterfunktion
+\begin{figure}[!ht]
+\centering
+\begin{tikzpicture}
+\draw[thin, ->] (0, -1.3) -- (0, 1.7) node[above] {$a(t)$};
+\draw[thin, ->] (0, 0) -- (2.8, 0) node[below] {$t$};
 
-%\subsubsection{Lautstärke}
-% TODO
+\draw (0.2, 0.0) -- (0.2, 0.5);
+\draw (0.4, 0.0) -- (0.4, 0.9);
+\draw (0.6, 0.0) -- (0.6, 0.9);
+\draw (0.8, 0.0) -- (0.8, 0.5);
+%\draw (1, 0.0) -- (1, 0.1);
+\draw (1.2, 0.0) -- (1.2, -0.5);
+\draw (1.4, 0.0) -- (1.4, -0.9);
+\draw (1.6, 0.0) -- (1.6, -0.9);
+\draw (1.8, 0.0) -- (1.8, -0.5);
+%\draw (2, 0.0) -- (2, 0.1);
+\draw (2.2, 0.0) -- (2.2, 0.5);
+\draw (2.4, 0.0) -- (2.4, 0.9);
 
-%\subsubsection{Bark Scale}
-% TODO
+\end{tikzpicture}
+\hspace{20pt}
+\begin{tikzpicture}
+\draw[thin, ->] (0, -1.3) -- (0, 1.7) node[above] {$a(t)$};
+\draw[thin, ->] (0, 0) -- (2.8, 0) node[below] {$f$};
 
-\subsection{Spektrale Features}
+\draw (1.4, 0) -- (1.4, 1.2);
+    
+\end{tikzpicture}
+\caption[Diskrete Kosinustransformation]{Diskrete Kosinustransformation (Angelehnt an \cite{KosTrans})}
+\label{fig:KosinusTransformation}
+\end{figure}
+\noindent
+Auf der linken Seite ist ein zeitdiskretes Signal zu sehen, welches als Eingabe für die diskrete Kosinustransformation fungiert. Die y-Achse gibt die Amplitude für den Zeitpunkt $t$ an. Auf der rechten Seite steht das Ergebnis der Transformation. Da die Eingabe der Transformation genau eine Frequenz beinhaltet, erzeugt die Transformation ebenfalls nur eine Frequenz als Ausgabe.
+Die Werte im Frequenzbereich werden als Koeffizienten von Kosinusfunktionen dargestellt. Diese Kosinusfunktionen sind über die Koeffizienten unterschiedlich gestreckt, um die Amplituden der verschiedenen Frequenzen abbilden zu können.\\
+Neben der diskreten Kosinustransformation existiert auch die diskrete Fourier Transformation (kurz DFT), die Frequenzen als Koeffizienten von Kosinus und Sinusfunktionen darstellt \cite[S. 185]{lerch2012introduction}. Nach K. Kammeyer und K. Kroschel \cite[S. 283]{kammeyer2013digitale} gibt es für die DFT eine optimierte Implementierung, die sogenannte schnelle Fourier Transformation (engl. Fast Fourier Transformation; kurz FFT), die es erlaubt eine DFT mit logarithmischer Komplexität durchzuführen.\\
+Anwendung findet die DCT bei der verlustbehafteten Audio- und Bildkompression. Für die Analyse des Spektrums eines Musikausschnittes bietet sich vor allem, dank ihrer besseren Laufzeit, die FFT an.
+
+\subsubsection{Bark Scale und Bark Bands}
+Die ``Bark Scale'' ist eine Maß für subjektiv empfundene Tonhöhe und wurde empirisch ermittelt. Dik J. Hermes beschreibt die Bark Scale als: ``a frequency scale on which equal distances correspond with perceptually equal distances.'' \cite{BBands}. Ein Bark entspricht 100 Hertz. Die Bark Scale ist definiert bis 24 Bark, was mit 15500 Hertz übereinstimmt.\\
+Bark Bands sind Gruppen von Frequenzen, deren Randwerte den Barkwerten entsprechen. Die Randwerte der Bänder sind nach \cite[S. 3]{smith1999bark}:
+\[0, 100, 200, 300, 400, 510, 630, 770, 920, 1080, 1270, 1480, 1720, 2000, \]
+\[2320, 2700, 3150, 3700, 4400, 5300, 6400, 7700, 9500, 12 000, 15 500\]
+gegeben in Hertz. Liegen zwei Töne innerhalb des selben Bandes, so beeinflussen sie gegenseitig die menschliche Wahrnehmung des jeweils anderen Tones.
+
+\subsection{Spektrum}
+Das Spektrum ist die Frequenzdarstellung eines Signals und gibt nach A. Lerch \cite[S. 41]{lerch2012introduction} Aufschluss über die Klangfarbe. Für die Audioanalyse sind statistische Eigenschaften des Spektrums interessant, weshalb diese hier aufgeführt werden.
+
 \begin{itemize}
-\item \textbf{Centroid:} Der Spectral Centroid ist der Schwerpunkt des Spektrums und wird für jeden Frame neu berechnet. Er kann auf in eine Frequenzangabe in Hertz oder in eine Spanne von Null bis Eins umgerechnet werden. Niedrige Werte bedeuten einen dunklen Sound, während hohe Werte einen sehr hellen klaren Sound anzeigen.
+\item \textbf{Centroid:} Der Spectral Centroid ist der Schwerpunkt des Spektrums. Er kann auf in eine Frequenzangabe in Hertz oder in eine Spanne von Null bis Eins umgerechnet werden. Niedrige Werte bedeuten einen dunklen Sound, während hohe Werte einen sehr hellen klaren Sound anzeigen \cite[S. 45 f.]{lerch2012introduction}.
 
-\item \textbf{Spread/Bandwidth:} Ein Maß, wie breit das Spektrum verteilt ist. Wie der Centroid kann auch der Spread in eine Frequenzangabe oder eine Spanne von Null bis Eins umgerechnet werden. Ein niedriger Spread deutet auf einen klaren Ton im Vordergrund hin, während ein breites Spektrum durch ein Rauschen entsteht.
+\item \textbf{Spread/Bandwidth:} Ein Maß, wie breit das Spektrum verteilt ist. Wie der Centroid kann auch der Spread in eine Frequenzangabe oder eine Spanne von Null bis Eins umgerechnet werden. Ein niedriger Spread deutet auf einen klaren Ton im Vordergrund hin, während ein breites Spektrum durch ein Rauschen entsteht \cite[S. 47 f.]{lerch2012introduction}.
 
-\item \textbf{Skewness:} Die ``Schrägheit'' des Spektrums ist ein Maß dafür, wie geneigt das Spektrum ist. Es erzeugt einen negativen Wert, falls der Spektrum in Richtung der tiefen Frequenzen geneigt ist, Null für ein symmetrisches Spektrum, sowie eine positive Zahl für ein Spektrum, das mehr hohe Frequenzen enthält. Im Gegensatz zum Centroid ist die Skewness nicht begrenzt.
+\item \textbf{Skewness:} Die ``Schrägheit'' des Spektrums ist ein Maß dafür, wie geneigt das Spektrum ist. Es erzeugt einen negativen Wert, falls der Spektrum in Richtung der tiefen Frequenzen geneigt ist, Null für ein symmetrisches Spektrum, sowie eine positive Zahl für ein Spektrum, das mehr hohe Frequenzen enthält. Im Gegensatz zum Centroid ist die Skewness nicht begrenzt \cite[S. 38 f.]{lerch2012introduction}.
 
-\item \textbf{Kurtosis:} Die Kurtosis oder ``Wölbung'' ist ein Maß dafür, wie spitz das Spektrum ist. Sie nimmt für eine perfekte Gaußsche Normalverteilung den Wert Null an, für ein flacheres Spektrum eine negative Zahl und für ein spitzer zulaufendes Spektrum einen positiven Wert an.
+\item \textbf{Kurtosis:} Die Kurtosis oder ``Wölbung'' ist ein Maß dafür, wie spitz das Spektrum ist. Sie nimmt für eine perfekte Gaußsche Normalverteilung den Wert Null an, für ein flacheres Spektrum eine negative Zahl und für ein spitzer zulaufendes Spektrum einen positiven Wert an \cite[S. 39 f.]{lerch2012introduction}.
 
-\item \textbf{Decrease / Slope:} Diese beiden Werte geben an, wie stark das Signal in den höher werdenden Frequenzen nachlässt. Der Decrease Wert eines Spektrums ist immer kleiner als Eins und kleine Werte deuten auf eine hohe Konzentration des Spektrums in den tiefen Frequenzen hin.
+\item \textbf{Decrease / Slope:} Diese beiden Werte geben an, wie stark das Signal in den höher werdenden Frequenzen nachlässt. Der Decrease Wert eines Spektrums ist immer kleiner als Eins und kleine Werte deuten auf eine hohe Konzentration des Spektrums in den tiefen Frequenzen hin \cite[S. 49 f.]{lerch2012introduction}.
 
-\item \textbf{Rolloff:} Der Rolloff wird benutzt, um die Bandbreite des Spektrums abzuschätzen. Existieren nur wenige hohe Frequenzen, so ist der Wert des Rolloffs klein.
+\item \textbf{Rolloff:} Der Rolloff wird benutzt, um die Bandbreite des Spektrums abzuschätzen. Existieren nur wenige hohe Frequenzen, so ist der Wert des Rolloffs klein \cite[S. 42 f.]{lerch2012introduction}.
 
-\item \textbf{Flux:} Der Flux Wert gibt Auskunft darüber, wie sehr sich das Spektrum über die Zeit ändert. Dazu werden die Spektren von zwei aufeinander folgenden Frames verglichen und deren quadrierten Differenzen aufsummiert.
+\item \textbf{Flux:} Der Flux Wert gibt Auskunft darüber, wie sehr sich das Spektrum über die Zeit ändert. Dazu werden die Spektren von zwei aufeinander folgenden Frames verglichen und deren quadrierten Differenzen aufsummiert \cite[S. 44 f.]{lerch2012introduction}.
 
-\item \textbf{Mel Frequency Ceptral Coefficients:} Mel Frequency Ceptral Coefficients (kurz MFCCs) wurden vor allem bei der computergestützten Spracherkennung eingesetzt und sind eine kompakte Beschreibung des Spektrums. Nachdem ihre Nützlichkeit in der Spracherkennung festgestellt wurde, benutzte man sie auch in der Music Genre Recognition, sowie auch in der Music Emotion Recognition. Die Berechnung des MFCCs ist kompliziert und sei hier nur so weit erklärt, dass die Frequenzen der Spektrums auf der logarithmischen Mel-Scala interpretiert werden, diese Frequenzen dann in Bänder unterteilt werden und die Frequenzen jedes Bandes zusammen summiert werden. Anschließend erfolgt auf den so gewonnenen Daten eine DCT. Meist erhält man auf diese Weise mehr Koeffizienten als eigentlich benötigt, um die wesentlichen Informationen darzustellen. Daher werden meist nur die unteren 4 bis 20 Koeffizienten in das Ergebnis mit aufgenommen. Abgesehen von der Verwertbarkeit für Machine Learning Algorithmen ist es schwierig einen einfachen Bezug zwischen dem Eingangssignal und den MFCCs zu erkennen \cite[S. 41 ff.]{lerch2012introduction}.
+\item \textbf{Mel Frequency Ceptral Coefficients:} Mel Frequency Ceptral Coefficients (kurz MFCCs) wurden vor allem bei der computergestützten Spracherkennung eingesetzt und sind eine kompakte Beschreibung des Spektrums. Nachdem ihre Nützlichkeit in der Spracherkennung festgestellt wurde, benutzte man sie auch in der Music Genre Recognition, sowie auch in der Music Emotion Recognition. Die Berechnung des MFCCs ist kompliziert und sei hier nur so weit erklärt, dass die Frequenzen der Spektrums auf der logarithmischen Mel-Scala interpretiert werden, diese Frequenzen dann in Bänder unterteilt werden und die Frequenzen jedes Bandes zusammen summiert werden. Anschließend erfolgt auf den so gewonnenen Daten eine DCT. Meist erhält man auf diese Weise mehr Koeffizienten als eigentlich benötigt, um die wesentlichen Informationen darzustellen. Daher werden meist nur die unteren 4 bis 20 Koeffizienten in das Ergebnis mit aufgenommen. Abgesehen von der Verwertbarkeit für Machine Learning Algorithmen ist es schwierig einen einfachen Bezug zwischen dem Eingangssignal und den MFCCs zu erkennen \cite[S. 51 ff.]{lerch2012introduction}.
 \end{itemize}
 
 \newpage
@@ -476,8 +513,8 @@ Um die beiden unabhängigen Komponenten Visualizer und Audioanalyse zu verbinden
 \subsection{Visualizer}
 In diesem Kapitel soll die Funktionsweise und die Benutzung der Visualizer Bibliothek beschrieben werden. Dafür wird erst das System im Großen aufgezeigt, sowie die Möglichkeit auf dieses einzuwirken, um danach die einzelnen Funktionalitäten genauer zu erklären.
 
-\subsubsection{Programmiersprachen}
-Für die Umsetzung des Prototypen wurde die Programmiersprache C++ gewählt. Einerseits da C++ schnelle Programme erzeugt, andererseits da es gute Bibliotheken mit C++ Anbindungen gibt, die für die Analyse von Audiomaterial konzipiert sind. Auch  gibt es mit OpenGL einen Standard, der schnelle 3D-Visualisierungen ermöglicht.\\
+\subsubsection{Programmiersprache}
+Für die Umsetzung des Prototypen wurde die Programmiersprache C++ gewählt. Einerseits da es möglich ist mit C++ schnelle Programme zu erzeugen, andererseits da es gute Bibliotheken mit C++ Anbindungen gibt, die für die Analyse von Audiomaterial konzipiert sind. Auch  gibt es mit OpenGL einen Standard, der schnelle 3D-Visualisierungen ermöglicht.\\
 C++ enthält objektorientierte Elemente, die für einen modularen Aufbau der Software Architektur geeignet sind. Auch enthält es mit der Standardbibliothek eine breite Auswahl an grundlegenden Klassen und Funktionen, die auch für größere Projekte geeignet sind.\\
 Ein Nachteil an C++ ist die teilweise schwierige Installation von Bibliotheken, wie ``Essentia''. Ein weiterer häufiger Kritikpunkt an C++ ist, dass Fehler in der Programmierung zu sogenanntem ``undefined behaviour'' führen, welches Abstürze erzeugt, die nur schwer auf den Implementierungsfehler zurückzuführen sind. Bjarne Stroustrup, der Entwickler von C++ sagte einmal selbst: ``C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.'' \cite{BjarneStroustrupCite}.\\
 Neben C++ wurde für Testzwecke die Scriptsprache Python verwendet. Da Python mit ``Numpy'', ``OpenCV2'' und ``Keras/Tensorflow'' schnell zu benutzende Bibliotheken bereitstellt, eignet es sich gut für kleinere Tests. Bei der Ausführung des Prototypen wird kein Python ausgeführt.
@@ -999,7 +1036,7 @@ Grundlage für jede Analyse ist es, die Daten von der Festplatte zu laden. Dazu 
 Anschließend werden die Audiodaten in Frames unterteilt, die eine Länge von 2048 Samples haben und sich jeweils zur Hälfte überlappen. An dieser Stelle ist noch wichtig, dass eine Fensterfunktion angewendet wird. Dies geschieht mit dem \textit{Windowing}-Algorithmus von Essentia. Das Resultat ist ein std::vector\textless std::vector\textless float\textgreater\text{}\textgreater . Der erste Vektor enthält die einzelnen Frames, die wiederum die Samples enthalten, auf die die Fensterfunktion angewendet wurde.\\
 % SpectrumDataGenerator
 Daraufhin wird das Spektrum berechnet. Das Spektrum gibt vor allem Auskunft über die Klangfarbe des Stückes \cite[S. 41]{lerch2012introduction}. Es wird aber auch für \textit{ChordDetection} als Akkorderkennung benutzt. Es gibt Auskunft über die Lautstärken einzelner Frequenzen. Da dies eine genauere Untersuchung der Musik ermöglicht und durch das breite Anwendungsfeld des Spektrums habe ich mich dafür entschieden, dieses zur Analyse mit zu verwenden. Umgesetzt wird es durch den Essentia Algorithmus \textit{Spectrum}, der als Input die Frames erhält und für jeden Frame einen std::vector\textless float\textgreater als Output generiert. Fast man die Spektren aller Frames wieder zusammen in einen Vektor, so erhält man erneut einen std::vector\textless std::vector\textless float\textgreater\text{}\textgreater .\\
-Für weitere Berechnungen ist es sinnvoll die Menge der Informationen zu reduzieren. Aus diesem Grund wird das Spektrum anschließend in 24 Bark Bands eingeteilt. Bark Bands sind Gruppen von Frequenzen. Die Randwerte der Bänder sind nach \cite[S. 3]{smith1999bark} [0, 100, 200, 300, 400, 510, 630, 770, 920, 1080, 1270, 1480, 1720, 2000, 2320, 2700, 3150, 3700, 4400, 5300, 6400, 7700, 9500, 12 000, 15 500] gegeben in Hertz. Liegen zwei Töne innerhalb des selben Bandes, so beeinflussen sie gegenseitig die menschliche Wahrnehmung des jeweils anderen Tones. Für die Umsetzung wurde der Essentia-Algorithmus \textit{BarkBands} verwendet. Das Resultat ist wieder ein std::vector<std::vector<float>\text{}>, der die Lautstärken der Bänder für jeden Frame enthält.\\
+Für weitere Berechnungen ist es sinnvoll die Menge der Informationen zu reduzieren. Aus diesem Grund wird das Spektrum anschließend in 24 Bark Bands eingeteilt. Für die Umsetzung wurde der Essentia-Algorithmus \textit{BarkBands} verwendet. Das Resultat ist wieder ein std::vector<std::vector<float>\text{}>, der die Lautstärken der Bänder für jeden Frame enthält.\\
 Wie im Kapitel ``Zeit in der Musik'' schon erläutert, ist es meist günstig die gemessenen Werte nicht direkt zu interpretieren, sondern deren Veränderung über die Zeit zu betrachten. Daher werden im nächsten Schritt die Differenzen der BarkBands berechnet. In diesem Zusammenhang muss berücksichtigt werden, dass die Lautstärke eines Bandes mit der Lautstärke des gleichen Bandes aus dem letzten Frame verrechnet wird und nicht die Lautstärke unterschiedlicher Bänder im selben Frame.\\
 Neben den Bark Bands gehen aus dem Spektrum auch die spektralen Spitzen (Spectral Peaks) hervor. Das Spektrum wird dabei auf besonders laute Frequenzen untersucht. Die Ausgabe beinhaltet eine Angabe der gefundenen Frequenzen, sowie deren Amplituden. Diese Werte können verwendet werden, um ein Pitch-Class-Profile des Frames zu erstellen. Ein Pitch-Class-Profile enthält einen Wert für jeden Ton der chromatischen Tonleiter, also einen Wert für jeden Ton der Klaviatur. Der Wert des Tones ist die Intensität mit der der Ton in diesem Frame wahrzunehmen ist. Für die Umsetzung wurden die Essentia Algorithmen \textit{SpectralPeaks} und \textit{HPCP} (Harmonic Pitch Class Profile) verwendet.\\
 Mit Hilfe der Pitch-Class-Profiles kann der Algorithmus \textit{ChordsDetection} benutzt werden. Dieser wertet ein Pitch-Class-Profile aus und entscheidet welcher Akkord die größte Übereinstimmung ergibt. Finden sich also vor allem die Töne eines C-Dur-Akkordes, so wird der String ``C'' als Output erzeugt. Töne mit Vorzeichen werden mit einem ``\#'' versehen und Mollakkorde mit einem ``m''. Der Fis-Moll Akkord beispielsweise erzeugt den Output ``F\#m''. Neben diesem String wird eine \textit{strength} bestimmt, die angibt, wie stark der gefundene Akkord dem Pitch-Class-Profile entspricht. Unglücklicherweise funktioniert die Vorhersage der ChordDetection nicht zuverlässig und erzeugt öfters falsche Angaben. Vor allem bei der Unterscheidung zwischen Moll und Dur treten häufig Fehler auf.
