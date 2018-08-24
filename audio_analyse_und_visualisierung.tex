@@ -11,6 +11,7 @@
 \usepackage{url}
 \usepackage{caption}
 \usepackage{tikz}
+\usepackage{tikz-uml}
 \usepackage{colortbl}
 \usepackage{sidecap}
 \usepackage{wrapfig}
@@ -476,7 +477,7 @@ Für die Einteilung in Frames bietet Essentia den ``FrameCutter'' Algorithmus \c
 In diesem Abschnitt wird das Softwaredesign für den Prototyp erarbeitet, indem der Ablauf der Datenverarbeitung bis zur Visualisierung aufgebaut wird. Anschließend wird eine grobe Aufteilung zwischen Teilen des Projektes beschrieben, um darauf aufbauend die Struktur der Teilbereiche zu untersuchen. Diese Teilbereiche sind der ``Visualizer'', die ``Audioanalyse'' und der ``AudioVisualizer'', deren Design in diesem Kapitel analysiert wird. Zuerst soll jedoch die Abfolge der Verarbeitung im Vordergrund stehen.
 
 \subsection{Verarbeitungsschritte}
-Um die Umwandlung von unbearbeiteten Audiosignalen in eine passende Visualisierung zu vereinfachen, wird die Aufgabenstellung in mehrere Teilschritte gegliedert. Als Ausgangspunkt existiert eine persistente Audiodatei.\\
+Um die Umwandlung von unbearbeiteten Audiosignalen in eine passende Visualisierung zu vereinfachen, wird die Aufgabenstellung in mehrere Teilschritte gegliedert. Als Ausgangspunkt existiert eine persistente Audiodatei, deren Pfad über eine Nutzereingabe bestimmt ist.\\
 Aus dieser werden die ``Features'' extrahiert. Da Teile der Musik, vor allem rhythmische Elemente einen klaren Zeitpunkt definieren, ist es sinnvoll diese Informationen nicht wie die kontinuierlichen Daten zu speichern, sondern als Events zu extrahieren. Diese beruhen auf den vorher entwickelten Daten. Diese Events, sowie die kontinuierlichen Daten werden zusammengefasst und benutzt, um eine passende Visualisierung zu generieren. Abbildung 2 zeigt einen Entwurf der Verarbeitung.
 \begin{figure}[ht!]
 \includegraphics[scale=0.65]{res/diagrams/data_flow}
@@ -485,7 +486,7 @@ Aus dieser werden die ``Features'' extrahiert. Da Teile der Musik, vor allem rhy
 
 \noindent
 Im Bild sind die Verarbeitungsschritte (1. - 3.), sowie deren Resultate (I. - IV.) zu sehen.\\
-Man stellt nun unterschiedliche Arten der Visualisierung (Schritt 3) zur Verfügung und schafft eine übergeordnete Einheit, die aus unterschiedlichen Arten der Datenvisualisierung wählt, um eine abwechslungsreichere Visualisierung zu generieren. Wenn das Umsetzen in eine Visualisierung unabhängige Eigenschaften der Visualisierung verändert, wie beispielsweise Farbe und Position, kann man auch verschiedene Objekte, die diese Eigenschaften verändern, gleichzeitig agieren lassen.
+Man stellt nun unterschiedliche Arten der Visualisierung (Schritt 3) zur Verfügung und schafft eine übergeordnete Einheit, die aus unterschiedlichen Arten der Datenvisualisierung wählt, um eine abwechslungsreichere Visualisierung zu generieren. Wenn das Umsetzen in eine Visualisierung unabhängige Eigenschaften der Visualisierung verändert, wie beispielsweise Farbe und Bewegung, können verschiedene Objekte, die diese Eigenschaften verändern, gleichzeitig agieren.
 
 \subsection{Hauptbestandteile}
 Der Prototyp gliedert sich in drei Hauptbestandteile, nämlich den Visualizer, die Audioanalyse und den AudioVisualizer, der die beiden anderen Teile verwendet. Der Visualizer wird als eigenständige Bibliothek umgesetzt, die vom AudioVisualizer eingebunden wird und von der Audioanalyse unabhängig ist. Der Visualizer verwaltet die animierten Objekte, deren Aussehen und Bewegungen, sowie den Rendervorgang mit Hilfe von OpenGL. Auch verarbeitet er die Benutzereingaben und die damit verbundene Kameraposition.\\
@@ -500,16 +501,29 @@ Der Visualizer ist die Implementierung des grafischen Anteils des Projektes. Er 
 Um die Funktionalität der Visualisierung zu definieren, wurde eine ``Visualizer'' Klasse geschrieben. Diese Klasse ruft bei ihrer Instanziierung die Initialisierungsfunktionen für OpenGL auf, erzeugt ein Fenster mit einer gegebenen Breite und Höhe und kompiliert die ``Shader''. Um den Stand der Visualisierung zu verändern existiert eine ``tick()'' Funktion, die jeden Frame aufgerufen werden sollte. Um den Ablauf der Visualisierung auf unterschiedlichen Systemen stabil zu halten, wird eine delta-Time berechnet, um die Geschwindigkeit der Objekte so zu skalieren, dass die Visualisierung auch auf langsamen Systemen mit gleicher Geschwindigkeit abläuft. Weiterhin speichert die Visualizer-Klasse die Objekte mit der die Animation umgesetzt wird.\\
 Die Objekte oder Partikel, mit denen die Visualisierung erzeugt wird, werden durch eine ``Entity'' Klasse beschrieben. Diese Entity Klasse enthält alle Informationen, die für das Rendern des Objektes benötigt werden. Diese Attribute sind eine Beschreibung des Shapes, also die Form der Oberfläche, eine Position, eine Größe, sowie eine Farbe.\\
 Diese Entity Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine ``Movable'' Klasse, die eine Entity Instanz enthält. Die Movable Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Movable ausgeführt werden sollen, sowie eine Liste von ``Tags'', die benutzt werden kann, um Movables zu identifizieren. Weiterhin existiert eine ``Geschwindigkeit für die Farbe''  des Objektes, da auch die Farbe keine schlagartigen Änderungen erfahren soll.\\
-Das Verhalten von Movables wird über ``Movements'' realisiert. Movements können einer Movable-Instanz oder einer Gruppe von Movables zugeordnet werden, um das Verhalten dieser zu verändern.\\
+Das Verhalten von Movables wird über ``Movements'' realisiert. Es gibt zwei Varianten von Movements. ``SingleMovements'' können genau einer Movable-Instanz zugeordnet werden, während ``GroupMovements'' eine Gruppe von Movables verwalten.\\
 Um neue Movables erzeugen zu können, wird die ``Creation'' Klasse eingeführt, die alle nötigen Informationen enthält, die für die Erstellung einer Gruppe von Movables nötig sind. Mit ihr ist es möglich eine Gruppe von unterschiedlichen Movables zu erzeugen, die sich jeweils in Position, Shape, Größe und Farbe unterscheiden können.\\
-Abbildung \ref{fig:AufbauVisualizer} zeigt ein UML Diagramm, das den Aufbau des Visualizers zeigt.
+Abbildung \ref{fig:AufbauVisualizer} zeigt ein UML Diagramm, das den Aufbau des Visualizers enthält.\\
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[scale=0.65]{res/diagrams/VisualizerClassDiagram}
+\begin{tikzpicture}[scale=1]
+\umlclass[x=-0.5]{Visualizer}{ camera: Camera } { render(): void\\ tick() : void\\ \$create() : Visualizer }
+\umlclass[x=-0.5, y=-4]{Movable}{ velocity: vec3\\ color\_velocity: vec3\\ tags: List<String> }{ render(): void\\ tick(): void }
+\umlclass[x=-6, y=-4]{Creation}{ quantity: int\\ ... }{ create(): List<Movable> }
+\umlclass[x=-0.5, y=-8]{SingleMovement}{ }{ init(Movable*): void\\ apply\_force(Movable*): void }
+\umlclass[x=4.5, y=-4]{Entity}{position: vec3\\ color: vec3\\ size: vec3\\ shape: Shape} { render(): void }
+
+\umlunicompo[geometry=-|, arg1=1, arg2=1, pos1=0.1, pos2=0.4]{Movable}{Entity}
+\umlassoc[geometry=-|, pos=0.2, arg=creates]{Movable}{Creation}
+\umlunicompo[geometry=|-, arg1=1, arg2=n, pos1=0.1, pos2=0.4]{Movable}{SingleMovement}
+\umlunicompo[geometry=|-, arg1=1, arg2=n, pos1=0.1, pos2=0.25]{Visualizer}{Movable}
+\end{tikzpicture}
 \caption[Aufbau Visualizer]{Aufbau Visualizer}
 \label{fig:AufbauVisualizer}
 \end{figure}
+\noindent
+Wie im Diagramm dargestellt, ist die Visualizer-Klasse die übergeordnete Einheit, die den Gesamtablauf steuert. Sie enthält eine statische \textit{create()}-Funktion und verwaltet eine Liste von Movables.
 
 \subsubsection{Speicherung der Movables}
 Im Folgenden sollen unterschiedliche Varianten untersucht werden, eine Menge von Movable-Instanzen zu speichern. Bewertet werden die Varianten darauf, wie schnell Zugriff auf eine Untermenge von Movables erfolgen kann, wie einfach die Variante zu handhaben ist und ob sich Einschränkungen ergeben.
@@ -646,6 +660,8 @@ C++ enthält objektorientierte Elemente, die für einen modularen Aufbau der Sof
 Ein Nachteil an C++ ist die Installation von Bibliotheken wie ``Essentia'', da C++ keinen standartisierten ``Package Manager'' besitzt. Ein weiterer häufiger Kritikpunkt an C++ ist, dass Fehler in der Programmierung zu sogenanntem ``undefined behaviour'' führen, welches Abstürze erzeugt, die nur schwer auf den Implementierungsfehler zurückzuführen sind. Bjarne Stroustrup, der Entwickler von C++ sagte einmal selbst: ``C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.'' \cite{BjarneStroustrupCite}.\\
 Neben C++ wurde für Testzwecke die Scriptsprache Python verwendet. Da Python mit ``Numpy'', ``OpenCV2'' und ``Keras/Tensorflow'' gut dokumentierte Bibliotheken bereitstellt, eignet es sich gut für Tests. Bei der Ausführung des Prototyps wird kein Python ausgeführt.
 
+\subsection{Visualizer}
+
 \subsubsection{OpenGL}
 Für die Erzeugung der Grafiken wurde OpenGL verwendet. In diesem Abschnitt soll beschrieben werden, wie OpenGL's ``core-profile'' benutzt wird, um dann in den folgenden Abschnitten erklären zu können, wie OpenGL in das System integriert wurde. Dabei wird bewusst nur aufgezeigt, wie OpenGL benutzt wird, ohne dabei in die Tiefe zu gehen, da eine ausführliche Erklärung der Funktionsweise von OpenGL nicht das Ziel dieser Arbeit ist. Meine Informationen habe ich vor allem aus diesem Tutorial \cite{LearnOpenGL}.\\
 Um Grafiken mit OpenGL erzeugen zu können, muss zuerst ein Fenster mit Hilfe von GLFW erzeugt werden. Dies wird über die Funktion \mbox{\textit{glfwCreateWindow()}} realisiert.
@@ -746,6 +762,8 @@ Um dies umzusetzen, wurde der \textit{ShapeHeap} entwickelt, der die schon erste
 Will man eine Kugel mit einer gegebenen \textit{ShapeSpecification} erzeugen, so ruft man die Funktion \mbox{\textit{get\_shape()}} des \mbox{\textit{ShapeHeaps}} auf, die eine \textit{ShapeSpecification} als Argument akzeptiert. Diese überprüft, ob ein \textit{Shape} mit der gegebenen \textit{ShapeSpecification} schon erstellt wurde und falls ja gibt es dieses zurück. Andernfalls wird das \textit{Shape} neu erstellt und zurück gegeben. Auf diese Weise wird sichergestellt, dass gleiche \textit{vertices} nicht mehrmals auf die Grafikkarte hoch geladen werden.
 
 %\subsubsection*{Kamera}
+
+\subsubsection{Movements}
 
 \paragraph{Flow Fields Erklärung}
 Die Umsetzung eines Flow Fields ist aufwendig, da es nicht einfach ist, den Anforderungen entsprechende Richtungsvektoren zu generieren, die sich über Zeit verändern und dabei ihre Ähnlichkeit bewahren. Um diese Vektoren zu generieren, wird ``Perlin Noise'' oder der Nachfolger ``Simplex Noise'' verwendet \cite{bcc7190da8e90284b4e790817b8eed4ee3ea6cffbe5a23ef07a000ca5628ffbc}. Perlin Noise ist eine Zufallsfunktion mit besonderen Eigenschaften. Sie wurde 1982 von Ken Perlin für den Film ``Tron'' entwickelt. Perlin erhielt dafür 1997 einen Oscar. Sie wurde damals zur Generierung von Texturen eingesetzt.\\
@@ -1004,6 +1022,8 @@ Häufig ist es sinnvoll die Entities mit zufälligen Werten zu initialisieren, u
 \subsubsection{Queries}
 Durch die Einführung der EntityMap ist die Notwendigkeit von \textit{Queries} gesunken, da nun direkt auf bestimmte Gruppen zugegriffen werden kann, weshalb sie nur kurz erwähnt werden.\\
 Sie dienten dazu nach Entities in einem EntityBuffer suchen zu können, indem bestimmte Attribute der Entities überprüft werden. Zu diesen Attributen zählen das Shape, die Position, sowie die Tags. In der Umsetzung des Prototypen wurden Queries nicht mehr verwendet.
+
+\subsection{AudioVisualizer}
 
 \subsubsection{DataGenerator}
 % Essentia Funktionsweise
