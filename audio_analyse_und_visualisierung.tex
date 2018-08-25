@@ -20,9 +20,17 @@
 \usetikzlibrary{decorations.pathreplacing}
 \usepackage{hyperref}
 \usepackage[figure]{hypcap}
+\usepackage{geometry}
 
 \overfullrule=0pt
 
+\definecolor{yellow_color}{RGB}{248, 230, 77}
+\definecolor{green_color}{RGB}{0, 142, 78}
+\definecolor{blue_color}{RGB}{5, 158, 212}
+\definecolor{red_color}{RGB}{218, 65, 74}
+\definecolor{white_color}{RGB}{255, 255, 255}
+\definecolor{gray_color}{RGB}{80, 80, 80}
+\definecolor{black_color}{RGB}{0, 0, 0}
 \definecolor{code_comment}{RGB}{180, 180, 180}
 \definecolor{code_keyword}{RGB}{0, 200, 00}
 \definecolor{code_background}{RGB}{40, 40, 40}
@@ -41,14 +49,18 @@
   xleftmargin=15pt
 }
 
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
 \begin{document}
+\pagenumbering{gobble}
 \begin{titlepage}
 \centering
 
+\vspace*{10pt}
 \scshape
 {\huge \textbf{Untersuchung von automatisierter Audioanalyse und Audiovisualisierung} \par}
 
-\vspace{50pt}
+\vspace{70pt}
 \large
 Abschlussarbeit\\
 
@@ -101,6 +113,7 @@ Bruno Schilling\\
 \normalsize
 
 \section{Einleitung}
+\pagenumbering{arabic}
 Das menschliche Gehör hat die Fähigkeit komplexe akustische Signale zu verarbeiten und zu interpretieren. Für eine Person ist es kein Problem aus einer Vielzahl von unterschiedlichen Geräuschen eine bestimmte Information zu gewinnen. Dabei werden mechanische Schwingungen der Luft in abstraktere Informationen umgewandelt und vom Hörzentrum interpretiert, sodass aufeinanderfolgende Laute erkannt und verstanden werden können. Zusätzlich ist es robust gegenüber Störfaktoren und besitzt die Fähigkeit des selektiven Hörens (Cocktail-Party-Effekt)\cite{hawley2004benefit}.\\
 % Wahrnehmung von Musik
 Neben dem Verständnis für Sprache ist der Mensch in der Lage Musik wahrzunehmen, wobei Musik die besondere Funktion aufweist Emotionen auszudrücken und zu erzeugen. Dabei können sich die erzeugten Emotionen stark unterscheiden und sind von der Harmonik, der Rhythmik sowie der Melodik abhängig. Darüber hinaus haben subjektive Faktoren, wie die Hörerwartung des Hörers und dessen musikalische Prägung einen Einfluss \cite[S. 2]{8a02f9c512933d46fbea928d23ac65e38b61b88caba9b38319a5d4952b5a6667}.\\
@@ -411,14 +424,6 @@ In diesem Abschnitt wird der Zusammenhang zwischen Valence-Arousal-Werten und Fa
 Der Zusammenhang von Musik und Farben ist wenig erforscht. Besser erforscht ist hingegen der Zusammenhang zwischen Farben und Emotionen, so werden Farben bewusst eingesetzt, um in Bildern, Filmen, Computerspielen und anderen multimedialen Anwendungen gesteuerte Emotionen hervorzurufen \cite{10.3389/fpsyg.2017.00440}. Will man menschliche Emotionen untersuchen, so werden häufig kurze Filme oder Bilder verwendet, um die gewünschten Emotionen zu erzeugen. Zu beachten ist hierbei, dass gleiche Farben in unterschiedlichen Ländern und Kulturen unterschiedliche Bedeutungen haben und dadurch unterschiedliche Emotionen hervorrufen können. So ist in China die Farbe des Todes Weiß, während es in westlichen Ländern Schwarz ist  \cite[S. 3]{c0f471f7e6a618d880cf25175c9f99ac97ef8ba7d016c7f8c523f8d902892d9e}.\\
 In Tabelle \ref{tab:ColorEmotions} sind Farben und ihre nach Naz Kaya and Helen H. Epps
  \cite{c0f471f7e6a618d880cf25175c9f99ac97ef8ba7d016c7f8c523f8d902892d9e} zugeordneten Emotionen und Assoziationen aufgelistet.
-
-\definecolor{yellow_color}{RGB}{248, 230, 77}
-\definecolor{green_color}{RGB}{0, 142, 78}
-\definecolor{blue_color}{RGB}{5, 158, 212}
-\definecolor{red_color}{RGB}{218, 65, 74}
-\definecolor{white_color}{RGB}{255, 255, 255}
-\definecolor{gray_color}{RGB}{80, 80, 80}
-\definecolor{black_color}{RGB}{0, 0, 0}
 
 \begin{center}
 \begin{table}[!ht]
@@ -1244,5 +1249,14 @@ Bei der Betrachtung der implementierten Visualisierung ist eine Verbindung zur M
 
 \listoftables
 \listoffigures
+
+\newpage
+\section{Eigenständigkeitserklärung}
+\noindent
+Hiermit versichere ich, dass ich die vorliegende Bachelorarbeit selbstständig und nur unter Verwendung der angegebenen Quellen und Hilfsmittel verfasst habe. Die Arbeit wurde bisher in gleicher oder ähnlicher Form keiner anderen Prüfungsbehörde vorgelegt.
+
+\vspace{30pt}
+\noindent
+Unterschrift: \hfill \today
 
 \end{document}
