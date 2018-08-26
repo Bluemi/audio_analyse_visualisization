@@ -38,7 +38,7 @@
 
 \lstset{
   backgroundcolor=\color{code_background},
-  basicstyle=\small\ttfamily\color{white},
+  basicstyle=\small\ttfamily\color{black},
   keywordstyle=\bfseries\ttfamily\color{code_keyword},
   stringstyle=\color{red}\ttfamily,
   commentstyle=\color{code_comment}\ttfamily,
@@ -171,7 +171,9 @@ Der Grundton dieser Tonleitern ist das C. Es befindet sich ganz links auf der Kl
 Wie man aus dieser Zusammenstellung erkennen kann, unterscheiden sich die Moll-Tonleitern und die Dur-Tonleiter immer im dritten Ton (der Terz) und dem sechsten Ton (der Sexte).\\
 Als Letztes sei noch die chromatische Tonleiter erwähnt, die alle zwölf Töne der Klaviatur enthält. Sie wird vor allem bei atonaler Musik verwendet.
 
+\newpage
 \subsection{Digitale Darstellung von Audio}
+\label{sec:DigitaleDarstellungAudio}
 Der Mensch nimmt Schall als Unterschiede im Luftdruck wahr. Der Schalldruck ist zeitkontinuierlich und nimmt für jeden Zeitpunkt in einem Beobachtungszeitraum einen definierten und beliebig genauen Wert an. Nach A. Lerch \cite[S. 9]{lerch2012introduction} können digitale Systeme nicht mit zeitkontinuierlichen Werten arbeiten, da dies eine unbegrenzte Anzahl von Messwerten erfordern würde.\\
 Aus diesem Grund werden Audiosignale in digitalen Systemen aufgezeichnet, indem die beobachtete physikalische Größe an diskreten Zeitpunkten gemessen wird. Die ``Abtastrate'' oder ``Samplerate'' definiert wie oft das Signal pro Sekunde gemessen wird. Ein Standartwert für die Abtastrate ist 44100 Hertz (CD-Qualität) \cite[S. 4]{lerch2012introduction}.  Ein Signal, das auf diese Weise beschrieben ist, wird ``zeitdiskret'' genannt.\\
 ``Quantisierung'' bezeichnet das Runden der gemessenen Werte auf digital darstellbare Werte. Die ``Bittiefe'' gibt an, wie viele Bits für die Speicherung einer Abtastung benutzt werden. Für CDs wird eine Bittiefe von 16 Bit pro Sample verwendet. Ist ein Signal zeitdiskret und wurde einer Quantisierung unterzogen, so ist es ein ``Digitalsignal'' \cite[S. 10]{kammeyer2013digitale}.
@@ -269,6 +271,7 @@ Auch relevant ist die Betrachtung der Veränderung der Lautstärke, um rhythmisc
 Die Konsonanz bzw. Dissonanz zweier Töne beschreibt, wie angenehm bzw. unangenehm diese Töne zusammen klingen. Entscheidend für den Eindruck ist dabei das Intervall zwischen den beiden Tönen. Nach Catherine Schmidt-Jones \cite{89a5aac0af37ff45f55cd59468ed3b0a5f30cbb229bb691b7970477c14dbe1af} gibt es für westliche Musik eine klare Vorschrift, welche Intervalle konsonant und welche dissonant klingen. Abbildung \ref{fig:KonDisIntervalle} stellt die konsonanten und dissonanten Töne zum Ton C dar.
 
 \begin{figure}[ht]
+\centering
 \includegraphics[scale=0.45]{res/images/konsonant}
 \vspace{5pt}\\
 \includegraphics[scale=0.45]{res/images/dissonant}
@@ -278,8 +281,8 @@ Die Konsonanz bzw. Dissonanz zweier Töne beschreibt, wie angenehm bzw. unangene
 \noindent
 In Essentia gibt es explizit einen Algorithmus, der aus den Spitzen des Spektrums dessen Dissonanz berechnet. Dazu wird die paarweise Dissonanz zweier spektraler Spitzen errechnet, um anschließend den Durchschnitt der Dissonanzwerte zu bilden \cite{EssentiaDissonance}. Das Vorhandensein von dissonanten Tönen könnte ein Indikator für eine negative Stimmung des Musikstückes sein.\\
 Ein praktischer Test zeigt, dass die Ergebnisse zu ungenau sind, um in eine Auswertung einzugehen. Tabelle \ref{tab:DissonanzTestergebnisse} zeigt einen Ausschnitt der Testergebnisse. Die erste Spalte gibt den Titel sowie den Komponisten oder Interpreten an. Die zweite Spalte stellt eine kurze Beschreibung des Stückes dar und die letzte Spalte der Tabelle ist der durchschnittliche Dissonanzwert, berechnet mit dem Essentia-Algorithmus.
-\begin{center}
 \begin{table}[!ht]
+\centering
 \begin{tabular}{l | l | l}
 \textbf{Titel (Komponist/Interpret)} & \textbf{Beschreibung} & \textbf{Dissonanz} \\
 \hline
@@ -295,7 +298,6 @@ Wind Quintett Op. 26 (A. Schönberg) & Atonale Kammermusik & 0.55 \\
 \caption[Testergebnisse Dissonanz]{Testergebnisse Dissonanz}
 \label{tab:DissonanzTestergebnisse}
 \end{table}
-\end{center}
 \noindent
 Verzerrte Töne, wie sie häufig in Rockmusik zu finden sind, wurden häufig fälschlicherweise als dissonant erkannt. Atonale Musik, also Musik, die bewusst dissonante Intervalle einsetzt, wird als wenig dissonant gedeutet. Grund hierfür ist vermutlich, dass die Dissonanz nicht zwischen Tönen unterschiedlicher Zeitpunkte berechnet wird, sondern für jeden Zeitpunkt lokal entschieden wird.
 
@@ -314,6 +316,7 @@ Eine Klasse im Bezug auf MER ist eine Beschreibung, die auf einen Song zutreffen
 MIREX gibt die in Tabelle \ref{tab:MIREXclasses} gezeigten Klassen vor, indem assoziierte Adjektive benannt werden.
 
 \begin{table}[!ht]
+\centering
 \begin{tabular}{c c c c c}
 \textbf{Klasse 1} & \textbf{Klasse 2} & \textbf{Klasse 3} & \textbf{Klasse 4} & \textbf{Klasse 5} \\
 \hline
@@ -332,6 +335,7 @@ rowdy & amiable/good natured & autumnal & whimsical & volatile \\
 Auch andere Klasseneinteilungen sind möglich, so erarbeiteten J. Skowronek, M. McKinney und S. Par  \cite{7cd5f337a4b030e3fafd0b4bc7e0976ff7cc1ec8c28d583c5dab695e0ee78941} 12 Klassen, die in Tabelle \ref{tab:altclasses} gezeigt werden.\\
 
 \begin{table}[!ht]
+\centering
 \begin{tabular}{c c c c c c}
 \textbf{Klasse 1} & \textbf{Klasse 2} & \textbf{Klasse 3} & \textbf{Klasse 4} & \textbf{Klasse 5} & \textbf{Klasse 6} \\
 \hline
@@ -424,6 +428,7 @@ Will man eine 3D-Visualisierung umsetzen, so bietet es sich an Objekte zu benutz
 und damit ihr Aussehen verändern. Diese Objekte werden in den folgenden Texten als ``Partikel'' bezeichnet.
 
 \paragraph{Farbe}
+\label{sec:Farbzuordnung}
 In diesem Abschnitt wird der Zusammenhang zwischen Valence-Arousal-Werten und Farbe untersucht, um einen Zusammenhang zwischen Eigenschaften der Musik und der Visualisierung zu schaffen.\\
 Der Zusammenhang von Musik und Farben ist wenig erforscht. Besser erforscht ist hingegen der Zusammenhang zwischen Farben und Emotionen, so werden Farben bewusst eingesetzt, um in Bildern, Filmen, Computerspielen und anderen multimedialen Anwendungen gesteuerte Emotionen hervorzurufen \cite{10.3389/fpsyg.2017.00440}. Will man menschliche Emotionen untersuchen, so werden häufig kurze Filme oder Bilder verwendet, um die gewünschten Emotionen zu erzeugen. Zu beachten ist hierbei, dass gleiche Farben in unterschiedlichen Ländern und Kulturen unterschiedliche Bedeutungen haben und dadurch unterschiedliche Emotionen hervorrufen können. So ist in China die Farbe des Todes Weiß, während es in westlichen Ländern Schwarz ist  \cite[S. 3]{c0f471f7e6a618d880cf25175c9f99ac97ef8ba7d016c7f8c523f8d902892d9e}.\\
 In Tabelle \ref{tab:ColorEmotions} sind Farben und ihre nach Naz Kaya and Helen H. Epps
@@ -566,12 +571,12 @@ Aus dieser werden die ``Features'' extrahiert. Da Teile der Musik, vor allem rhy
 \end{figure}
 
 \noindent
-Im Bild sind die Verarbeitungsschritte (1. - 3.) sowie deren Resultate (I. - IV.) zu sehen. Es können unterschiedliche Arten der Visualisierung (Schritt 3) zur Verfügung gestellt werden. Wird dann eine übergeordnete Einheit geschaffen, die aus unterschiedlichen Varianten wählt, kann eine abwechslungsreichere Visualisierung generiert werden. Wenn das Umsetzen in eine Visualisierung unabhängige Eigenschaften verändert, wie beispielsweise Farbe und Bewegung, können verschiedene Objekte, die diese Eigenschaften verändern, gleichzeitig agieren.
+Es sind die Verarbeitungsschritte (1. - 3.) sowie deren Resultate (I. - IV.) zu sehen. Es können unterschiedliche Arten der Visualisierung (Schritt 3) zur Verfügung gestellt werden. Wird dann eine übergeordnete Einheit geschaffen, die aus unterschiedlichen Varianten wählt, kann eine abwechslungsreichere Visualisierung generiert werden. Wenn das Umsetzen in eine Visualisierung unabhängige Eigenschaften verändert, wie beispielsweise Farbe und Bewegung, können verschiedene Objekte, die diese Eigenschaften verändern, gleichzeitig agieren.
 
 \newpage
 \subsection{Hauptbestandteile}
 Der Prototyp gliedert sich in drei Hauptbestandteile, nämlich den Visualizer, die Audioanalyse und den AudioVisualizer, der die beiden anderen Teile verwendet. Der Visualizer wird als eigenständige Bibliothek umgesetzt, die vom AudioVisualizer eingebunden wird und von der Audioanalyse unabhängig ist. Der Visualizer verwaltet die animierten Objekte, deren Aussehen und Bewegungen sowie den Rendervorgang mit Hilfe von OpenGL. Zusätzlich erfolgt die Verarbeitung der Benutzereingaben und die damit verbundenen Kamerasteuerungen.\\
-Für die Audioanalyse wird, wie bereits in Abschnitt \ref{sec:BibAudioanalyse} der Analyse erläutert, Essentia verwendet. Die grundlegenden Funktionen von Essentia werden erweitert, um spezielle Informationen, die für die Umsetzung nötig sind, extrahieren zu können.\\
+Für die Audioanalyse wird, wie bereits in Abschnitt \ref{sec:BibAudioanalyse} erläutert, Essentia verwendet. Die grundlegenden Funktionen von Essentia werden erweitert, um spezielle Informationen, die für die Umsetzung nötig sind, extrahieren zu können.\\
 Um die beiden unabhängigen Komponenten Visualizer und Audioanalyse zu verbinden, wird der AudioVisualizer entwickelt. Dieser entscheidet, welche Daten und Events erzeugt werden und setzt diese Informationen in eine Visualisierung um, die dann im Visualizer realisiert wird, indem Objekte erzeugt, gelöscht und verändert werden.\\
 Bei der Ausführung wird der AudioVisualizer gestartet, der dann die Audioanalyse durchführt. Wenn diese fertig ist, beginnt die Animation mit Hilfe des Visualizers. Die modulare Aufteilung wurde gewählt, um das Projekt überschaubar zu gestalten und die einzelnen Komponenten unabhängig voneinander testen und weiterentwickeln zu können. Abbildung \ref{fig:Hauptbestandteile} zeigt eine Übersicht der Hauptbestandteile.
 
@@ -599,7 +604,7 @@ Bei der Ausführung wird der AudioVisualizer gestartet, der dann die Audioanalys
 \label{fig:Hauptbestandteile}
 \end{figure}
 \noindent
-Der AudioVisualizer übernimmt vor allem eine organisierende Funktion, der die Abläufe der einzelnen Bestandteile startet und organisiert. Er verwendet die beiden anderen Parts, die voneinander unabhängig sind.
+Der AudioVisualizer übernimmt vor allem eine organisierende Funktion, der die Abläufe der einzelnen Bestandteile startet und organisiert.
 
 \newpage
 \subsection{Visualizer}
@@ -607,12 +612,12 @@ In diesem Kapitel soll die Funktionsweise und die Benutzung der Visualizer-Bibli
 
 \subsubsection{Aufbau}
 Der Visualizer ist die Implementierung des grafischen Anteils des Projektes. Er verwaltet die Objekte, aus denen die Animation besteht und bietet eine Schnittstelle, die es erlaubt, auf das Verhalten dieser Objekte einzuwirken.\\
-Um die Funktionalität der Visualisierung zu definieren, wurde eine ``Visualizer'' Klasse geschrieben. Da das Konzept Visualizer und die Klasse Visualizer existieren, wird die Klasse mit ``Visualizer-Klasse'' bezeichnet mit dem Ziel Verwechslungen zu vermeiden.\\
-Die Visualizer-Klasse ruft bei ihrer Instanziierung die Initialisierungsfunktionen für OpenGL auf, erzeugt ein Fenster mit einer gegebenen Breite und Höhe und kompiliert die ``Shader''. Um den Stand der Visualisierung zu verändern existiert eine ``tick()''-Funktion, die fortlaufend von außerhalb aufgerufen wird. Um den Ablauf der Visualisierung auf unterschiedlichen Systemen stabil zu halten, wird eine delta-Time berechnet, die die Zeit darstellt, die zwischen zwei Aufrufen der tick()-Funktion abgelaufen ist. Die delta-Time wird verwendet, um die Geschwindigkeit der Objekte so zu skalieren, dass die Visualisierung auch auf langsamen Systemen mit gleicher Geschwindigkeit abläuft. Weiterhin speichert die Visualizer-Klasse die Objekte mit der die Animation umgesetzt wird.\\
-Die Objekte oder Partikel, mit denen die Visualisierung erzeugt wird, werden durch eine ``Entity''-Klasse beschrieben. Diese Entity-Klasse enthält alle Informationen, die für das Rendern des Objektes benötigt werden. Diese Attribute sind eine Beschreibung des Shapes, also die Form der Oberfläche, eine Position, eine Größe sowie eine Farbe.\\
-Diese Entity-Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine ``Movable''-Klasse, die eine Entity-Instanz enthält. Die Movable-Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Movable ausgeführt werden sollen sowie eine Liste von ``Tags'', die benutzt werden kann, um Movables zu identifizieren.\\
-Das Verhalten von Movables wird über ``Movements'' realisiert. Es gibt zwei Varianten von Movements. ``SingleMovements'' können genau einer Movable-Instanz zugeordnet werden, während ``GroupMovements'' eine Gruppe von Movables verwalten.\\
-Um neue Movables erzeugen zu können, wird die ``Creation''-Klasse eingeführt, die alle nötigen Informationen enthält, die für die Erstellung einer Gruppe von Movables nötig sind. Mit ihr ist es möglich eine Gruppe von unterschiedlichen Movables zu erzeugen, die sich jeweils in Position, Shape, Größe und Farbe unterscheiden können.\\
+Um die Funktionalität der Visualisierung zu definieren, wurde eine \lstinline!Visualizer!-Klasse geschrieben. Da das Konzept Visualizer und die Klasse \lstinline!Visualizer! existieren, wird die Klasse mit \lstinline!Visualizer!-Klasse bezeichnet mit dem Ziel Verwechslungen zu vermeiden.\\
+Die \lstinline!Visualizer!-Klasse ruft bei ihrer Instanziierung die Initialisierungsfunktionen für OpenGL auf, erzeugt ein Fenster mit einer gegebenen Breite und Höhe und kompiliert die ``Shader''. Um den Stand der Visualisierung zu verändern existiert eine \lstinline!tick()!-Funktion, die fortlaufend von außerhalb aufgerufen wird. Um den Ablauf der Visualisierung auf unterschiedlichen Systemen stabil zu halten, wird eine delta-Time berechnet, die die Zeit darstellt, die zwischen zwei Aufrufen der \lstinline!tick()!-Funktion abgelaufen ist. Die delta-Time wird verwendet, um die Geschwindigkeit der Objekte so zu skalieren, dass die Visualisierung auch auf langsamen Systemen mit gleicher Geschwindigkeit abläuft. Weiterhin speichert die \lstinline!Visualizer!-Klasse die Objekte mit der die Animation umgesetzt wird.\\
+Die Objekte oder Partikel, mit denen die Visualisierung erzeugt wird, werden durch eine \lstinline!Entity!-Klasse beschrieben. Diese \lstinline!Entity!-Klasse enthält alle Informationen, die für das Rendern des Objektes benötigt werden. Diese Attribute sind eine Beschreibung des Shapes, also die Form der Oberfläche, eine Position, eine Größe sowie eine Farbe im RGB-Farbraum.\\
+Die \lstinline!Entity!-Klasse enthält keine Informationen über die Geschwindigkeit oder die Bewegungen des Objektes. Um diese Informationen abzubilden, existiert eine \lstinline!Movable!-Klasse, die eine \lstinline!Entity!-Instanz enthält. Die \lstinline!Movable!-Klasse enthält zusätzlich eine Geschwindigkeit, eine Liste von Bewegungen, die von diesem Partikel ausgeführt werden sollen sowie eine Liste von ``Tags'', die benutzt werden kann, um ein \lstinline!Movable! zu identifizieren.\\
+Das Verhalten der Partikel wird über ``Movements'' realisiert. Es gibt zwei Varianten von Movements. ``SingleMovements'' können genau einer \lstinline!Movable!-Instanz zugeordnet werden, während ``GroupMovements'' eine Gruppe von \lstinline!Movables! verwalten.\\
+Um neue Partikel erzeugen zu können, wird die \lstinline!Creation!-Klasse eingeführt, die alle nötigen Informationen enthält, die für die Erstellung einer Gruppe von Partikeln nötig sind. Mit ihr ist es möglich eine Gruppe von unterschiedlichen \lstinline!Movable!-Instanzen zu erzeugen, die sich jeweils in Position, Shape, Größe und Farbe unterscheiden können.\\
 Abbildung \ref{fig:AufbauVisualizer} zeigt ein UML Diagramm, das den Aufbau des Visualizers darstellt.\\
 
 \begin{figure}[!ht]
@@ -636,18 +641,18 @@ Abbildung \ref{fig:AufbauVisualizer} zeigt ein UML Diagramm, das den Aufbau des 
 \label{fig:AufbauVisualizer}
 \end{figure}
 \noindent
-Wie im Diagramm dargestellt, ist die Visualizer-Klasse die übergeordnete Einheit, die den Gesamtablauf steuert. Sie enthält eine statische \textit{create()}-Funktion und verwaltet eine Liste von Movables. Die Eigenschaften der Creation sind nicht vollzählig aufgeführt, da diese in der Implementierung behandelt werden.
+Wie im Diagramm dargestellt, ist die \lstinline!Visualizer!-Klasse die übergeordnete Einheit, die den Gesamtablauf steuert. Sie enthält eine statische \lstinline!create()!-Funktion und verwaltet eine Liste von \lstinline!Movable!-Instanzen. Die Eigenschaften der \lstinline!Creation! sind nicht vollzählig aufgeführt, da diese in der Implementierung behandelt werden.
 
 \subsubsection{Speicherung der Movables}
-Im Folgenden sollen unterschiedliche Varianten untersucht werden, eine Menge von Movable-Instanzen zu speichern. Bewertet werden die Varianten darauf, wie schnell Zugriff auf eine Untermenge von Movables erfolgen kann, wie einfach die Variante zu handhaben ist und ob sich Einschränkungen ergeben.
+Im Folgenden sollen unterschiedliche Varianten untersucht werden, eine Menge von \lstinline!Movable!-Instanzen zu speichern. Bewertet werden die Varianten darauf, wie schnell Zugriff auf eine Untermenge von \lstinline!Movable!-Instanzen erfolgen kann, wie einfach die Variante zu handhaben ist und ob sich Einschränkungen ergeben.
 \paragraph{EntityBuffer}
-Eine triviale Art der Speicherung wäre es eine Liste oder ein Array (in c++ einen vector) zu verwenden, um die einzelnen Partikel zu speichern. Folgender Anwendungsfall wird hierbei problematisch. Wenn man nur eine Teilmenge aller Movables betrachten möchte, um beispielsweise diesen eine Bewegung zu geben, so muss über den gesamten EntityBuffer iteriert werden und nur die in der Gruppe enthaltenen Movables behandelt werden. Da diese Operation mehrmals pro Frame ausgeführt werden würde, ist diese Variante nicht performant.
+Eine triviale Art der Speicherung wäre es eine Liste oder ein Array (in c++ einen \lstinline!std::vector<>!) zu verwenden, um die einzelnen Partikel zu speichern. Folgender Anwendungsfall wird hierbei problematisch. Wenn nur eine Teilmenge aller Partikel betrachten werden soll, um beispielsweise diesen eine Bewegung zu geben, so muss über die gesamte Liste iteriert werden und nur die in der Gruppe enthaltenen \lstinline!Movable!-Instanzen behandelt werden. Da diese Operation mehrmals pro Frame ausgeführt werden würde, ist diese Variante nicht performant.
 \paragraph{Externe Gruppen}
-Um eine effektivere Lösung umzusetzen, könnte man über den EntityBuffer iterieren und sich mehrere std::vector<Movable*> erstellen, die jeweils eine Teilmenge repräsentieren. Diese Gruppen werden dann gespeichert, um im nächsten Frame wiederverwendet werden zu können. Dies kann so nicht umgesetzt werden, da die Movable-Pointer invalide werden, wenn der EntityBuffer neuen Speicher alloziert oder Elemente aus dem EntityBuffer entfernt werden.
+Um eine effektivere Lösung umzusetzen, kann über die Liste iteriert werden und mehrere \lstinline!std::vector<Movable*>! erstellt werden, die jeweils eine Teilmenge der Partikel repräsentieren. Diese Gruppen werden dann gespeichert, um im nächsten Frame wiederverwendet werden zu können. Dies kann so nicht umgesetzt werden, da die \lstinline!Movable!-Pointer invalide werden, wenn der \lstinline!vector! neuen Speicher alloziert oder Elemente entfernt werden.
 \paragraph{Heap Allocation}
-Dies würde nicht passieren, wenn schon der EntityBuffer Movable-Pointer speichern würde. Nachteilig an dieser Variante wäre, dass die Objekte mit ``new'' und ``delete'' erstellt und gelöscht werden müssten oder die Verwendung von Smartpointern notwendig wird. Das Löschen der Objekte aus allen Vektoren stellt hier ein Problem dar.
+Dies würde nicht passieren, wenn schon der ursprüngliche \lstinline!vector! \lstinline!Movable!-Pointer speichern würde. Nachteilig an dieser Variante ist, dass die Partikel mit ``new'' und ``delete'' erstellt und gelöscht werden müssen oder die Verwendung von Smartpointern notwendig wird. Das Löschen der Objekte aus allen Vektoren stellt hier ein Problem dar.
 \paragraph{Map}
-Wenn die Gruppen der Movables direkt in Gruppen gespeichert werden, so ist das Ansprechen einer Gruppe direkt möglich, ohne über die Gesamtheit der Movables iterieren zu müssen. Dazu werden die Movables in einer Map gespeichert, die einen Identifikator, zum Beispiel einen String, auf einen Vektor von Movables abbildet. Nachteil ist, dass das Iterieren über alle Movables umständlicher ist, da erst über die Map und dann über die Vektoren iteriert werden muss. Weiterhin können externe Pointer auf Movables invalide werden, sobald die Map oder einer der Vektoren neuen Speicher alloziert oder verschiebt. Tabelle \ref{tab:MemoryManagement} fasst die Vor- und Nachteile der einzelnen Verfahren zusammen.
+Wenn die Gruppen der \lstinline!Movable!-Instanzen direkt in Gruppen gespeichert werden, so ist das Ansprechen einer Gruppe direkt möglich, ohne über die Gesamtheit aller Partikel iterieren zu müssen. Dazu werden die \lstinline!Movable!-Instanzen in einer \lstinline!std::map<>! gespeichert, die einen Identifikator, zum Beispiel einen String, auf einen \lstinline!std::vector<>! von Partikeln abbildet. Nachteil ist, dass das Iterieren über alle \lstinline!Movable!-Instanzen umständlicher ist, da erst über die Map und dann über die Vektoren iteriert werden muss. Weiterhin können externe Pointer auf \lstinline!Movable!-Instanzen invalide werden, sobald die Map oder einer der Vektoren neuen Speicher alloziert oder verschiebt. Tabelle \ref{tab:MemoryManagement} fasst die Vor- und Nachteile der einzelnen Verfahren zusammen.
 
 \begin{center}
 \begin{table}[!ht]
@@ -682,39 +687,40 @@ Map & - Schneller Zugriff auf & - Iterieren über alle Movables umständlich\\
 Für die Umsetzung des Prototyps wird die Variante der Map gewählt, da deren Nachteile am wenigsten ins Gewicht fallen. Das Iterieren über alle Movables kann mit einem eigenen Iterator vereinfacht werden und der Zugriff auf Teilmengen erfolgt schnell. Weiterhin müssen die Movables nicht einzeln referenziert werden (std::vector\textless Movable$^\ast$\textgreater), sondern der gesamte Vektor kann benutzt werden (std::vector\textless Movable\textgreater$^\ast$). Der Fakt, dass ein Movable auf diese Weise nicht in mehreren Gruppen sein kann, wird in Kauf genommen.
 
 \subsubsection{Movements}
-Um die Bewegung von Entities lenken zu können, werden Movements entwickelt, die sich in zwei Arten unterscheiden. Es gibt Einzelbewegungen oder \textit{SingleMovements}, die immer einzelnen Movables zugeordnet werden und Gruppenbewegungen oder \mbox{\textit{GroupMovements}}, die nur auf Gruppen von Movables angewendet werden können.
+Um die Bewegung von Entities zu beeinflussen, werden Movements entwickelt, die sich in zwei Arten unterscheiden. Es gibt Einzelbewegungen oder ``SingleMovements'', die immer einzelnen Movables zugeordnet werden und Gruppenbewegungen oder ``GroupMovements'', die nur auf Gruppen von Movables angewendet werden können.
 
 \paragraph{SingleMovements}
-Um Einzelbewegungen umzusetzen, wird eine abstrakte Klasse \textit{ISingleMovement} implementiert, von der die unterschiedlichen SingleMovements erben. Diese deklariert die Funkionen \textit{void init(Movable* movable)}, \textit{void apply\_force(Movable* movable)} und \textit{bool should\_be\_removed()}. Die \textit{init()} Funktion wird beim Hinzufügen des \textit{SingleMovements} zur \textit{Movable}-Instanz ausgeführt, wobei sich die \textit{Movable}-Instanz selbst als Argument übergibt. Dabei kann das \textit{SingleMovement} initiale Einstellungen vornehmen, wie Daten des \textit{Movables} abzuspeichern oder es zu verändern.\\
-In der \textit{apply\_force()} Funktion findet die tatsächliche Tätigkeit des \textit{ISingleMovements} statt, wie eine Veränderung der Geschwindigkeit oder der Farbe, weshalb jede Unterklasse von \textit{ISingleMovement} diese Funktion überschreiben muss. Dabei hat das \textit{ISingleMovement} kompletten Zugriff auf das \textit{Movable} Objekt.\\
-Um zu wissen, wann das \textit{ISingleMovement} wieder gelöscht werden soll, gibt es die Funktion \textit{should\_be\_removed()}, die jeden Frame vom \textit{Movable} aufgerufen wird. Wenn \textit{true} zurück gegeben wird, wird das \textit{ISingleMovement} aus der Liste der \textit{Movable}-Instanz entfernt.\\
-Neben den eben genannten Funktionen gibt es eine \textit{clone()} Funktion, die eine neu allozierte Kopie des \textit{ISingleMovements} erzeugt.\\
-Da für die Verwendung von Polymorphismus in C++ Pointer notwendig sind, werden die Unterklassen von \textit{ISingleMovement} mit \textit{new} erstellt und müssen dementsprechend mit \textit{delete} gelöscht werden. Um dies zu vereinfachen, gibt es die \textit{SingleMovement}-Klasse, die genau dieses Memory-Management übernimmt. Sie bekommt im Konstruktor einen mit \textit{new} erzeugten Pointer einer \textit{ISingleMovement}-Unterklasse, klont diese, falls die \textit{SingleMovement}-Instanz kopiert wird und gibt den Speicher im Destruktor wieder frei.
+Um Einzelbewegungen umzusetzen, wird eine Klasse \lstinline!ISingleMovement! implementiert, von der die unterschiedlichen SingleMovements erben. Der Begriff ``SingleMovement'' meint im Folgenden eine Unterklasse von \lstinline!ISingleMovement!. Die Klasse \lstinline!ISingleMovement! deklariert die Funktionen \lstinline!void init(Movable*)!, \lstinline!void apply_force(Movable*)! sowie die Funktion \lstinline!bool should_be_removed()!. Die \lstinline!init()! Funktion wird beim Hinzufügen des SingleMovements zur \lstinline!Movable!-Instanz ausgeführt, wobei sich die \lstinline!Movable!-Instanz selbst als Argument übergibt. Dabei kann das SingleMovement initiale Einstellungen vornehmen, wie Daten des Partikels zu speichern oder es zu verändern.\\
+In der \lstinline!apply_force()! Funktion findet die tatsächliche Tätigkeit des SingleMovements statt, wie eine Veränderung der Geschwindigkeit oder der Farbe, weshalb jedes SingleMovement diese Funktion überschreiben muss. Dabei hat das SingleMovement kompletten Zugriff auf das \lstinline!Movable!-Objekt.\\
+Um zu wissen, wann das SingleMovement wieder gelöscht werden soll, gibt es die Funktion \lstinline!should_be_removed()!, die jeden Frame von der \lstinline!Movable!-Instanz aufgerufen wird. Wenn \lstinline!true! zurück gegeben wird, wird das SingleMovement aus der Liste der \lstinline!Movable!-Instanz entfernt.\\
+Neben den eben genannten Funktionen gibt es eine \lstinline!clone()! Funktion, die eine neu allozierte Kopie des SingleMovements erzeugt.\\
+Da für die Verwendung von Polymorphismus in C++ Pointer notwendig sind, werden die Unterklassen von \lstinline!ISingleMovement! mit \lstinline!new! erstellt und müssen dementsprechend mit \lstinline!delete! gelöscht werden. Um dies zu vereinfachen, gibt es die \lstinline!SingleMovement!-Klasse, die genau dieses Memory-Management übernimmt. Sie bekommt im Konstruktor einen mit \lstinline!new! erzeugten Pointer einer \lstinline!ISingleMovement!-Unterklasse, klont diese, falls die \lstinline!SingleMovement!-Instanz kopiert wird und gibt den Speicher im Destruktor wieder frei.
 
 \paragraph{Gruppenbewegungen}
-Während Einzelbewegungen auf bestimmte Entities angewendet werden können, indem sie einem \textit{Movable} Objekt hinzugefügt werden, beziehen sich \textit{GroupMovements} immer auf ganze Gruppen der \textit{EntityMap}. Sie werden verwendet, wenn viele Entities in einer gemeinsamen Bewegung zusammengefasst werden.\\
-Die Umsetzung des \textit{GroupMovements} unterscheidet sich an vielen Stellen von der Umsetzung der Einzelbewegungen. Zwar kann man, wie bei den Einzelbewegungen, unterschiedliche Arten von \textit{GroupMovements} über neue Klassen definieren, diese haben aber keine gemeinsame Oberklasse. Stattdessen werden sie in einem \textit{std::variant\textless \textgreater} zusammengefasst, die in C++ 17 eingeführt wurden.\\
-Ein \mbox{\textit{std::variant\textless A,B \textgreater}} ist eine  typensichere Union, die entweder den Typen A oder B annimmt, von denen es beliebig viele geben kann (\textit{std::variant\textless A, B, C, ... \textgreater}). Zugriff auf ein \textit{variant} bekommt man über die Funktion \textit{std::visit()}, die als Argumente zuerst einen Funktor oder einen Funktionspointer, der für alle Varianten des Variants überladen ist und als zweites die Instanz des Variants erwartet. Das Variant, welches alle GroupMovements zusammenfasst heißt \textit{\_GroupMovementVar} und ist für den Benutzer des Visualizers nicht sichtbar. Alle Klassen, die im \textit{\_GroupMovementVar} Variant zusammengefasst sind, müssen die Funktion \textit{apply\_force()} definieren, die einen \textit{std::vector\textless Movable\textgreater}\& als Argument erwartet. In dieser Funktion wird die Logik der Bewegung definiert.\\
-Um den Aufruf der Gruppenbewegungen zu vereinfachen wurde die Klasse \textit{GroupMovement} entwickelt, die eine Instanz des Variants hält. Sie definiert die Funktion \textit{apply\_to()}, die einen EntityMap Pointer akzeptiert und die im Variant gehaltene Bewegung auf alle \textit{Movables} in der Map anwendet, indem die \textit{apply\_force()} Funktion des Movements im Variant ausgeführt wird. Will man die Bewegung nicht auf alle Gruppen der Map anwenden, so kann man in der \textit{GroupMovement}-Instanz eine Liste von Gruppen definieren, die von der Bewegung betroffen ist.\\
-Die Unterschiede der \textit{Movements} sollen kurz aufgezeigt werden. Während man bei den Einzelbewegungen für jede Movable-Instanz eine neue Instanz der Bewegung benötigt, wird für eine Gruppenbewegung nur eine Instanz für alle Movables benötigt. Dafür ist es für Einzelbewegungen möglich, einzelne Entities zu beeinflussen. Der größte Vorteil von \textit{GroupMovements} ist der, dass man sie deutlich einfacher Verwalten kann. Will man Parameter einer Einzelbewegung ändern, so muss man diese erst in der EntityMap suchen. Danach wird es schwierig diese voneinander zu unterscheiden, da die Typeninformation über die Oberklasse verlorengegangen ist.\\
-Ein \textit{GroupMovement} behält durch die Verwendung des Variants die Typeninformation und es wird nur eine Instanz benötigt, sodass eine aufwendige Suche in der EntityMap entfällt.
+Während Einzelbewegungen auf bestimmte Partikel angewendet werden können, indem sie einem \lstinline!Movable!-Objekt hinzugefügt werden, beziehen sich GroupMovements immer auf ganze Gruppen von \lstinline!Movable!-Instanzen. Sie werden verwendet, wenn viele Partikel in einer gemeinsamen Bewegung zusammengefasst werden.\\
+Die Umsetzung der GroupMovements unterscheidet sich an vielen Stellen von der Umsetzung der Einzelbewegungen. Zwar kann man, wie bei den Einzelbewegungen, unterschiedliche Arten von GroupMovements über neue Klassen definieren, diese haben aber keine gemeinsame Oberklasse. Stattdessen werden sie in einem \lstinline!std::variant<>! zusammengefasst, die in C++ 17 eingeführt wurden.\\
+Ein \lstinline!std::variant<A,B>! ist eine  typensichere Union, die entweder den Typen A oder B annimmt, von denen es beliebig viele geben kann (\lstinline!std::variant<A, B, C, ...>!). Zugriff auf ein \lstinline!variant<>! bekommt man über die Funktion \lstinline!std::visit()!, die als Argumente zuerst einen Funktor oder einen Funktionspointer, der für alle Varianten des \lstinline!std::variants! überladen ist und als zweites die Instanz des \lstinline!std::variants! erwartet. Das \lstinline!std::variant<>!, welches alle GroupMovements zusammenfasst heißt \lstinline!_GroupMovementVar! und ist für den Benutzer des Visualizers nicht sichtbar. Alle Klassen, die im \lstinline!_GroupMovementVar!-Variant zusammengefasst sind, müssen die Funktion \lstinline!apply_force()! definieren, die einen \lstinline!std::vector<Movable>&! als Argument erwartet. In dieser Funktion wird die Logik der Bewegung definiert.\\
+Um den Aufruf der Gruppenbewegungen zu vereinfachen wird die Klasse \lstinline!GroupMovement! entwickelt, die eine Instanz des \lstinline!_GroupMovementVar! hält. Sie definiert die Funktion \lstinline!apply_to()!, die einen EntityMap-Pointer akzeptiert und die im \lstinline!std::variant<>! gehaltene Bewegung auf alle \lstinline!Movable!-Instanzen in der Map anwendet, indem die \lstinline!apply_force()! Funktion des Movements im Variant ausgeführt wird. Will man die Bewegung nicht auf alle Gruppen der Map anwenden, so kann man in der \lstinline!GroupMovement!-Instanz eine Liste von Gruppen definieren, die von der Bewegung betroffen ist.\\
+Die Unterschiede der Movements sollen kurz aufgezeigt werden. Während man bei den Einzelbewegungen für jede Movable-Instanz eine neue Instanz der Bewegung benötigt, wird für eine Gruppenbewegung nur eine Instanz für alle Movables benötigt. Dafür ist es für Einzelbewegungen möglich, einzelne Entities zu beeinflussen.\\
+Der Vorteil von GroupMovements ist, dass diese deutlich einfacher verwaltet werden können. Sollen Parameter einer Einzelbewegung geändert werden, so muss diese in der Menge aller \lstinline!Movable!-Instanzen gesucht werden. Danach ist eine Unterscheidung der SingleMovements schwierig, da die Typeninformation über die Oberklasse verlorengegangen ist. Ein GroupMovement behält durch die Verwendung des \lstinline!std::variant! die Typeninformation und es wird nur eine Instanz benötigt, sodass eine Suche in der EntityMap entfällt.
 
 \newpage
 \subsection{AudioVisualizer}
 % Was ist der AudioVisualizer?
-Der \textit{AudioVisualizer} verbindet die beiden Parts der Audioanalyse und der Visualisierung. Im Gegensatz zu Essentia und dem Visualizer ist es keine Bibliothek, sondern ein ausführbares Programm, die den Pfad der zu visualisierenden Datei als ``Command Line Argument'' entgegennimmt.\\
+Der AudioVisualizer verbindet die beiden Parts der Audioanalyse und der Visualisierung. Im Gegensatz zu Essentia und dem Visualizer ist es keine Bibliothek, sondern ein ausführbares Programm, die den Pfad der zu visualisierenden Datei als ``Command Line Argument'' entgegennimmt.\\
 In den folgenden Abschnitten wird zuerst der grobe Ablauf aufgezeigt sowie die sich daraus ergebenden Anforderungen an das System. Sich darauf beziehend wird anschließend eine Architektur entwickelt.
 
 \subsubsection{Ablauf Audioanalyse}
-Beim Start des AudioVisualizers wird zuerst die Audioanalyse durchgeführt, die noch vor Beginn der Visualisierung abgeschlossen wird. Die Audioanalyse lässt sich in mehrere aufeinander aufbauende Verarbeitungsschritte einteilen. Abbildung 12 zeigt die einzelnen Verarbeitungsschritte und deren Abhängigkeiten sowie generierte Events.
+\label{sec:AblaufAnalyse}
+Beim Start des AudioVisualizers wird zuerst die Audioanalyse durchgeführt, die noch vor Beginn der Visualisierung abgeschlossen wird. Die Audioanalyse lässt sich in mehrere aufeinander aufbauende Verarbeitungsschritte einteilen. Abbildung \ref{fig:DatenUndEventsAbhaengigkeiten} zeigt die einzelnen Verarbeitungsschritte und deren Abhängigkeiten sowie die generierten Events.
 
 \begin{wrapfigure}{r}{0.5\linewidth}
 \begin{tikzpicture}[scale=1]
 \small
-\node (rect) at (0,0) [draw] {AudioFile};
-\draw[->] (0, -0.25) -- (2, -0.75);
+\node (rect) at (0.5,0) [draw] {AudioFile};
+\draw[->] (0.5, -0.25) -- (2, -0.75);
 \node (rect) at (2, -1)[draw, dashed] {TickEvents};
-\draw[->] (0, -0.25) -- (-0.5, -0.75);
+\draw[->] (0.5, -0.25) -- (-0.5, -0.75);
 \node (rect) at (-0.5,-1) [draw] {Frames};
 \draw[->] (-0.5, -1.25) -- (0, -1.75);
 \node (rect) at (0,-2) [draw] {Spectrum};
@@ -739,22 +745,24 @@ Beim Start des AudioVisualizers wird zuerst die Audioanalyse durchgeführt, die 
 \node (rect) at (3.5,-6) [draw] {Valence};
 \end{tikzpicture}
 \captionsetup{justification=centering}
-\caption[Daten und Event Abhängigkeiten]{Daten und Event Abhängigkeiten}
+\caption[Abhängigkeiten der Daten und Events]{Abhängigkeiten der Daten und Events}
+\label{fig:DatenUndEventsAbhaengigkeiten}
 \end{wrapfigure}
 \noindent
 In diesem Kapitel wird eine grobe Übersicht über die Verarbeitungsschritte gegeben ohne tiefer auf die Umsetzung der einzelnen Algorithmen einzugehen.\\
-Im ersten Schritt wird die Audiodatei geladen. Direkt daraus gehen die Frames hervor sowie die Tick-Events. Das Audiomaterial in Frames, also in sich überlappende Abschnitte definierter Länge, zu teilen, ist Voraussetzung für weitere Bearbeitungsschritte. Die Zeiten der Tick-Events werden mit dem dafür vorgesehenen Algorithmus ``RhythmExtractor'' von Essentia berechnet, der die Grundschläge oder Zählzeiten extrahiert. Für die weitere Analyse wird das Spektrum jedes Frames generiert, indem eine diskrete Fouriertransformation durchgeführt wird. Die Einteilung in sogenannte \textit{Bark Bands} hat eine Datenreduktion zur Folge, bei der Frequenzbänder zusammengefasst werden. Dadurch werden die weiteren Berechnungen beschleunigt, wichtige Informationen bleiben aber erhalten, da Bark Bands dem menschlichen Hören nachempfunden sind \cite[S. 80]{lerch2012introduction}. Für die Arousaldaten und die Beat-Events ist es sinnvoll, nicht die Lautstärke der einzelnen Frequenzbänder zu betrachten, sondern die Unterschiede benachbarter Frames zu analysieren. Aus diesem Grund werden im nächsten Schritt die Lautstärkedifferenzen der Werte der einzelnen Frequenzbänder ermittelt. Daraus hervor gehen die Arousalwerte sowie die Beat-Events, von denen die Arousalwerte gruppiert werden, um den Song in mehrere Parts zu untergliedern. Mit dem Ziel einen Valence-Wert zu bestimmen, werden auch tonale Features, wie Pitch-Class-Profiles und Akkorde (Chords) extrahiert.\\
-Ist die Audioanalyse abgeschlossen, wird eine Instanz der Visualizer-Klasse erstellt, deren Objekte über eine \textit{Creation} erstellt und \textit{Movements} initialisiert. Die \textit{Movements} werden dabei passend zu den ermittelten Daten angepasst.
+Im ersten Schritt wird die Audiodatei geladen. Direkt daraus gehen die Frames hervor sowie die Tick-Events. Die Tick-Events definieren die Zeitpunkte der Grundzählzeiten, wie ein Metronom sie erzeugt. Die Zeiten der Tick-Events werden mit dem dafür vorgesehenen Algorithmus ``RhythmExtractor'' von Essentia berechnet, der die Grundschläge extrahiert. Das Audiomaterial in Frames, also in sich überlappende Abschnitte definierter Länge, zu teilen, ist Voraussetzung für weitere Bearbeitungsschritte. Für die weitere Analyse wird das Spektrum jedes Frames generiert, indem eine diskrete Fouriertransformation durchgeführt wird. Die Einteilung in Bark Bands hat eine Datenreduktion zur Folge, bei der Frequenzbänder zusammengefasst werden. Dadurch werden die weiteren Berechnungen beschleunigt, wichtige Informationen bleiben aber erhalten, da Bark Bands dem menschlichen Hören nachempfunden sind \cite[S. 80]{lerch2012introduction}. Für die Arousaldaten und die Beat-Events ist es sinnvoll, nicht die Lautstärke der einzelnen Frequenzbänder zu betrachten, sondern die Unterschiede benachbarter Frames zu analysieren. Aus diesem Grund werden im nächsten Schritt die Lautstärkedifferenzen der Werte der einzelnen Frequenzbänder ermittelt. Daraus hervor gehen die Arousalwerte sowie die Beat-Events, von denen die Arousalwerte gruppiert werden, um den Song in mehrere Parts zu untergliedern. Mit dem Ziel einen Valencewert zu bestimmen, werden auch tonale Features, wie Pitch-Class-Profiles und Akkorde (Chords) extrahiert.\\
+Ist die Audioanalyse abgeschlossen, wird eine Instanz der Visualizer-Klasse erstellt, deren Objekte über eine Creation erstellt und Movements initialisiert. Die Movements werden dabei passend zu den ermittelten Daten angepasst.
 
 \subsubsection{Aufbau}
-Für die Audioanalyse wurde eine \textit{InformationBuilder}-Klasse entwickelt, die den Ablauf der Analyse steuert. Für die Organisation der Visualisierung wurde die \textit{AudioVisualizer}-Klasse entwickelt. Das Konzept des AudioVisualizers wird als ``AudioVisualizer'' bezeichnet und die Klasse als ``AudioVisualizer-Klasse''.
+Für die Steuerung der Audioanalyse wird eine \lstinline!InformationBuilder!-Klasse entwickelt, die den Ablauf der Analyse steuert. Für die Organisation der Visualisierung wird die \lstinline!AudioVisualizer!-Klasse entwickelt. Das Konzept des AudioVisualizers wird als ``AudioVisualizer'' bezeichnet und die Klasse als ``\lstinline!AudioVisualizer!-Klasse''.
 
 \paragraph{Audioanalyse}
-Der InformationBuilder bekommt den Pfad einer Audiodatei übergeben. Weiterhin wird definiert, welche Daten und Events generiert werden sollen. Ruft man nun die \textit{build()} Funktion auf, so werden die spezifizierten Daten generiert und in einem \textit{InformationContainer} zurückgegeben, der die generierten Daten und Events enthält.\\
-Wie eben gezeigt wurde, gibt es bei der Audioanalyse mehrere Teilaufgaben, die nacheinander abgearbeitet werden müssen. Diese Aufgaben haben Abhängigkeiten untereinander und können daher nicht in einer beliebigen Reihenfolge bearbeitet werden. Auch wäre es ungünstig mehrmals benötigte Daten, wie das Spektrum, für jede Anwendung neu zu berechnen.\\
-Die Abarbeitung der einzelnen Aufgaben wurde über \textit{DataGenerator} gelöst, die jeweils einen der eben genannten Schritte bearbeiten. Dazu implementieren sie eine \textit{compute()}-Funktion. Ähnlich wie für die Shapes gibt es \textit{DataSpecifications}, die dazu benutzt werden können, einen \textit{DataGenerator} zu erstellen. Dies hat den Vorteil, dass die einfach zu erzeugenden Spezifikationen benutzt werden können, um die schwieriger zu initialisierenden DataGeneratoren zu erstellen. Die Spezifikationen haben simple Konstruktoren, deren Argumente einfach zu definieren sind. Die Generatoren andererseits benötigen Zugriff auf die vorher generierten Daten und einige auch auf eine \textit{AlgorithmFactory} von Essentia. Der InformationBuilder sorgt dafür, dass die Generatoren in der richtigen Reihenfolge aufgerufen werden und das sie den Zugriff auf die benötigten Daten bekommen.\\
-Die Reihenfolge wird dabei über Abhängigkeiten gelöst. Jeder DataGenerator kann angeben, welche Daten er benötigt, indem er entsprechende Spezifikationen erstellt. Diese Abhängigkeiten werden dann im InformationBuilder rekursiv abgefragt und sortiert. Sollen bestimmte Daten nicht generiert werden, so werden auch deren Abhängigkeiten nicht mehr berechnet, sofern diese nicht anderweitig gebraucht werden.\\
-Sind alle notwendigen Daten generiert, können diese verwendet werden, um Events zu generieren. Dies geschieht über \textit{EventGenerators}, die wiederum \textit{EventSpecifications} besitzen. Im Gegensatz zu den kontinuierlichen Daten, haben Events keinen Zugriff auf andere Events. Sie können als Abhängigkeiten ebenfalls DataSpecifications angegeben.
+Der \lstinline!InformationBuilder! bekommt den Pfad einer Audiodatei übergeben. Weiterhin wird definiert, welche Daten und Events generiert werden sollen. Ruft man nun die \lstinline!build()! Funktion auf, so werden die spezifizierten Daten generiert und in einem \lstinline!InformationContainer! zurückgegeben, der die generierten Daten und Events enthält.\\
+Wie in Abschnitt \ref{sec:AblaufAnalyse} gezeigt wurde, gibt es bei der Audioanalyse mehrere Teilaufgaben, die nacheinander abgearbeitet werden müssen. Diese Aufgaben haben Abhängigkeiten untereinander und können daher nicht in einer beliebigen Reihenfolge bearbeitet werden. Auch ist es ungünstig mehrmals benötigte Daten, wie das Spektrum, für jede Anwendung neu zu berechnen.\\
+Die Abarbeitung der einzelnen Aufgaben wurde über \lstinline!DataGenerator! gelöst, die jeweils einen Verarbeitungsschritt übernehmen. Dazu implementieren sie eine \lstinline!compute()!-Funktion. In der \lstinline!compute()!-Funktion wird die Funktionsweise des \lstinline!DataGenerators! definiert, so berechnet beispielsweise der \lstinline!SpectrumDataGenerator! in seiner \lstinline!compute()!-Funktion das Spektrum des Musikstückes.\\
+Ähnlich wie für die Shapes gibt es für jeden \lstinline!DataGenerator! eine \lstinline!DataSpecification!, die dazu benutzt werden kann, einen \lstinline!DataGenerator! zu erstellen. Dies hat den Vorteil, dass die einfach zu erzeugenden Spezifikationen benutzt werden können, um die schwieriger zu initialisierenden Generatoren zu erstellen. Die Spezifikationen haben simple Konstruktoren, deren Argumente einfach zu definieren sind. Die Generatoren andererseits benötigen Zugriff auf die vorher generierten Daten und auf eine \lstinline!AlgorithmFactory! von Essentia. Der \lstinline!InformationBuilder! sorgt dafür, dass die Generatoren in der richtigen Reihenfolge aufgerufen werden und das sie den Zugriff auf die benötigten Daten erhalten.\\
+Jeder \lstinline!DataGenerator! gibt an, welche Daten er benötigt, indem er entsprechende Spezifikationen erstellt. Diese Abhängigkeiten werden dann im \lstinline!InformationBuilder! rekursiv ermittelt und sortiert. Sollen bestimmte Daten nicht generiert werden, so werden auch deren Abhängigkeiten nicht mehr berechnet, sofern diese nicht anderweitig gebraucht werden.\\
+Sind alle notwendigen Daten generiert, können diese verwendet werden, um Events zu generieren. Dies geschieht über \lstinline!EventGenerators!, die wiederum \lstinline!EventSpecifications! besitzen. Im Gegensatz zu den kontinuierlichen Daten, haben \lstinline!EventGenerator! keinen Zugriff auf die Ergebnisse andere \lstinline!EventGenerator!. Sie können als Abhängigkeiten ebenfalls \lstinline!DataSpecifications! angegeben.
 
 %\begin{figure}[!ht]
 %\centering
@@ -776,25 +784,38 @@ Sind alle notwendigen Daten generiert, können diese verwendet werden, um Events
 %\end{figure}
 
 \paragraph{Visualisierung}
-Die Visualisierung baut auf den Daten des InformationContainers auf, die in der Audioanalyse berechnet wurden. Hier findet die Umwandlung dieser Daten in Veränderungen der Entities statt, wobei vor allem die Bewegungen und die Farben der Entities verändert werden.\\
-Die Visualisierung wird gestartet, indem die \textit{run()}-Funktion der AudioVisualizer-Klasse aufgerufen wird. Diese erwartet die analysierten Daten in Form eines InformationContainers, der zuvor mit dem InformationBuilder generiert wurde. In der \textit{run()}-Funktion wird zuerst eine Instanz der \textit{Visualizer}-Klasse erzeugt und geprüft, ob die Erstellung erfolgreich war. Falls nicht, wird eine Fehlermeldung ausgegeben und das Programm schließt sich. Ist die Erstellung der Instanz der Visualizer-Klasse ohne Probleme verlaufen, so werden Entities und Movements erstellt. Darauf folgend wird die Musik über einen Systemcall abgespielt, indem die Command-Line-Version des ``VLC Players'' gestartet wird. Für die Ausführung ist daher eine installierte Version des VLC Players notwendig.\\
-Die Bewegungen der Entities werden über \textit{Handler} gesteuert, welche die Informationen des InformationContainers verarbeiten und in Parameter der Bewegungen umsetzen. Dabei haben alle Handler Zugriff auf alle Daten und Events. Jeder Handler steht für einen Bewegungsablauf oder eine Bewegungsform. Um die Visualisierung abwechslungsreich zu gestalten, werden unterschiedliche Handler aktiviert und deaktiviert. Dies geschieht im \textit{Compositor}, der ebenfalls Zugriff auf die Informationen der Audioanalyse hat.
+Die Visualisierung baut auf den Daten des \lstinline!InformationContainers! auf, die in der Audioanalyse berechnet wurden. Hier findet die Umwandlung dieser Daten in Veränderungen der Partikel statt, wobei vor allem die Bewegungen und die Farben der Partikel verändert werden.\\
+Die Visualisierung wird gestartet, indem die \lstinline!run()!-Funktion der \lstinline!AudioVisualizer!-Klasse aufgerufen wird. Diese erwartet die analysierten Daten in Form eines \lstinline!InformationContainers!. In der \lstinline!run()!-Funktion wird zuerst eine Instanz der \lstinline!Visualizer!-Klasse erzeugt und geprüft, ob die Erstellung erfolgreich war. Falls nicht, wird eine Fehlermeldung ausgegeben und das Programm schließt sich. Ist die Erstellung der Instanz der \lstinline!Visualizer!-Klasse ohne Probleme verlaufen, so werden \lstinline!Movable!-Instanzen und Movements erstellt. Darauf folgend wird die Musik über einen Systemcall abgespielt, indem die Command-Line-Version des ``VLC Players'' gestartet wird. Für die Ausführung ist daher eine installierte Version des VLC Players notwendig.\\
+Die Parameter der Bewegungen werden über \lstinline!Handler! gesteuert, welche die Informationen des \lstinline!InformationContainers! verarbeiten und in Bewegungen der Partikel umsetzen. Dabei haben alle \lstinline!Handler! Zugriff auf alle Daten und Events. Jeder \lstinline!Handler! steht für einen Bewegungsablauf oder eine Bewegungsform. Um die Visualisierung abwechslungsreich zu gestalten, werden unterschiedliche \lstinline!Handler! aktiviert und deaktiviert. Dies geschieht im \lstinline!Compositor!, der ebenfalls Zugriff auf die Informationen der Audioanalyse hat.
 
 \newpage
 \section{Implementierung}
 In diesem Abschnitt wird die Implementierung des Prototypes mit Hilfe der oben beschriebenen Konzepte erläutert. Dazu werden die im Konzept genannten Bestandteile erläutert. Es werden die Schnittstellen der Bestandteile gezeigt und wie diese miteinander interagieren. Neben dem Skizzieren des Gesamtsystems sollen auch Algorithmen, die eine gewisse Komplexität übersteigen, erläutert werden, um die Funktionsweise des Prototyps zu veranschaulichen.
 
 \subsection{Programmiersprachen}
-Für die Umsetzung des Prototypen wird die Programmiersprache C++ gewählt. Einerseits da es möglich ist mit C++ schnelle Programme zu erzeugen, andererseits da es gute Bibliotheken mit C++ Anbindungen gibt, die für die Analyse von Audiomaterial konzipiert sind. Auch gibt es mit OpenGL einen Standard, der 3D-Visualisierungen ermöglicht.\\
+Für die Umsetzung des Prototypen wird die Programmiersprache C++ gewählt. Einerseits da es möglich ist mit C++ performante Programme zu erzeugen, andererseits da es gute Bibliotheken mit C++ Anbindungen gibt, die für die Analyse von Audiomaterial konzipiert sind. Auch gibt es mit OpenGL einen Standard, der 3D-Visualisierungen ermöglicht.\\
 C++ enthält objektorientierte Elemente, die für einen modularen Aufbau der Softwarearchitektur geeignet sind. Auch enthält C++ mit der Standardbibliothek eine breite Auswahl an grundlegenden Klassen und Funktionen, die für größere Projekte geeignet sind.\\
 Ein Nachteil an C++ ist die Installation von Bibliotheken wie ``Essentia'', da C++ keinen standartisierten ``Package Manager'' besitzt. Ein weiterer häufiger Kritikpunkt an C++ ist, dass Fehler in der Programmierung zu sogenanntem ``undefined behaviour'' führen, welches Abstürze erzeugt, die nur schwer auf den Implementierungsfehler zurückzuführen sind. Bjarne Stroustrup, der Entwickler von C++ sagte einmal selbst: ``C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off.'' \cite{BjarneStroustrupCite}.\\
 Neben C++ wurde für Testzwecke die Scriptsprache Python verwendet. Da Python mit ``Numpy'', ``OpenCV2'' und ``Keras/Tensorflow'' gut dokumentierte Bibliotheken bereitstellt, eignet es sich gut für Tests. Im Abschnitt \ref{sec:AVDataGenerator} wird genauer auf die Verwendung eingegangen. Bei der Ausführung des Prototyps wird kein Python ausgeführt.
 
+\newpage
 \subsection{Visualizer}
-
 \subsubsection{OpenGL}
 Für die Entwicklung des Visualizers und die Erzeugung der Grafiken wurde OpenGL verwendet. In diesem Abschnitt soll beschrieben werden, wie OpenGL's ``core-profile'' benutzt wird, um dann in den folgenden Abschnitten erklären zu können, wie OpenGL in das System integriert wird. Dabei wird bewusst nur aufgezeigt, wie OpenGL benutzt wird, ohne dabei in die Tiefe zu gehen, da eine ausführliche Erklärung der Funktionsweise von OpenGL nicht das Ziel dieser Arbeit ist.\\
-Um Grafiken mit OpenGL umsetzen zu können, muss zuerst ein Fenster mit Hilfe von GLFW erzeugt werden. Dies wird über die Funktion \mbox{\textit{glfwCreateWindow()}} realisiert \cite[Hello-Window]{LearnOpenGL}, wie in Listing \ref{lst:createWindow} veranschaulicht.
+Um Grafiken mit OpenGL umsetzen zu können, muss zuerst ein Fenster mit Hilfe von GLFW erzeugt werden. Dies wird über die Funktion \lstinline!glfwCreateWindow()! realisiert \cite[Hello-Window]{LearnOpenGL}, wie in Listing \ref{lst:createWindow} veranschaulicht.
+
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 
 \begin{lstlisting} [caption={Erzeugen eines Fensters mit GLFW}\label{lst:createWindow},captionpos=t,language=c++]
 GLFWwindow* window = glfwCreateWindow(width, height,
@@ -802,11 +823,35 @@ GLFWwindow* window = glfwCreateWindow(width, height,
                                       NULL, NULL);
 glfwMakeContextCurrent(window);
 \end{lstlisting}
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{black},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \noindent
-Die Funktion \mbox{\textit{glfwCreateWindow()}} kann dabei einen Null-Pointer zurückgeben, falls das Fenster nicht erstellt werden konnte. Die ersten beiden Parameter sind die Breite und Höhe des Fensters. Das dritte Argument ist der Titel.\\
+Die ersten beiden Parameter der \lstinline!glfwCreateWindow()!-Funktion sind die Breite und Höhe des Fensters. Das dritte Argument ist der Titel.\\
 In OpenGL werden Objekte grundlegend aus Dreiecken aufgebaut, die über die Position ihrer Ecken definiert werden. Zwar sind auch Linien  und Punkte möglich, diese können aber nicht für Flächen verwendet werden. Die lokalen Positionen der Ecken werden über Vertices festgelegt. Später werden diese lokalen Positionen im ``Vertex-Shader'' zu Positionen in einer 3D-Szene umgerechnet.\\
-Vertices werden als Array von float Werten umgesetzt und über ``Vertex Buffer Objects'' auf der Grafikkarte verwaltet. Um ein Vertices-Array an die Grafikkarte zu senden sind drei Schritte nötig. Zuerst muss ein Buffer generiert werden. Dies erfolgt über den Aufruf von \mbox{\textit{glGenBuffers()}}. Danach muss der generierte Buffer gebunden werden, um ihn daraufhin mit Daten zu füllen. Listing \ref{lst:genBuffer} veranschaulicht den Ablauf der Buffergenerierung \cite[Hello-Triangle]{LearnOpenGL}.
+Vertices werden als Array von \lstinline!float! Werten umgesetzt und über ``Vertex Buffer Objects'' auf der Grafikkarte verwaltet. Um ein Vertices-Array in den Grafikspeicher zu laden sind drei Schritte erforderlich. Zuerst muss ein Buffer generiert werden. Dies erfolgt über den Aufruf von \lstinline!glGenBuffers()!. Danach muss der generierte Buffer gebunden werden, um ihn daraufhin mit Daten zu füllen. Listing \ref{lst:genBuffer} veranschaulicht den Ablauf der Buffergenerierung \cite[Hello-Triangle]{LearnOpenGL}.
 
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \begin{lstlisting} [caption={Generierung eines Buffers und Laden der Vertices}\label{lst:genBuffer}, captionpos=t, language=c++]
 unsigned int vbo;
 glGenBuffers(1, &vbo);
@@ -814,10 +859,34 @@ glBindBuffer(GL_ARRAY_BUFFER, vbo);
 glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
              vertices, GL_STATIC_DRAW);
 \end{lstlisting}
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{black},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \noindent
-Die Variable \textit{vbo} ist die ID für den generierten Buffer. Diese wird beim Aufruf von \mbox{\textit{glGenBuffers()}} gesetzt und kann im weiteren Verlauf verwendet werden, um den Buffer anzusprechen. Dieser wird durch \mbox{\textit{glBindBuffer()}} gebunden, was dazu führt das weitere Funktionsaufrufe, wie beispielsweise \mbox{\textit{glBufferData()}} sich auf diesen Buffer beziehen. Die Funktion \mbox{\textit{glBufferData()}} wird dann benutzt, um die Daten, die sich im float Array \mbox{\textit{vertices}} befinden, in den durch \mbox{\textit{vbo}} identifizierten Buffer zu schreiben. Die Konstante \mbox{\textit{GL\_STATIC\_DRAW}} gibt an, dass die \mbox{\textit{vertices}} nicht für häufiges Überschreiben optimiert werden müssen. Als Alternativen existieren \mbox{\textit{GL\_DYNAMIC\_DRAW}} sowie \mbox{\textit{GL\_STREAM\_DRAW}}, die für \mbox{\textit{vertices}} konzipiert sind, die sich häufig ändern. Bevor ein vbo erstellt werden kann, muss noch ein \mbox{\textit{Vertex Array Object}} (VAO) auf ähnliche Weise erzeugt werden.\\
+Die Variable \lstinline!vbo! ist die ID für den generierten Buffer. Diese wird beim Aufruf von \lstinline!glGenBuffers()! gesetzt und kann im weiteren Verlauf verwendet werden, um den Buffer anzusprechen. Dieser wird durch \lstinline!glBindBuffer()! gebunden, was dazu führt das weitere Funktionsaufrufe, wie beispielsweise \lstinline!glBufferData()! sich auf diesen Buffer beziehen. Die Funktion \lstinline!glBufferData()! wird dann benutzt, um die Daten, die sich im \lstinline!float! Array \lstinline!vertices! befinden, in den durch \lstinline!vbo! identifizierten Buffer zu schreiben. Die Konstante \mbox{\textit{GL\_STATIC\_DRAW}} gibt an, dass die \mbox{\textit{vertices}} nicht für häufiges Überschreiben optimiert werden müssen. Bevor ein \lstinline!vbo! erstellt werden kann, muss noch ein ``Vertex Array Object'' (VAO) auf ähnliche Weise erzeugt werden.\\
 Um diese Daten eine globale Position in der Welt zu geben und die 3D-Szene auf einem 2D-Bildschirm darzustellen, wird der ``Vertex-Shader'' benutzt. In Listing \ref{lst:vertexShader} ist der im Prototypen benutzte Vertex-Shader zu sehen \cite[Coordinate Systems]{LearnOpenGL}.
 
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \begin{lstlisting} [caption={Vertex Shader}\label{lst:vertexShader},captionpos=t,language=c++]
 layout (location = 0) in vec3 aPos;
 
@@ -830,30 +899,79 @@ void main()
 	gl_Position = projection * view * model * vec4(aPos, 1.0);
 }
 \end{lstlisting}
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{black},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \noindent
-Um einen Shader benutzen zu können, muss dieser mit der Funktion \mbox{\textit{glCompileShader()}} kompiliert werden. Dieser Vorgang erfolgt zur Laufzeit des eigentlichen Programms und schlägt fehl, falls der Shadercode nicht kompiliert werden konnte.\\
-Die Matrizen \mbox{\textit{model}}, \mbox{\textit{view}} und \mbox{\textit{projection}} werden verwendet, um die lokalen Koordinaten der \mbox{\textit{vertices}} in Koordinaten umzuwandeln, die zum Rendern auf einem 2D-Bildschirm verwendet werden können. Die \mbox{\textit{model}} Matrix verschiebt, rotiert und skaliert die Koordinate \mbox{\textit{aPos}} in ein globales Koordinatensystem, mit dessen Hilfe Positionen der Entities dargestellt werden. Die Variable \mbox{\textit{aPos}} nimmt dabei die Werte der Vertices an.\\
-Damit die \mbox{\textit{vertices}} richtig interpretiert werden, muss über sogenannte Attribute-Pointer definiert werden, welche Teile der \mbox{\textit{vertices}} welchen Variablen des Vertex-Shaders entsprechen \cite[Hello-Triangle]{LearnOpenGL}.
+Um einen Shader benutzen zu können, muss dieser mit der Funktion \lstinline!glCompileShader()! kompiliert werden. Dieser Vorgang erfolgt zur Laufzeit des eigentlichen Programms und schlägt fehl, falls der Shadercode nicht kompiliert werden konnte.\\
+Die Matrizen \lstinline!model!, \lstinline!view! und \lstinline!projection! werden verwendet, um die lokalen Koordinaten der \lstinline!vertices! in Koordinaten umzuwandeln, die zum Rendern auf einem 2D-Bildschirm verwendet werden können. Die \lstinline!model! Matrix verschiebt, rotiert und skaliert die Koordinate \lstinline!aPos! in ein globales Koordinatensystem, mit dessen Hilfe Positionen der Partikel dargestellt werden. Die Variable \lstinline!aPos! nimmt dabei die Werte der \lstinline!vertices! an.\\
+Damit die \lstinline!vertices! richtig interpretiert werden, muss über sogenannte ``Attribute-Pointer'' definiert werden, welche Teile der \lstinline!vertices! welchen Variablen des Vertex-Shaders entsprechen \cite[Hello-Triangle]{LearnOpenGL}.
 
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \begin{lstlisting} [caption={Attribute Pointer}\label{lst:AttribPointer},captionpos=t,language=c++]
 glVertexAttribPointer(0, 3,
                       GL_FLOAT, GL_FALSE,
                       3 * sizeof(float), (void*)0);
 glEnableVertexAttribArray(0);
 \end{lstlisting}
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{black},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \noindent
-Mit dem in Listing \ref{lst:AttribPointer} zu sehenden Funktionsaufruf \mbox{\textit{glVertexAttribPointer()}} wird ein Attribut-Pointer gesetzt. Er definiert, welcher Attribut-Pointer gesetzt werden soll, dessen Größe, einen Stride sowie ein Offset. Der Stride definiert, wie weit der nächste Satz von \mbox{\textit{vertices}} entfernt ist. Mit \mbox{\textit{glEnableVertexAttribArray()}} wird der Attribut-Pointer aktiviert.\\
-Neben dem Vertex-Shader muss auch ein Fragment-Shader bereitgestellt werden, der vor allem die Textur und Farbe eines Objektes bestimmt. Zusammen mit dem Vertex Shader kann ein Shader-Programm mit \mbox{\textit{glLinkProgram()}} gelinkt werden.\\
-Um Objekte zu rendern muss das Shader-Programm mit \mbox{\textit{glUseProgram()}} aktiviert werden, ein \mbox{\textit{VAO}} gebunden und die in den Shadern definierten \mbox{\textit{uniforms}} festgelegt sein. Dann kann mit der Funktion \mbox{\textit{glDrawArrays()}} gerendert werden.
+Mit dem in Listing \ref{lst:AttribPointer} zu sehenden Funktionsaufruf \lstinline!glVertexAttribPointer()! wird ein Attribut-Pointer gesetzt. Die Parameter definieren, welcher Attribut-Pointer gesetzt werden soll, dessen Größe, einen Stride sowie ein Offset. Der Stride definiert, wie weit der nächste Satz von \lstinline!vertices! entfernt ist. Mit \lstinline!glEnableVertexAttribArray()! wird der Attribut-Pointer aktiviert.\\
+Neben dem Vertex-Shader muss auch ein Fragment-Shader bereitgestellt werden, der vor allem die Textur und Farbe eines Objektes bestimmt. Zusammen mit dem Vertex Shader kann ein Shader-Programm mit \lstinline!glLinkProgram()! gelinkt werden.\\
+Um Objekte zu rendern muss das Shader-Programm mit \lstinline!glUseProgram()! aktiviert werden, ein VAO gebunden und die in den Shadern definierten \lstinline!uniforms! festgelegt sein. Dann kann mit der Funktion \lstinline!glDrawArrays()! gerendert werden.
 
 \subsubsection{Initialisierung und Callbacks}
-Bei der Erstellung einer Instanz der \mbox{\textit{Visualizer}}-Klasse wird das Fenster erstellt sowie das Shader-Programm geladen, kompiliert und gelinkt. Da die Initialisierung des Fensters sowie die Kompilierung der Shader fehlschlagen kann, werden diese Aufgaben nicht im Konstruktor der Visualizer-Klasse abgearbeitet, sondern in einer \mbox{\textit{Visualizer::create()}} Funktion, die ein \mbox{\textit{std::optional<Visualizer>}} zurückgibt. Ein \mbox{\textit{std::optional<T>}} kann, muss aber nicht, eine T-Instanz enthalten. Dieser Aufbau wurde gewählt, da der Konstruktor in der Fehlerbehandlung eingeschränkt ist, da er immer eine Instanz der \mbox{\textit{Visualizer}}-Klasse zurückgeben werden muss. Schlägt die Kompilierung eines Shaders fehl oder kann kein Fenster erzeugt werden, so wird ein leeres \mbox{\textit{optional}} zurückgegeben.\\
-Bei der Initialisierung musste ein weiteres Problem gelöst werden, dass kurz beschrieben werden soll. OpenGL informiert das eigene Programm über Mausbewegungen und Größenänderungen des Fensters. Dies geschieht über Callback-Funktionen, die vom Programmierer gesetzt werden können. Ein Callback für die Größenänderung des Fensters setzt man mit der Funktion \mbox{\textit{glfwSetFramebufferSizeCallback(window, callback\_function)}}, wobei \mbox{\textit{callback\_function()}} die vom Programmierer definierte Funktion ist, die bei einer Größenänderung ausgeführt wird. Jedoch ist es nicht möglich eine Memberfunktion zu registrieren, wodurch verhindert wird, dass die \mbox{\textit{Visualizer}}-Klasse eine eigene Funktion registriert. Man könnte eine statische Funktion registrieren und in dieser einen globalen State verändern, der dann von der \mbox{\textit{Visualizer}}-Klasse benutzt wird, um die Visualisierung anzupassen. Da aber globale Variablen ``Bad Practice'' sind und verhindern würden, mehrere Instanzen der Visualizer-Klasse zu benutzen, wurde ein \mbox{\textit{ResizeManager}} sowie ein \mbox{\textit{MouseManager}} entwickelt. Bei diesen kan sich eine Instanz der \mbox{\textit{Visualizer}}-Klasse registrieren kann, um die OpenGL-Callbacks auf eigenen Member-Funktionen umleiten zu lassen.\\
-Dazu gibt die Instanz der \mbox{\textit{Visualizer}}-Klasse dem \mbox{\textit{ResizeManager}} sowie dem \mbox{\textit{MouseManager}} eine Referenz von sich selbst, die von den Managern benutzt wird, um die Member-Funktion der \mbox{\textit{Visualizer}}-Klasse aufzurufen. Im Destruktor der \mbox{\textit{Visualizer}}-Klasse wird die Referenz wieder entfernt.
+Bei der Erstellung einer Instanz der \lstinline!Visualizer!-Klasse wird das Fenster erstellt sowie das Shader-Programm geladen, kompiliert und gelinkt. Da die Initialisierung des Fensters sowie die Kompilierung der Shader fehlschlagen kann, werden diese Aufgaben nicht im Konstruktor der \lstinline!Visualizer!-Klasse abgearbeitet, sondern in einer \lstinline!Visualizer::create()! Funktion, die ein \lstinline!std::optional<>! zurückgibt. Ein \lstinline!std::optional<T>! kann, muss aber nicht, eine T-Instanz enthalten. Dieser Aufbau wurde gewählt, da der Konstruktor in der Fehlerbehandlung eingeschränkt ist, da er immer eine Instanz der \lstinline!Visualizer!-Klasse zurückgeben werden muss. Schlägt die Kompilierung eines Shaders fehl oder kann kein Fenster erzeugt werden, so wird ein leeres \lstinline!std::optional! zurückgegeben.\\
+Bei der Initialisierung musste ein weiteres Problem gelöst werden, dass kurz beschrieben werden soll. OpenGL informiert das eigene Programm über Mausbewegungen und Größenänderungen des Fensters. Dies geschieht über Callback-Funktionen, die vom Programmierer gesetzt werden können. Ein Callback für die Größenänderung des Fensters setzt man mit der Funktion \lstinline!glfwSetFramebufferSizeCallback(window, callback_function)!, wobei \lstinline!callback_function()! die vom Programmierer definierte Funktion ist, die bei einer Größenänderung ausgeführt wird. Jedoch ist es nicht möglich eine Memberfunktion zu registrieren, wodurch verhindert wird, dass die \lstinline!Visualizer!-Klasse eine eigene Funktion registriert. Man könnte eine statische Funktion registrieren und in dieser einen globalen State verändern, der dann von der \lstinline!Visualizer!-Klasse benutzt wird, um die Visualisierung anzupassen. Da aber globale Variablen ``Bad Practice'' sind und verhindern würden, mehrere Instanzen der \lstinline!Visualizer!-Klasse zu benutzen, wurde ein \lstinline!ResizeManager! sowie ein \lstinline!MouseManager! entwickelt. Bei diesen kan sich eine Instanz der \lstinline!Visualizer!-Klasse registrieren kann, um die OpenGL-Callbacks auf eigenen Member-Funktionen umleiten zu lassen.\\
+Dazu gibt die Instanz der \lstinline!Visualizer!-Klasse dem \lstinline!ResizeManager! sowie dem \lstinline!MouseManager! eine Referenz von sich selbst, die von den Managern benutzt wird, um die Member-Funktion der \lstinline!Visualizer!-Klasse aufzurufen. Im Destruktor der \lstinline!Visualizer!-Klasse wird die Referenz wieder entfernt.
 
+\newpage
 \subsubsection{Shapes}
-Die Form einer Entity wird im Visualizer über sogenannte ``Shapes'' identifiziert. Dabei definiert ein Shape die \mbox{\textit{vertices}} eines Objektes, beispielsweise die in Listing \ref{lst:vertices} zu sehenden \mbox{\textit{vertices}} eines einfachen Dreiecks \cite[Hello Triangle]{LearnOpenGL}.
+Die Form einer \lstinline!Entity!-Instanz wird im Visualizer über sogenannte ``Shapes'' identifiziert. Dabei definiert ein Shape die \lstinline!vertices! eines Objektes, beispielsweise die in Listing \ref{lst:vertices} zu sehenden \lstinline!vertices! eines einfachen Dreiecks \cite[Hello Triangle]{LearnOpenGL}.
 
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \begin{lstlisting} [caption={Vertices eines Dreiecks}\label{lst:vertices},captionpos=t,language=c++]
 float vertices[] = {
     -0.5f, -0.5f, 0.0f, // unten links
@@ -861,9 +979,21 @@ float vertices[] = {
      0.0f,  0.5f, 0.0f  // oben mitte
 };
 \end{lstlisting}
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{black},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \noindent
 Möchte man einen Würfel definieren, so kann man diesen aus 12 Dreiecken zusammensetzen, von denen jeweils zwei eine Seite des Würfels bilden.\\
-Schwieriger sind die  \mbox{\textit{vertices}} einer Kugel zu berechnen, da man, um eine Kugel zu erzeugen, relativ viele  \mbox{\textit{vertices}} benötigt, da ansonsten Ecken der Kugeln zu sehen sind. Es existieren unterschiedliche Arten der Generierung von Kugel-\mbox{\textit{vertices}}. Im Prototyp wurde die Problematik wie folgt gelöst. Zuerst werden, wie in Abbildung \ref{fig:kugelVertices} $a)$ zu sehen, zwei aufeinander stehende Pyramiden erstellt, die aus jeweils vier Dreiecken bestehen.\\
+Schwieriger sind die  \lstinline!vertices! einer Kugel zu berechnen, da man, um eine Kugel zu erzeugen, relativ viele  Punkte benötigt werden, da ansonsten Ecken der Kugeln zu sehen sind. Es existieren unterschiedliche Arten der Generierung von Kugel-\lstinline!vertices!. Im Prototyp wurde die Problematik wie folgt gelöst. Zuerst werden, wie in Abbildung \ref{fig:kugelVertices} $a)$ zu sehen, zwei aufeinander stehende Pyramiden erstellt, die aus jeweils vier Dreiecken bestehen.\\
 Nun wird jedes Dreieck der Pyramiden in vier weitere Dreiecke geteilt, indem die Mittelpunkte der Seiten verbunden werden wie in Abbildung \ref{fig:kugelVertices} $b)$ veranschaulicht. Die so entstandenen Dreiecke können erneut auf die gleiche Weise unterteilt werden. Diesen Vorgang wiederholt man, bis eine ausreichende Feinheit erreicht wurde. Anschließend werden die Vektoren, die vom Mittelpunkt der Kugel zu den Eckpunkten der Vierecke verlaufen, normalisiert. Das Resultat ist eine Approximation einer Kugel \cite{sphereGeneration}.
 
 \begin{center}
@@ -888,32 +1018,33 @@ Nun wird jedes Dreieck der Pyramiden in vier weitere Dreiecke geteilt, indem die
 \end{figure}
 \end{center}
 \noindent
-Will man mit OpenGL unterschiedliche Objekte rendern, die aber die gleiche Form annehmen, so ist es deutlich effizienter, die \textit{vertices} nicht für jedes Objekt neu auf die Grafikkarte zu laden, sondern diese wiederzuverwenden.\\
-Um dies umzusetzen, wurde der \textit{ShapeHeap} entwickelt, der die schon erstellten Shapes und damit die hoch geladenen \textit{vertices} verwaltet. Dieser bildet mit Hilfe einer Map sogenannte \textit{ShapeSpecifications} auf konkrete Shapes ab. Eine \textit{ShapeSpecification} definiert exakt, wie ein Shape aussehen soll. Die Spezifikation einer Kugel enthält beispielsweise, wie oft die Dreiecke in Folge geteilt werden sollen, um zu definieren, wie genau die Kugel gezeichnet werden soll.\\
-Will man eine Kugel mit einer gegebenen \textit{ShapeSpecification} erzeugen, so ruft man die Funktion \mbox{\textit{get\_shape()}} des \mbox{\textit{ShapeHeaps}} auf, die eine \textit{ShapeSpecification} als Argument akzeptiert. Diese überprüft, ob ein \textit{Shape} mit der gegebenen \textit{ShapeSpecification} bereits erstellt wurde und gibt diese zurück. Andernfalls wird das \textit{Shape} neu erstellt und zurückgegeben. Auf diese Weise wird sichergestellt, dass gleiche \textit{vertices} nicht mehrmals in den Grafikspeicher geladen werden.
+Will man mit OpenGL unterschiedliche Objekte rendern, die aber die gleiche Form annehmen, so ist es deutlich effizienter, die \lstinline!vertices! nicht für jedes Objekt neu auf die Grafikkarte zu laden, sondern diese wiederzuverwenden.\\
+Um dies umzusetzen, wurde der \lstinline!ShapeHeap! entwickelt, der die schon erstellten Shapes und damit die hoch geladenen Vertices verwaltet. Dieser bildet mit Hilfe einer \lstinline!std::map! sogenannte \lstinline!ShapeSpecifications! auf konkrete Shapes ab. Eine \lstinline!ShapeSpecification! definiert exakt, wie ein Shape aussehen soll. Die Spezifikation einer Kugel enthält beispielsweise, wie oft die Dreiecke in Folge geteilt werden sollen, um zu definieren, wie genau die Kugel gezeichnet werden soll.\\
+Will man eine Kugel mit einer gegebenen \lstinline!ShapeSpecification! erzeugen, so ruft man die Funktion \lstinline!get\_shape()! des \lstinline!ShapeHeaps! auf, die eine \lstinline!ShapeSpecification! als Argument akzeptiert. Diese überprüft, ob ein \lstinline!Shape! mit der gegebenen \lstinline!ShapeSpecification! bereits erstellt wurde und gibt diese zurück. Andernfalls wird das Shape neu erstellt und zurückgegeben. Auf diese Weise wird sichergestellt, dass gleiche \lstinline!vertices! nicht mehrmals in den Grafikspeicher geladen werden.
 
 \subsubsection{Movements}
 Die Implementierung einiger Movements ist Thema dieses Abschnittes. Vorrangig werden Flow Fields behandelt, welche eine höhere Komplexität haben, als die übrigen Movements.
 
 \paragraph{Flow Fields}
 Die Umsetzung eines Flow Fields ist aufwendig, da den Anforderungen entsprechende Richtungsvektoren zu generieren, die sich über Zeit verändern und dabei ihre Ähnlichkeit bewahren, Schwierigkeiten mit sich bringt. Um diese Vektoren zu generieren, wird ``Perlin Noise'' oder der Nachfolger ``Simplex Noise'' verwendet. Perlin Noise ist eine Zufallsfunktion mit besonderen Eigenschaften. Sie wurde 1982 von Ken Perlin für den Film ``Tron'' entwickelt. Perlin erhielt dafür 1997 einen Oscar \cite{bcc7190da8e90284b4e790817b8eed4ee3ea6cffbe5a23ef07a000ca5628ffbc}. Sie wurde damals zur Generierung von Texturen eingesetzt.\\
-Perlin Noise ist eine kontinuierliche Funktion, die im  eindimensionalen Fall eine Zahl $x \in \mathbb{R}$ auf eine andere zufällige Zahl $noise(x) \in \mathbb{R}$ abbildet \cite{25a05da283ffd9d4bdda94c308ccf3a8759f22373b368f895cbef2e9186ab646}. Weiterhin sorgt eine kleine Änderung von $x$ auch nur für eine kleine Änderung von $noise(x)$. Ein möglicher Plot der Perlin Noise Funktion ist in Abbildung 6 zu sehen.
+Perlin Noise ist eine kontinuierliche Funktion, die im  eindimensionalen Fall eine Zahl $x \in \mathbb{R}$ auf eine andere zufällige Zahl $noise(x) \in \mathbb{R}$ abbildet \cite{25a05da283ffd9d4bdda94c308ccf3a8759f22373b368f895cbef2e9186ab646}. Weiterhin sorgt eine kleine Änderung von $x$ auch nur für eine kleine Änderung von $noise(x)$. Ein möglicher Plot der Perlin Noise Funktion ist in Abbildung \ref{fig:PerlinNoisePlot} zu sehen.
 \begin{SCfigure}[][h]
 \hspace{110pt}
 \includegraphics[scale=0.5]{res/images/perlin_noise}
 \caption[Perlin Noise Plot]{\\Perlin Noise Plot aus \cite[Kap.\\Introduction]{nature_of_code}}
+\label{fig:PerlinNoisePlot}
 \end{SCfigure}
 \noindent
-Neben der eindimensionalen Perlin Noise Funktion existieren auch mehrdimensionale. Diese bilden die Zahlen $x_1, x_2, ..., x_n \in \mathbb{R}$ auf eine Zahl $noise(x_1, x_2, ..., x_n) \in \mathbb{R}$ ab. Dabei gilt wie bei der eindimensionalen Version, dass eine kleine Änderung von einem der Eingangswerte auch nur eine kleine Auswirkung auf die Ausgabe der $noise$ Funktion hat.\\
+Neben der eindimensionalen Perlin Noise Funktion existieren auch mehrdimensionale. Diese bilden die Zahlen $x_1, x_2, ..., x_n \in \mathbb{R}$ auf eine Zahl $noise(x_1, x_2, ..., x_n) \in \mathbb{R}$ ab. Dabei gilt wie bei der eindimensionalen Version, dass eine kleine Änderung von einem der Eingangswerte auch nur eine kleine Auswirkung auf die Ausgabe der $noise()$ Funktion hat.\\
 Flow Fields lassen sich unter Zuhilfenahme der mehrdimensionalen Perlin Noise Funktion umsetzen. Es gibt unterschiedliche Möglichkeiten das Ergebnis der Funktion auf einen Vektor abzubilden. Im zweidimensionalen Raum wird häufig der aus der Perlin Noise Funktion gewonnene Wert als Winkel eines Vektors interpretiert. Eine andere Variante besteht darin,  jede Koordinate des Beschleunigungsvektors über einen erneuten Aufruf der Perlin Noise Funktion zu bestimmen.\\
 Der folgende Abschnitt behandelt die Implementierung des Perlin Noise Funktion, um im Anschluss die Verwendung dieser zu untersuchen.
 
 \subparagraph{Perlin Noise}
-Die Standardbibliothek von C++ bietet keinen Algorithmus, der Perlin Noise berechnet. Eine eigene Implementierung hat den Vorteil, dass sie exakt an Voraussetzungen angepasst werden kann. Um Entwicklungsaufwand zu sparen, wurde der Algorithmus abgewandelt. Die wichtigen Eigenschaften von Perlin Noise bleiben dabei erhalten. Die \textit{noise()} Funktion muss $n$ Argumente akzeptieren und sicherstellen, dass eine kleine Änderung der Argumente auch nur eine kleine Änderung der \textit{noise()} Funktion bewirkt.\\
-Grundlegend wird vorgegangen, indem eine zufällige Folge $\left(f_i\right)_{i \in \mathbb{N}}$ definiert wird, die auf die Zahlen $[-1, 1]$ abbildet.
-Anschließend wird zwischen den Werten der Folge mit dem Polynom $6x^5-15x^4+10x^3$ interpoliert \cite[S. 2]{bcc7190da8e90284b4e790817b8eed4ee3ea6cffbe5a23ef07a000ca5628ffbc}. Abbildung \ref{fig:perlinNoise} $a)$ zeigt eine Veranschaulichung der Zufallsfolge mit Interpolation sowie einen Plot des Polynoms $b)$. Die blauen Punkte befinden sich an den Punkten $\left(i, \left(f_i\right)\right)$ einer möglichen Zufallsfolge, zwischen denen mit der schwarzen dünnen Linie interpoliert wird. Auf der rechten Seite befindet sich der Plot des Interpolationspolynoms $I(x) = 6x^5-15x^4+10x^3$.
+Die Standardbibliothek von C++ bietet keinen Algorithmus, der Perlin Noise berechnet. Eine eigene Implementierung hat den Vorteil, dass sie exakt an die gegebenen Voraussetzungen angepasst werden kann. Um Entwicklungsaufwand zu sparen, wurde der Algorithmus abgewandelt. Die wichtigen Eigenschaften von Perlin Noise bleiben dabei erhalten. Die \textit{noise()} Funktion muss $n$ Argumente akzeptieren und sicherstellen, dass eine kleine Änderung der Argumente auch nur eine kleine Änderung der \textit{noise()} Funktion bewirkt.\\
+Grundlegend wird vorgegangen, indem eine zufällige Folge $\left(f_i\right)_{i \in \mathbb{N}}$ definiert wird, die auf die Zahlen zwischen $[-1, 1]$ abbildet.
+Anschließend wird zwischen den Werten der Folge mit dem Polynom $6x^5-15x^4+10x^3$ interpoliert \cite[S. 2]{bcc7190da8e90284b4e790817b8eed4ee3ea6cffbe5a23ef07a000ca5628ffbc}.\\
+Abbildung \ref{fig:perlinNoise} $a)$ zeigt eine Veranschaulichung der Zufallsfolge mit Interpolation sowie einen Plot des Polynoms $b)$. Die blauen Punkte befinden sich an den Punkten $\left(i, \left(f_i\right)\right)$ einer möglichen Zufallsfolge, zwischen denen mit der schwarzen dünnen Linie interpoliert wird. Auf der rechten Seite befindet sich der Plot des Interpolationspolynoms $I(x) = 6x^5-15x^4+10x^3$.
 
-\begin{center}
 \begin{figure}[!ht]
 \begin{tikzpicture}[scale=1]
 \node at(-1, 2.6) {$a)$};
@@ -961,23 +1092,21 @@ Anschließend wird zwischen den Werten der Folge mit dem Polynom $6x^5-15x^4+10x
 \caption[Zufallsfolge $\left(f_i\right)$ und Interpolation]{$a)$ Zufallsfolge $\left(f_i\right)$ mit Interpolation und $b)$ Interpolationspolynom $I(x)$ (Angelehnt an \cite[S. 2]{bcc7190da8e90284b4e790817b8eed4ee3ea6cffbe5a23ef07a000ca5628ffbc})}
 \label{fig:perlinNoise}
 \end{figure}
-\end{center}
 \noindent
-Man kann die in Abbildung \ref{fig:perlinNoise} $a)$ gezeigten, interpolierten Werte als eine stetige Funktion $noise\_part_d\colon \mathbb{R} \rightarrow [-1, 1]$ auffassen, wobei $d$ den Abstand zwischen den Zufallswerten von $(f_i)$ angibt. Die Funktion $noise\_part_{0.5}(x)$ würde also an den Stellen $0, 0.5, 1, 1.5, ...$ einen durch $(f_i)$ definierten Wert annehmen und dazwischen interpolieren. Um Perlin Noise zu erzeugen, werden mehrere $noise\_part_d$ Funktionen mit unterschiedlichen Argumenten für $d$ verwendet und $m$ mal, gewichtet zusammen summiert, wobei $m \in \mathbb{N}\setminus\{0\}$ beliebig gewählt werden kann. Man nennt $m$ auch die Anzahl der ``Octaves'' \cite[Kap. Introduction]{nature_of_code}.
+Die in Abbildung \ref{fig:perlinNoise} $a)$ gezeigten interpolierten Werte können als eine stetige Funktion mit der Bezeichnung $noise\_part_d\colon \mathbb{R} \rightarrow [-1, 1]$ aufgefasst werden, wobei $d$ den Abstand zwischen den Zufallswerten von $(f_i)$ angibt. Die Funktion $noise\_part_{0.5}(x)$ würde also an den Stellen $0, 0.5, 1, 1.5, ...$ einen durch $(f_i)$ definierten Wert annehmen und dazwischen interpolieren. Um Perlin Noise zu erzeugen, werden mehrere $noise\_part_d$ Funktionen mit unterschiedlichen Argumenten für $d$ verwendet und $m$ mal, gewichtet zusammen summiert, wobei $m \in \mathbb{N}\setminus\{0\}$ beliebig gewählt werden kann. Man nennt $m$ auch die Anzahl der ``Octaves'' \cite[Kap. Introduction]{nature_of_code}.
 
 \begin{align}
-noise(x) = \sum^{m}_{j=1} k \cdot noise\_part_{k}(x) mit k = \frac{1}{2^j}
+noise(x) = \sum^{m}_{j=1} k(j) \cdot noise\_part_{k(j)}(x), k(j) = \frac{1}{2^j}
 \end{align}
 \noindent
-Dies kann umgesetzt werden, indem das Argument von $noise\_part_k$ mit $j$ multipliziert wird, da so eine Änderung von $x$ mit $2^j$ skaliert wird, was dazu führt, dass man nur noch die $noise\_part_1$ Funktion benötigt.
+Dies kann umgesetzt werden, indem das Argument von $noise\_part_k$ mit $2^j$ multipliziert wird, da so eine Änderung von $x$ mit $2^j$ skaliert wird, was dazu führt, dass man nur noch die $noise\_part_1$ Funktion benötigt.
 \begin{align}
 noise(x) = \sum^{m}_{j=1}  \frac{1}{2^j} \cdot noise\_part_1(2^j \cdot x)
 \end{align}
 \noindent
 Diese Funktion erfüllt die Eigenschaften, dass eine kleine Änderung von $x$ ebenfalls auch $noise(x)$ nur geringfügig ändert. Allerdings ist es so nicht möglich mehrere $x$ anzugeben. Um dies zu erreichen, muss gleichermaßen die Zufallsfolge $(f_i)$ $n$ viele Argumente auf einen Zufallswert abbilden, $f_{i_1, i_2, ..., i_n} \rightarrow \mathbb{R}$. Ist dies umgesetzt, so muss in der neuen Funktion $noise\_part(x_1, x_2, ..., x_n)$ über $n$ Dimensionen interpoliert werden. Dies soll kurz anhand eines zweidimensionalen Beispiels veranschaulicht werden.\\
-Gegeben seien die Eingabewerte der $noise(x_1, x_2)$ Funktion mit $x_1=3.3$ und $x_2 = 1.7$ (Der blaue Punkt in Abbildung 10). Gehen wir von $m = 1$ aus, was bedeutet, dass nur eine Octave berechnet wird. Da unsere Eingabewerte $x_1 = 3.3$ und $x_2 = 1.7$ sind, müssen wir in diesem Fall auf der $x_1$-Achse zwischen den Werten 3 und 4 und auf der $x_2$ Achse zwischen den Werten 1 und 2 interpolieren. Dazu werden die Werte von $(f_{i_1, i_2})$, zwischen denen interpoliert werden soll, benötigt. Diese sind über $(f_{i_1, i_2})$ an den Stellen $(3, 1), (3, 2), (4, 1), (4, 2)$ (rote Punkte der Abbildung) definiert, also an allen Kombinationen von $(3,4)$ und $(1,2)$.\\
+Gegeben seien die Eingabewerte der $noise(x_1, x_2)$ Funktion mit $x_1=3.3$ und $x_2 = 1.7$ (Gekennzeichnet durch einen blauen Punkt in Abbildung \ref{fig:PerlinNoiseBeispiel2DInterpolation}). Ausgegangen wird von $m = 1$ aus, was bedeutet, dass nur eine Octave berechnet wird. Da die Eingabewerte $x_1 = 3.3$ und $x_2 = 1.7$ lauten, muss in diesem Fall auf der $x_1$-Achse zwischen den Werten 3 und 4 und auf der $x_2$ Achse zwischen den Werten 1 und 2 interpoliert werden. Dazu werden die Werte von $(f_{i_1, i_2})$, zwischen denen interpoliert werden soll, benötigt. Diese sind über $(f_{i_1, i_2})$ an den Stellen $(3, 1), (3, 2), (4, 1), (4, 2)$ (rote Punkte Abbildung \ref{fig:PerlinNoiseBeispiel2DInterpolation}) definiert, also an allen Kombinationen von $(3,4)$ und $(1,2)$.\\
 
-\begin{center}
 \begin{figure}[!ht]
 \centering
 \begin{tikzpicture}
@@ -1009,8 +1138,8 @@ Gegeben seien die Eingabewerte der $noise(x_1, x_2)$ Funktion mit $x_1=3.3$ und 
   \draw (1pt,\y) -- (-3pt,\y) node[anchor=east] {$\ytext$};
 \end{tikzpicture}
 \caption[Beispiel 2D Interpolation]{Beispiel 2D Interpolation}
+\label{fig:PerlinNoiseBeispiel2DInterpolation}
 \end{figure}
-\end{center}
 \noindent
 Um das Beispiel fortzusetzen, sei die Folge $(f_{i_1, i_2})$ für die gefragten Stellen, wie folgt definiert:
 \begin{center}
@@ -1018,7 +1147,6 @@ $f_{3, 1} = -0.2$ \hspace{10pt} $f_{3, 2} = 0.4$ \hspace{10pt} $f_{4, 1} = 0.7$ 
 \end{center}
 \noindent
 Interpoliert man erst über $x_1$, so muss zwischen den Wertepaaren $f_{3, 1} = -0.2$ und $f_{4, 1} = 0.7$ sowie $f_{3, 2} = 0.4$ und $f_{4, 2} = -0.5$ interpoliert werden, wobei der Eingangswert $x_1$ mit einbezogen werden muss. Um zwischen den Werten $f_{3, 1} = -0.2$ und $f_{4, 1} = 0.7$ zu interpolieren, muss das Interpolationspolynom $I(x) = 6x^5-15x^4+10x^3$ an die umliegenden Werte angepasst werden. Dazu wird es um $-0.2$ nach unten verschoben und um $0.7 - (-0.2) = 0.9$ gestreckt, woraus $I^\prime(x) = 0.9 \cdot I(x) - 0.2$ resultiert. $I^\prime(x)$ bezeichnet dabei keine Ableitung, sondern die abgewandelte Form von $I(x)$. Abbildung \ref{fig:iprime} zeigt einen Plot von $I^\prime(x)$.
-\begin{center}
 \begin{figure}[!ht]
 \centering
 \begin{tikzpicture}[scale=0.8]
@@ -1042,10 +1170,21 @@ Interpoliert man erst über $x_1$, so muss zwischen den Wertepaaren $f_{3, 1} = 
 \caption[Interpolation]{Interpolation}
 \label{fig:iprime}
 \end{figure}
-\end{center}
-Werden $x_1 - floor(x_1) = 3.3 - 3.0 = 0.3$ in $I^\prime(x)$ eingesetzt, so ist das Ergebnis der erste Interpolationswert $-0.0532$. Die gleiche Prozedur wird mit $f_{3, 2} = 0.4$ und $f_{4, 2} = -0.5$ durchlaufen und erhält $0.2532$. Nun wird auf gleiche Weise für $x_2$ interpoliert, mit den errechneten Werten $-0.0532$ und $0.2532$ und erhält $0.2032$, wobei nun $0.7$ in die Interpolationsfunktion geben werden muss, da $x_2 - floor(x_2) = 1.7 - floor(1.7) = 0.7$. Das Endresultat ist somit $0.2032$ für die erste Octave.\\
-Für die Implementierung der Zufallsfolge $(f_i)$ wird eine Abwandlung vom XOR-Shift RNG verwendet, wie sie von George Marsaglia \cite{ac8e278bab88e59aa3a147bef7b113350a723aa4547b89da74bdcadaf0244f1b} vorgestellt wurden. Diese haben den Vorteil, dass sie schnell arbeiten, da sie nur auf dem binären XOR und Shiftoperationen aufbauen. Die Funktion wird so abgewandelt, sodass Fließkommazahlen zwischen -1 und 1 erzeugt werden. Listing \ref{lst:xorshift} zeigt die Implementierung des XOR-Shifts.
+Werden $x_1 - floor(x_1) = 3.3 - 3.0 = 0.3$ in $I^\prime(x)$ eingesetzt, so ist das Ergebnis der erste Interpolationswert $-0.0532$. Die gleiche Prozedur wird mit $f_{3, 2} = 0.4$ und $f_{4, 2} = -0.5$ durchlaufen und erhält $0.2532$. Nun wird auf gleiche Weise für $x_2$ interpoliert, mit den errechneten Werten $-0.0532$ und $0.2532$ und erhält $0.2032$, wobei nun $0.7$ in die Interpolationsfunktion geben werden muss, da $x_2 - floor(x_2) = 1.7 - 1 = 0.7$. Das Endresultat ist somit $0.2032$ für die erste Octave.\\
+Für die Implementierung der Zufallsfolge $(f_i)$ wird eine Abwandlung vom XOR-Shift RNG verwendet, wie sie von George Marsaglia \cite{ac8e278bab88e59aa3a147bef7b113350a723aa4547b89da74bdcadaf0244f1b} vorgestellt wurden. Diese haben den Vorteil, dass sie effizient implementiert werden können, da sie nur auf dem binären XOR und Shiftoperationen aufbauen. Die Funktion wird so abgewandelt, sodass Fließkommazahlen zwischen -1 und 1 erzeugt werden. Listing \ref{lst:xorshift} zeigt die Implementierung des XOR-Shifts.
 
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \begin{lstlisting} [caption={Xorshift RNG}\label{lst:xorshift},captionpos=t,language=c++]
 float random(unsigned int x) {
 	x ^= x >> 12;
@@ -1056,8 +1195,21 @@ float random(unsigned int x) {
 		static_cast<float>(_accuracy);
 }
 \end{lstlisting}
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{black},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \noindent
-Damit mehrere Eingabewerte verarbeitet werden können, werden diese durch Aufsummieren zusammengefasst. Dabei wird jeder Eingabewert $x_i$ mit $10^i$ multipliziert, damit die Eingabewerte $(a, b)$ und $(b, a)$ keine identischen Ergebnisse produzieren. An dieser Methode sollte man kritisieren, dass die Eingaben $(a, b)$ und $(b\cdot 10, \frac{a}{10})$ die selben Ergebnisse produzieren. Dies fällt in der Visualisierung aber nicht auf und wird deshalb vernachlässigt.
+Damit mehrere Eingabewerte verarbeitet werden können, werden diese durch Aufsummieren zusammengefasst. Dabei wird jeder Eingabewert $x_i$ mit $10^i$ multipliziert, damit die Eingabewerte $(a, b)$ und $(b, a)$ keine identischen Ergebnisse produzieren.\\
+An dieser Methode kann kritisiert werden, dass die Eingaben $(a, b)$ und $(b\cdot 10, \frac{a}{10})$ die selben Ergebnisse produzieren. Dies fällt in der Visualisierung aber nicht auf und wird deshalb vernachlässigt.
 
 \vspace{10pt}
 \noindent
@@ -1077,18 +1229,44 @@ Die Konstante $f$, im Prototypen auf $0.2$ gesetzt, wird benutzt, um zu definier
 Der Parameter der Geschwindigkeit wird über eine Skalierung der berechneten Kraft umgesetzt. So führen beispielsweise rhythmische Element dazu, dass die Stärke der Bewegungen kurzzeitig zunimmt.
 
 \paragraph{Plain Force}
-Der visuelle Effekt der Flow Fields kann verbessert werden, indem eine weitere Kraft hinzufügt wird, die die Entities in Richtung der xz-Ebene drückte, sprich die y-Koordinate Richtung null beschleunigt. Dies wird implementiert, indem die y-Koordinate negativ auf die Beschleunigung addiert wird:
-\begin{lstlisting} [caption={Plain Force},captionpos=t,language=c++]
+Der visuelle Effekt der Flow Fields kann verbessert werden, indem eine weitere Kraft hinzufügt wird, die die Entities in Richtung der xz-Ebene drückte, sprich die y-Koordinate Richtung null beschleunigt. Dies wird implementiert, indem die y-Koordinate negativ auf die Beschleunigung addiert wird. Listing \ref{lst:PlainForce} zeigt die Vorgehensweise.
+
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
+\begin{lstlisting} [caption={Plain Force}\label{lst:PlainForce},captionpos=t,language=c++]
 	acceleration += vec3(0.f,
 		entity.position.y * -strength,
 		0.f));
 \end{lstlisting}
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{black},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \noindent
-Der Parameter $strength$ gibt dabei an, wie stark diese Kraft wirkt.\\
+Der Parameter \lstinline!strength! gibt dabei an, wie stark diese Kraft wirkt.\\
 
 \noindent
 Weiterhin wird eine Reibung für die Geschwindigkeit sowie eine Reibung für die Veränderungen der Farbe implementiert, die unverändert aus \ref{sec:GrundprinzipienBewegung} übernommen werden.
 
+\newpage
 \paragraph{Kreise}
 Um Partikel in einer definierten Kreisbahn zu bewegen, wird ein Punkt berechnet, welcher durch ein Steering Behaviour angesteuert werden kann.
 Dazu wird der Mittelpunkt $m \in \mathbb{R}^3$ des Kreises bei der Erstellung definiert sowie sein Radius $r \in \mathbb{R}$. Will man ein Partikel mit der Position $p \in \mathbb{R}^3$ kreisen lassen, so kann wie folgt vorgegangen werden.\\
@@ -1117,23 +1295,33 @@ Man projiziert den Vektor $p - m$, also den Vektor der von $m$ auf $p$ zeigt, au
 \noindent
 Wird jetzt $p_0+t$ berechnet und die Länge des resultierenden Vektors auf $r$ gesetzt, so erhält man einen Punkt, der vom Partikel angesteuert werden kann (Steering Behaviour), um den Partikel in eine Kreisbahn zu bringen. Über die Länge von $t$ lässt sich die Geschwindigkeit der Partikel bestimmen.
 
-\newpage
-
 \subsubsection{Creations}
-Um neue Gruppen von Entities in die EntityMap einzufügen, wird die \textit{Creation}-Klasse eingeführt. Diese ermöglicht es eine bestimmbare Anzahl von Entities mit definierbaren Eigenschaften zu erzeugen. Dabei erlaubt sie es insbesondere die Eigenschaften der erzeugten Entities auch zufällig zu bestimmen.\\
-Zwei Eigenschaften der Creation müssen zu Beginn definiert werden, da sie keine sinnvollen Standartwerte besitzen. Diese Eigenschaften sind eine Definition des Shapes sowie eine String, der den Gruppennamen definiert. Dieser wird später als Key der EntityMap verwendet. Damit diese Eigenschaften nicht ausgelassen werden dürfen, sind sie im Konstruktor einer \textit{Creation} gefordert.\\
-Weitere Eigenschaften, die bestimmt werden können, sind die Anzahl der zu erzeugenden Entities, deren Position, Größe, Startgeschwindigkeit und Shape. Diese werden über \textit{with\_}-Funktionen gesetzt, beispielsweise \textit{with\_position()}. Weiterhin können String-\textit{Tags} der zu erzeugenden Entities gesetzt werden, die später zur Identifikation benutzt werden können.\\
-Häufig ist es sinnvoll die Entities mit zufälligen Werten zu initialisieren, um Variationen von Position, Farbe oder Startgeschwindigkeit zu erzeugen. Dazu werden Generator-Klassen geschrieben, deren Erwartungswert und Standartabweichung konfigurierbar sind und deren \textit{get()}-Funktion ein neues zufälliges Objekt, beispielsweise einen Vektor oder ein Shape, zurückgibt. Die \textit{with\_}-Funktionen der \textit{Creation}-Klasse nehmen Instanzen der Generator-Klassen entgegen und rufen bei der Erzeugung der Entities deren \textit{get()}-Funktion auf. Die tatsächliche Erzeugung der Entities wird in der \textit{create()}-Funktion der \textit{Creation} vollzogen.
+Um Gruppen von Movables zu erzeugen, wird die \lstinline!Creation!-Klasse eingeführt. Diese ermöglicht es eine bestimmbare Anzahl von Partikeln zu erzeugen. Dabei erlaubt sie es insbesondere die Eigenschaften der erzeugten \lstinline!Movable!-Instanzen auch zufällig zu bestimmen.\\
+Die Definition des Shapes sowie der Gruppenname werden im Konstruktor einer \lstinline!Creation! gefordert. Weitere Eigenschaften, die bestimmt werden können, sind die Anzahl der zu erzeugenden Partikel, deren Position, Größe, Startgeschwindigkeit und weitere Shapes. Diese werden über \lstinline!with_!-Funktionen gesetzt, beispielsweise \lstinline!with\_position()!. Weiterhin können String-Tags der zu erzeugenden Movables gesetzt werden, die später zur Identifikation benutzt werden können.\\
+Häufig ist es sinnvoll die Partikel mit zufälligen Werten zu initialisieren, um Variationen von Position, Farbe oder Startgeschwindigkeit zu erzeugen. Dazu werden \lstinline!Generator!-Klassen geschrieben, deren Erwartungswert und Standartabweichung konfigurierbar sind und deren \lstinline!get()!-Funktion ein neues zufälliges Objekt, beispielsweise einen Vektor oder ein Shape, zurückgibt. Die \lstinline!with_!-Funktionen der \lstinline!Creation!-Klasse nehmen Instanzen der \lstinline!Generator!-Klassen entgegen und rufen bei der Erzeugung der Entities deren \lstinline!get()!-Funktion auf. Die tatsächliche Erzeugung der \lstinline!Movable!-Instanzen wird in der \lstinline!create()!-Funktion einer \lstinline!Creation! vollzogen.
 
 \newpage
 \subsection{AudioVisualizer}
 Der AudioVisualizer organisiert die Abfolge der Audioanalyse und die Abhängigkeiten, die zwischen den Verarbeitungsschritten existieren. Darüber hinaus startet er die Visualisierung und setzt die Beziehung zwischen Musik und Visualisierung um, indem Parameter der Visualisierung entsprechend der analysierten Daten angepasst werden.\\
 % Ablauf
-In diesem Abschnitt soll zu Beginn die Benutzung von Essentia erläutert werden, um darauf aufbauend die DataGenerator näher zu beleuchten. Zuerst werden DataGenerator beleuchtet, die Essentia-Algorithmen verwenden. Daraufhin werden die Bereiche erklärt, an denen die Audioanalyse um eigene Algorithmen erweitert wurde. Anschließend wird aufgezeigt, wie die Umwandlung der analysierten Daten in Farbe und Bewegungen der Partikel abläuft.\\
-Ausschlaggebend für das Verständnis der Arbeitsweise der DataGenerator ist die Datenstruktur \textit{Pool} von Essentia \cite{EssentiaPool}. Ein Pool ist ein Container, ähnlich wie eine std::map, der benutzt werden kann, um Daten zu speichern. Dabei werden als Keys Strings verwendet, während unterschiedliche Value-Types verwendet werden können. Um Daten hinzuzufügen, kann die Funktion \textit{add()} oder \textit{set()} benutzt werden. Mit der \textit{value()} Funktion werden Daten abgefragt.\\
-Die DataGenerator funktionieren, indem sie Daten aus dem Pool abfragen, indem sie die \textit{value()}-Funktion benutzen, diese Daten dann verarbeiten und die Ergebnisse zurück in den Pool schreiben. Der nächste Generator kann dann auf diese Daten zugreifen.
+In diesem Abschnitt soll zu Beginn die Benutzung von Essentia erläutert werden, um darauf aufbauend die \lstinline!DataGenerator! näher zu beleuchten. Zuerst werden \lstinline!DataGenerator! beleuchtet, die Essentia-Algorithmen verwenden. Daraufhin werden die Bereiche erläutert, an denen die Audioanalyse um eigene Algorithmen erweitert wurde. Anschließend wird aufgezeigt, wie die Umwandlung der analysierten Daten in Farbe und Bewegungen der Partikel abläuft.\\
+Ausschlaggebend für das Verständnis der Arbeitsweise der DataGenerator ist die Datenstruktur \lstinline!Pool! von Essentia \cite{EssentiaPool}. Ein Pool ist ein Container, ähnlich wie eine \lstinline!std::map!, der benutzt werden kann, um Daten zu speichern. Dabei werden als Keys Strings verwendet, während unterschiedliche Value-Types verwendet werden können. Um Daten hinzuzufügen, kann die Funktion \lstinline!add()! oder \lstinline!set()! benutzt werden. Mit der \lstinline!value()! Funktion werden Daten abgefragt.\\
+Die \lstinline!DataGenerator! funktionieren, indem sie Daten aus dem Pool abfragen, indem sie die \lstinline!value()!-Funktion benutzen, diese Daten dann verarbeiten und die Ergebnisse zurück in den Pool schreiben. Der nächste Generator kann dann auf diese Daten zugreifen.
 \paragraph{Benutzung von Essentia}
-Essentia ist eine Sammlung von Algorithmen, die zur Analyse von Audiomaterial verwendet werden kann. Um einen Algorithmus zu benutzen, muss dieser erst erzeugt werden. Für diesen Zweck gibt es die \textit{AlgorithmFactory} von Essentia. Deren \textit{create()}-Funktion gibt einen \textit{Algorithm}-Pointer zurück. Die Algorithmen von Essentia haben Inputs und Outputs, die gesetzt werden müssen bevor der Algorithmus ausgeführt wird. Listing \ref{lst:GeneratorAblauf} zeigt schematisch den Ablauf eines typischen Generators.
+Essentia ist eine Sammlung von Algorithmen, die zur Analyse von Audiomaterial verwendet werden kann. Um einen Algorithmus zu benutzen, muss dieser erst erzeugt werden. Für diesen Zweck gibt es die \lstinline!AlgorithmFactory! von Essentia. Deren \lstinline!create()!-Funktion gibt einen \lstinline!essentia::Algorithm!-Pointer zurück. Die Algorithmen von Essentia haben Inputs und Outputs, die gesetzt werden müssen bevor der Algorithmus ausgeführt wird. Listing \ref{lst:GeneratorAblauf} zeigt schematisch den Ablauf eines typischen Generators.
+
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{white},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \begin{lstlisting} [caption={Ablauf eines Generators}\label{lst:GeneratorAblauf},captionpos=t,language=c++]
 Algorithm* algorithm = factory->create("AlgorithmName")
 std::vector<float> input;
@@ -1145,28 +1333,40 @@ algorithm->compute();
 pool->add("OutputDataName", output);
 delete algorithm;
 \end{lstlisting}
+\lstset{
+  backgroundcolor=\color{code_background},
+  basicstyle=\small\ttfamily\color{black},
+  keywordstyle=\bfseries\ttfamily\color{code_keyword},
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{code_comment}\ttfamily,
+  emph={comment},
+  showstringspaces=false,
+  flexiblecolumns=false,
+  tabsize=4,
+  xleftmargin=15pt
+}
 \noindent
-Zuerst wird ein Algorithmus erstellt, indem die AlgorithmFactory benutzt wird. An dieser Stelle können auch Parameter für den Algorithmus gesetzt werden, indem diese mit in der \textit{create()}-Funktion angegeben werden. Anschließend werden die Inputdaten des Algorithmus aus dem Pool geladen und dem Algorithmus übergeben. Ein Output-Vektor wird erstellt und ebenfalls dem Algorithmus übergeben. Ein Algorithmus kann beliebig viele Inputs und Outputs haben. Sind alle Inputs und Outputs gesetzt kann der Algorithmus ausgeführt werden, indem die \textit{compute()} Funktion ausgeführt wird. Zum Schluss werden die neuen Daten in den Pool geschrieben, um weiter verwertet zu werden und der Destruktor des Algorithmus wird aufgerufen.
+Zuerst wird ein \lstinline!essentia:Algorithm! erstellt, indem die \lstinline!AlgorithmFactory! benutzt wird. An dieser Stelle können auch Parameter für den Algorithmus gesetzt werden, indem diese mit in der \lstinline!create()!-Funktion angegeben werden. Anschließend werden die Inputdaten des Algorithmus aus dem Pool geladen und dem Algorithmus übergeben. Ein Output-Vektor wird erstellt und ebenfalls dem Algorithmus übergeben. Ein Algorithmus kann beliebig viele Inputs und Outputs haben. Sind alle Inputs und Outputs gesetzt kann der Algorithmus ausgeführt werden, indem die \lstinline!compute()! Funktion ausgeführt wird. Zum Schluss werden die neuen Daten in den Pool geschrieben, um weiter verwertet zu werden und der Destruktor des Algorithmus wird aufgerufen.
 
 \paragraph{Generatoren mit Essentia-Algorithmen}
-In diesem Absatz werden DataGenerator behandelt, die einen Essentia-Algorithmus benutzen. Es wird gezeigt, in welcher Form die Daten gespeichert werden, wie diese Daten zu interpretieren sind sowie für einige begründet, weshalb dieser Verarbeitungsschritt nutzbringend ist.\\
-Grundlage für jede Analyse ist es, die Daten von der Festplatte zu laden. Dazu wurde der \textit{AudioDataGenerator} entwickelt, der den Essentia-Algorithmus \textit{MonoLoader} verwendet. Der MonoLoader erwartet den Dateinamen als Parameter sowie eine \textit{Samplerate}. Stimmt die Samplerate der Datei nicht mit der angegebenen überein, so werden die geladenen Daten in die angegebene Samplerate konvertiert. Ein Großteil der heutigen Musik ist Stereo abgemischt. Dies wird \textit{gedownmixt}, also zu einer Monospur zusammengeführt. Als Samplerate wurde konstant der Standartwert 44100 Hz verwendet. Der Output ist std::vector\textless float\textgreater , der die encodierten Daten des Audiofiles enthält.\\
-Anschließend werden die Audiodaten in Frames unterteilt, die eine Länge von 2048 Samples haben und sich jeweils zur Hälfte überlappen. Das Resultat aus diesem Verarbeitungsschritt ist ein std::vector\textless std::vector\textless float\textgreater\text{}\textgreater . Der erste Vektor enthält die einzelnen Frames, die wiederum die Samples enthalten.\\
+In diesem Absatz werden DataGeneratoren behandelt, die einen Essentia-Algorithmus benutzen. Es wird gezeigt, in welcher Form die Daten gespeichert werden, wie diese Daten zu interpretieren sind sowie für einige begründet, weshalb dieser Verarbeitungsschritt nutzbringend ist.\\
+Grundlage für jede Analyse ist es, die Daten von der Festplatte zu laden. Dazu wurde der \lstinline!AudioDataGenerator! entwickelt, der den Essentia-Algorithmus \lstinline!MonoLoader! verwendet. Der Algorithmus \lstinline!MonoLoader! erwartet den Dateinamen als Parameter sowie eine Samplerate (siehe \ref{sec:DigitaleDarstellungAudio}). Stimmt die Samplerate der Datei nicht mit der angegebenen überein, so werden die geladenen Daten in die angegebene Samplerate konvertiert. Ein Großteil der heutigen Musik ist Stereo abgemischt. Die Stereospuren werden zu einer Monospur zusammengeführt. Als Samplerate wurde konstant der Standartwert 44100 Hz verwendet. Der Output ist \lstinline!std::vector<float>! , der die encodierten Daten des Audiofiles enthält.\\
+Anschließend werden die Audiodaten in Frames unterteilt, die eine Länge von 2048 Samples haben und sich jeweils zur Hälfte überlappen. Das Resultat aus diesem Verarbeitungsschritt ist ein \lstinline!std::vector<std::vector<float>>!. Der erste Vektor enthält die einzelnen Frames, die wiederum die Samples enthalten.\\
 % SpectrumDataGenerator
-Daraufhin wird das Spektrum berechnet. Es wird für die Bestimmung von Bark Bands und als Grundlage für die \textit{ChordDetection} eingesetzt. Auf Grund des breiten Anwendungsfeldes des Spektrums wurde es in die Analyse mit einbezogen. Umgesetzt wird es durch den Essentia-Algorithmus \textit{Spectrum}, der als Input die Frames erhält und für jeden Frame einen std::vector\textless float\textgreater\ als Output generiert. Fasst man die Spektren der Frames zin einem Vektor zusammen, so erhält man erneut einen std::vector\textless std::vector\textless float\textgreater\text{}\textgreater .\\
-Für weitere Berechnungen wird die Menge an Informationen reduziert. Aus diesem Grund wird das Spektrum anschließend in Bark Bands eingeteilt. Für die Umsetzung wurde der Essentia-Algorithmus \textit{BarkBands} verwendet. Das Resultat ist ein std::vector<std::vector<float>\text{}>, der die Lautstärken der Bänder für jeden Frame enthält.\\
-Im nächsten Schritt werden die Differenzen der BarkBands berechnet. In diesem Zusammenhang muss beachtet werden, dass die Lautstärke eines Bandes mit der Lautstärke des gleichen Bandes aus dem letzten Frame verrechnet wird und nicht die Lautstärke unterschiedlicher Bänder im selben Frame.\\
-Neben den Bark Bands gehen aus dem Spektrum auch die spektralen Spitzen (Spectral Peaks) hervor. Das Spektrum wird dabei auf besonders laute Frequenzen untersucht. Die Ausgabe beinhaltet eine Angabe der gefundenen Frequenzen sowie deren Amplituden. Diese Werte können verwendet werden, um ein Pitch-Class-Profile des Frames zu erstellen. Ein Pitch-Class-Profile enthält einen Wert für jeden Ton der chromatischen Tonleiter, also einen Wert für jeden Ton der Klaviatur. Der Wert des Tones ist die Intensität mit der der Ton in diesem Frame wahrzunehmen ist. Für die Umsetzung wurden die Essentia-Algorithmen \textit{SpectralPeaks} und \textit{HPCP} (Harmonic Pitch Class Profile) verwendet.\\
-Mit Hilfe der Pitch-Class-Profiles kann der Algorithmus \textit{ChordsDetection} benutzt werden. Dieser wertet ein Pitch-Class-Profile aus und entscheidet, welcher Akkord die größte Übereinstimmung ergibt. Sind die Töne eines C-Dur-Akkordes am deutlichsten im Pitch-Class-Profile vertreten, so wird der String ``C'' als Output erzeugt. Töne mit Vorzeichen werden mit einem ``\#'' versehen und Mollakkorde mit einem ``m''. Der Fis-Moll Akkord beispielsweise erzeugt den Output ``F\#m''. Neben diesem String wird eine \textit{strength} bestimmt, die angibt, wie stark der gefundene Akkord dem Pitch-Class-Profile entspricht. Die Vorhersage der ChordDetection funktioniert nicht zuverlässig und erzeugt mitunter falsche Angaben. Vor allem bei der Unterscheidung zwischen Moll und Dur treten häufig Fehler auf.
+Daraufhin wird das Spektrum berechnet. Es wird für die Bestimmung von Bark Bands und als Grundlage für die ChordDetection eingesetzt. Auf Grund des breiten Anwendungsfeldes des Spektrums wurde es in die Analyse mit einbezogen. Umgesetzt wird es durch den Essentia-Algorithmus \lstinline!Spectrum!, der als Input die Frames erhält und für jeden Frame einen \lstinline!std::vector<float>! als Output generiert. Fasst man die Spektren der Frames zin einem Vektor zusammen, so erhält man erneut einen \lstinline!std::vector<std::vector<float>>!.\\
+Für weitere Berechnungen wird die Menge an Informationen reduziert. Aus diesem Grund wird das Spektrum anschließend in Bark Bands eingeteilt. Für die Umsetzung wurde der Essentia-Algorithmus \lstinline!BarkBands! verwendet. Das Resultat ist ein \lstinline!std::vector<std::vector<float>>!, der die Lautstärken der Bänder für jeden Frame enthält.\\
+Im nächsten Schritt werden die Differenzen der Bark Bands berechnet. In diesem Zusammenhang muss beachtet werden, dass die Lautstärke eines Bandes mit der Lautstärke des gleichen Bandes aus dem letzten Frame verrechnet wird und nicht die Lautstärke unterschiedlicher Bänder im selben Frame.\\
+Neben den Bark Bands gehen aus dem Spektrum auch die spektralen Spitzen (Spectral Peaks) hervor. Das Spektrum wird dabei auf besonders laute Frequenzen untersucht. Die Ausgabe beinhaltet eine Angabe der gefundenen Frequenzen sowie deren Amplituden. Diese Werte können verwendet werden, um ein Pitch-Class-Profile des Frames zu erstellen. Ein Pitch-Class-Profile enthält einen Wert für jeden Ton der chromatischen Tonleiter, also einen Wert für jeden Ton der Klaviatur. Der Wert des Tones ist die Intensität mit der der Ton in diesem Frame wahrzunehmen ist. Für die Umsetzung wurden die Essentia-Algorithmen \lstinline!SpectralPeaks! und \lstinline!HPCP! (Harmonic Pitch Class Profile) verwendet.\\
+Mit Hilfe der Pitch-Class-Profiles kann der Algorithmus \lstinline!ChordsDetection! benutzt werden. Dieser wertet ein Pitch-Class-Profile aus und entscheidet, welcher Akkord die größte Übereinstimmung ergibt. Sind die Töne eines C-Dur-Akkordes am deutlichsten im Pitch-Class-Profile vertreten, so wird der String ``C'' als Output erzeugt. Töne mit Vorzeichen werden mit einem ``\#'' versehen und Mollakkorde mit einem ``m''. Der Fis-Moll Akkord beispielsweise erzeugt den Output ``F\#m''. Neben diesem String wird eine \lstinline!strength! bestimmt, die angibt, wie stark der gefundene Akkord dem Pitch-Class-Profile entspricht. Die Vorhersage der ChordDetection funktioniert nicht zuverlässig und erzeugt mitunter falsche Angaben. Vor allem bei der Unterscheidung zwischen Moll und Dur treten häufig Fehler auf.
 
 \paragraph{Arousal-Valence DataGenerator}
 \label{sec:AVDataGenerator}
 Für eine Visualisierung, die auf die Emotionen der Musik eingeht, ist ein MER-Algorithmus hilfreich. Essentia stellt keinen Algorithmus bereit, der auf Valence oder Arousaldaten abbildet, wie sie im Circumplex Model of Affect beschrieben sind.\\
 Es lassen sich viele Paper finden, in denen unterschiedliche Herangehensweisen für Music Emotion Recognition beschrieben werden. Größtenteils werden spektrale Features auf Klassen abgebildet \cite[S. 159]{lerch2012introduction}.\\
 Aus diesem Grund wurde ein neuronales Netz entwickelt. Für das Training des Netzes musste ein geeigneter Datensatz gefunden werden. Das DEAM-Dataset (The MediaEval Database for Emotional Analysis of Music) bietet eine große Menge an annotierten Musikstücken und ist frei zugänglich für nicht kommerzielle Nutzung \cite{AlajankiEmoInMusicAnalysis} und wurde aus diesen Gründen gewählt. Positiv an diesem Datensatz war auch, dass die Musikstücke nicht mit einem einzelnen Wert annotiert waren, sondern Annotationen für mehrere Zeitpunkte existierten. Er besteht aus den annotierten Musikstücken im MP3 Format, den Annotationen im CSV-Format sowie schon extrahierte Features ebenfalls im CSV-Format. Die Features wurde nicht benutzt.\\
-Als Features wurden die ``Mel Frequency Cepstral Coefficients'' für einen ersten Prototypen gewählt. Um diese zu extrahieren, wurde mit Hilfe von Essentia ein Programm geschrieben, dass eine Audiodatei einließt und die daraus gewonnenen MFCC-Values in in eine YAML Datei schreibt. Die MFCCs können mit dem Essentia-Algorithmus \textit{MFCC} direkt aus dem Spektrum berechnet werden.\\
-Die Annotationen im CSV-Format wurden mit der Pythonbibliothek\textit{Pandas}\cite{pandasDoc} eingelesen und organisiert. Für die Umsetzung des Models wurde die Pythonbibliothek \textit{Keras}\cite{kerasDoc} verwendet.\\
-Nachdem ich einige Tests durchgeführt und unterschiedliche Netze ausprobiert hatte, gab es bei den Arousalwerten richtige Tendenzen, während die Valencewerte keine gute Vorhersage ergaben. Da die Optimierung von Machine-Learning-Algorithmen zeitaufwendig ist, wurde dieser Versuch nicht weiter zu verfolgt. Stattdessen werden Algorithmen entwickelt, die die Musik auf ein Valence-Arousal-Koordinatensystem abbilden.
+Als Features wurden die ``Mel Frequency Cepstral Coefficients'' für einen ersten Prototypen gewählt. Um diese zu extrahieren, wurde mit Hilfe von Essentia ein Programm geschrieben, dass eine Audiodatei einließt und die daraus gewonnenen MFCC-Values in in eine YAML Datei schreibt. YAML ist eine einfache Auszeichnungssprache ähnlich wie XML oder JSON \cite{yamlDoc}. Die MFCCs können mit dem Essentia-Algorithmus \lstinline!MFCC! direkt aus dem Spektrum berechnet werden.\\
+Die Annotationen im CSV-Format wurden mit der Pythonbibliothek ``Pandas''\cite{pandasDoc} eingelesen und organisiert. Für die Umsetzung des Models wurde die Pythonbibliothek ``Keras''\cite{kerasDoc} verwendet.\\
+Nachdem ich einige Tests durchgeführt und unterschiedliche Netze ausprobiert hatte, gab es bei den Arousalwerten richtige Tendenzen, während die Valencewerte keine gute Vorhersage ergaben. Da die Optimierung von Machine-Learning-Algorithmen zeitaufwendig ist, wurde dieser Versuch nicht weiter zu verfolgt. Stattdessen werden im Folgenden Algorithmen entwickelt, die die Musik auf ein Valence-Arousal-Koordinatensystem abbilden.
 
 \paragraph{ArousalDataGenerator}
 Einer der implementierten Algorithmen extrahiert einen Arousalwert. Dazu werden die berechneten Differenzen der Bark Bands verwendet. Die Funktionsweise des Generators basierte auf folgenden Annahmen. Der Arousalwert wird umso höher, je stärker sich die Lautstärke über die Zeit ändert. Vor allem kurze laute Töne bewirken eine aktive Grundstimmung der Musik. Langgezogene gleichbleibende Töne erzeugen eine eher ruhige Stimmung. Eine weitere Annahme, die gemacht werden kann ist, dass besonders leise Stücke eher ruhige Stücke sind. Darüber hinaus verändert sich der Arousalwert eines Stückes nicht schlagartig, sondern entwickelt sich über die Zeit.\\
@@ -1177,10 +1377,10 @@ Da permanente und schlagartige Wechsel im Arousalwert nicht den empfundenen Emot
 
 \paragraph{ValenceDataGenerator}
 % Valence Wert erklären
-Der Valencewert kann interpretiert werden, als das empfundene Wohlbefinden. Niedrige Valencewerte bedeuten negative Emotionen, hohe Valencewerte hingegen positive. Die Moll-Tonleiter und ihre Akkorde werden gemeinhin eher mit negativen Emotionen verbunden, während die Dur-Tonleiter eher mit positiven Emotionen in Verbindung gebracht wird \cite{dalla2001developmental}.\\
-Ausgehend davon wurde eine erste einfache Version des Algorithmus implementiert, die die erfassten Akkorde des \textit{ChordDetection} Algorithmus verwendete. Dazu wird, wie auch beim ArousalDataGenerator, über die Frames des Stückes iteriert und ein Wert in Richtung des aktuellen Valencewertes verändert. Wird ein Dur-Akkord erkannt, so wird der Wert erhöht, wird ein Moll-Akkord erkannt, so wird er verringert. Die Stärke der Veränderung wird, mit der Sicherheit, dass der erkannte Akkord richtig erkannt wurde, skaliert. Die Information, wie sicher der Akkord richtig erkannt wurde, stellte der ChordDetection-Algorithmus bereit.\\
-Die Ergebnisse des \textit{ChordDetection}-Algorithmus sind nicht ausreichend belastbar, um auf diese Weise auf einen Valencewert zu schließen. Vorrangig die Unterscheidung zwischen Moll und Dur Akkorden ist fehleranfällig, während der Grundton häufig stimmt. Vor allem wird der Wert, der die Sicherheit des Akkordes beschreibt, nicht angepasst, wenn nur knapp zwischen Moll und Dur unterschieden wird.\\
-Um eine Verbesserung zu erzielen werden die Pitch-Class-Profiles mit einbezogen. Ein Pitch-Class-Profile repräsentiert die Intensitäten aller Töne der chromatischen Tonleiter. Wie in \ref{sec:Tonleitern} behandelt, unterscheiden sich die Moll und Dur-Tonleitern vor allem über die Terz und die Sexte. Während die kleine Terz und die kleine Sexte in der Moll-Tonleiter vorkommen, werden die große Terz und die große Sexte in der Dur-Tonleiter verwendet. Ausgehend vom Grundton wird nun die Intensität der kleinen Terz und die Intensität der großen Terz ins Verhältnis gesetzt sowie die Intensitäten der Sexten.
+Der Valencewert kann als das empfundene Wohlbefinden interpretiert werden. Niedrige Valencewerte bedeuten negative Emotionen, hohe Valencewerte hingegen positive. Die Moll-Tonleiter und ihre Akkorde werden gemeinhin eher mit negativen Emotionen verbunden, während die Dur-Tonleiter eher mit positiven Emotionen in Verbindung gebracht wird \cite{dalla2001developmental}.\\
+Ausgehend davon wurde eine erste einfache Version des Algorithmus implementiert, die die erfassten Akkorde des \lstinline!ChordDetection! Algorithmus verwendete. Dazu wird, wie auch beim ArousalDataGenerator, über die Frames des Stückes iteriert und ein Wert in Richtung des aktuellen Valencewertes verändert. Wird ein Dur-Akkord erkannt, so wird der Wert erhöht, wird ein Moll-Akkord erkannt, so wird er verringert. Die Stärke der Veränderung wird, mit der Sicherheit, dass der erkannte Akkord richtig erkannt wurde, skaliert. Die Information, wie sicher der Akkord richtig erkannt wurde, stellte der \lstinline!ChordDetection!-Algorithmus zur Verfügung.\\
+Die Ergebnisse des \lstinline!ChordDetection!-Algorithmus sind nicht ausreichend belastbar, um auf diese Weise auf einen Valencewert zu schließen. Vorrangig die Unterscheidung zwischen Moll und Dur Akkorden ist fehleranfällig, während der Grundton häufig stimmt. Vor allem wird der Wert, der die Sicherheit des Akkordes beschreibt, nicht angepasst, wenn nur knapp zwischen Moll und Dur unterschieden wird.\\
+Um eine Verbesserung zu erzielen werden die Pitch-Class-Profiles mit einbezogen. Ein Pitch-Class-Profile repräsentiert die Intensitäten aller Töne der chromatischen Tonleiter. Wie in \ref{sec:Tonleitern} behandelt, unterscheiden sich die Moll- und Dur-Tonleitern vor allem über die Terz und die Sexte. Während die kleine Terz und die kleine Sexte in der Moll-Tonleiter vorkommen, werden die große Terz und die große Sexte in der Dur-Tonleiter verwendet. Ausgehend vom Grundton wird nun die Intensität der kleinen Terz und die Intensität der großen Terz ins Verhältnis gesetzt sowie die Intensitäten der Sexten.
 \begin{align}
 dur\_third\_ratio = 2 \cdot \frac{big\_third\_intensity}{big\_third\_intensity + little\_third\_intensity} - 1
 \end{align}
@@ -1188,15 +1388,16 @@ dur\_third\_ratio = 2 \cdot \frac{big\_third\_intensity}{big\_third\_intensity +
 dur\_sixth\_ratio = 2 \cdot \frac{big\_sixth\_intensity}{big\_sixth\_intensity + little\_sixth\_intensity}- 1
 \end{align}
 \noindent
-Die Multiplikation mit zwei und das Subtrahieren der eins, schiebt den Wertebereich von $[0, 1]$ auf $[-1, 1]$. Das Ergebnis sind folglich zwei Zahlen zwischen $[-1, 1]$, die angeben wie intensiv die Dur-Terz und die Dur-Sexte im Verhältnis zu ihren Moll Varianten ermittelt wurden. Sind die Moll und die Dur Varianten gleich intensiv, so ergibt sich der Wert null. Ist nur die Dur-Variante vorhanden so ergibt sich eine eins.\\
+Die Multiplikation mit zwei und das Subtrahieren der eins, schiebt den Wertebereich von $[0, 1]$ auf $[-1, 1]$. Das Ergebnis sind folglich zwei Zahlen zwischen $[-1, 1]$, die angeben wie intensiv die Dur-Terz und die Dur-Sexte im Verhältnis zu ihren Moll-Varianten ermittelt wurden. Sind die Moll- und die Dur-Varianten gleich intensiv, so ergibt sich der Wert null. Ist nur die Dur-Variante vorhanden so ergibt sich eine eins.\\
 Problematisch hierbei ist, dass eine leise Dur-Variante immer noch eine sehr große $ratio$ erzeugen kann, falls die Moll-Variante deutlich leiser ist. Aus diesem Grund werden die $dur\_ratios$ anschließend mit dem Maximum aus der Dur- und Mollintensität multipliziert.
 \begin{align}
 dur\_third\_ratio\ = dur\_third\_ratio \cdot max(big\_third\_intensity, little\_third\_intensity)
 \end{align}
 \noindent
 Das Ergebnis ist nun umso näher der null, umso kleiner das Maximum der Moll- und Durvarianten ist. Anschließend werden die $ratios$ gewichtet zusammen addiert. Da die kleine (große) Terz im Moll-Dreiklang (Dur-Dreiklang) enthalten ist und damit einen klareren Moll (Dur) Klang erzeugt, wird die Terz höher gewichtet, als die Sexte.\\
-So ergeben sich Werte für jeden Frame, die wieder in das Interval $[0, 1]$ verschoben werden. Erzeugt der ChordDetection-Algorithmus keine Ausgabe, was beispielsweise bei Stille vorkommt, so wird der Wert $0.5$ als erzeugter Wert angenommen, da dieser Wert als eine neutrale Stimmung interpretiert werden kann.
+So ergeben sich Werte für jeden Frame, die wieder in das Interval $[0, 1]$ verschoben werden. Erzeugt der \lstinline!ChordDetection!-Algorithmus keine Ausgabe, was beispielsweise bei Stille vorkommt, so wird der Wert $0.5$ als erzeugter Wert angenommen, da dieser Wert als eine neutrale Stimmung interpretiert werden kann.
 
+\newpage
 \paragraph{PartsDataGenerator}
 Die meisten Musikstücke bestehen aus mehreren Teilen, die unterschieden werden können. Schafft man es diese Teile zu identifizieren, so lässt sich die Visualisierung sinnvoll anpassen. Vor allem die Bewegungsabläufe der Entities zu ändern, wenn ein neuer Abschnitt des Liedes beginnt, erscheint sinnvoll.\\
 Für die Umsetzung dieser Einteilung werden einfachheitshalber ausschließlich die Arousalwerte betrachtet. Diese Werte werden als Fenster aufgefasst. Ein Fenster ist über einen zeitlichen Beginn, eine Dauer sowie einen Wert definiert. Zwei anliegende Fenster lassen sich zusammenführen, indem der Beginn des früheren Fensters übernommen wird und die Dauer sich aus der Summe der Dauer beider Eingangsfenster ergibt. Der Wert des größeren Fensters wird als Wert des neuen Fensters übernommen.\\
@@ -1209,24 +1410,27 @@ Die Arousalwerte werden einigermaßen zuversichtlich bestimmt. Vor allem innerha
 Auch die Werte der Valenceberechnung sind nicht zuverlässig. Gerade bei vielschichtiger Musik mit breitem Spektrum, treten wahrnehmbare Fehler auf. Für die sehr einfachen Annahmen, die zur Berechnung getroffen wurde, funktionieren sie aber erstaunlich gut.\\
 Die größte Schwierigkeit bei der Berechnung ist die Subjektivität menschlicher Emotionen. Diese sind so höchstens über statistische Auswertungen erfassbar, die allerdings aus Zeitgründen nicht umgesetzt wurden.
 
+\newpage
 \subsubsection{EventGenerator}
-Ähnlich wie die DataGenerator überladen ebenfalls die \textit{EventGenerator} eine \textit{compute()}-Funktion. Die \textit{compute()}-Funktion der EventGenerator erwartet einen Pool als Argument und gibt einen std::vector<Event> zurück.\\
-Ein Event definiert einen Zeitpunkt in Sekunden und kann weitere Eigenschaften enthalten, die sich zwischen den einzelnen Eventtypen unterscheiden können. Implementiert wurden \textit{BeatEvents} sowie \textit{TickEvents}.\\
-Die TickEvents werden mithilfe von Essentia generiert. Der \textit{RhythmExtractor}-Algorithmus generiert dabei die Zeitpunkte an denen sich die Grundschläge der Musik befinden. Diese werden daraufhin in einer Liste von Events gespeichert.\\
+Ähnlich wie die \lstinline!DataGenerator! überladen ebenfalls die \lstinline!EventGenerator! eine \lstinline!compute()!-Funktion. Die \lstinline!compute()!-Funktion der \lstinline!EventGenerator! erwartet einen \lstinline!essentia::Pool! als Argument und gibt einen \lstinline!std::vector<Event>! zurück.\\
+Ein \lstinline!Event! definiert einen Zeitpunkt in Sekunden und kann weitere Eigenschaften enthalten, die sich zwischen den einzelnen Eventtypen unterscheiden können. Implementiert wurden ``BeatEvents'' sowie ``TickEvents''.\\
+Die ``TickEvents'' werden mithilfe von Essentia generiert. Der \lstinline!RhythmExtractor!-Algorithmus generiert dabei die Zeitpunkte an denen sich die Grundschläge der Musik befinden. Diese werden daraufhin in einer Liste von Events gespeichert.\\
 Des Weiteren wurden BeatEvents extrahiert. BeatEvents definieren Zeitpunkte an denen plötzliche Änderungen der Lautstärke auftreten, wie beispielsweise beim Anschlag eines Schlagzeugs.\\
-Um die BeatEvents zu extrahieren, werden erneut die Lautstärkeunterschiede der einzelnen Bark Bands betrachtet. Eine erste Implementation wurde umgesetzt, indem ein BeatEvent generiert wurde, sobald der Unterschied der Lautstärke eine gewisse Schwelle überbot. Dies funktionierte nicht ausreichend gut, da lautere Stücke ununterbrochen BeatEvents generierten, während für leisere Musik keine BeatEvents generiert wurden.\\
-Um dieses Problem zu lösen, wurde eine variable Schwelle eingesetzt. Diese Schwelle ist ein veränderbares Limit, das sich an die Vergleichswerte anpasst. Das Limit wird höher gesetzt, sobald es überschritten wird. Über Zeit fällt das Limit wieder ab. Zusätzlich besitzt die Schwelle eine feste \textit{reset\_rate}. Übersteigt der Vergleichswert des letzten Frames multipliziert mit der \textit{reset\_rate}, das aktuelle Limit der Schwelle, so wird das Limit der Schwelle auf den Vergleichswert multipliziert mit der \textit{reset\_rate} gesetzt. Übersteigt der aktuelle Vergleichswert das aktuelle Limit, so wird ein BeatEvent generiert.\\
+Um die BeatEvents zu extrahieren, werden erneut die Lautstärkeunterschiede der einzelnen Bark Bands betrachtet. Eine erste Implementation wurde umgesetzt, indem ein BeatEvent generiert wurde, sobald der Unterschied der Lautstärke eine gewisse Schwelle überbot. Dies funktionierte nicht ausreichend gut, da lautere Stücke ununterbrochen BeatEvents generieren, während für leisere Musik keine BeatEvents generiert werden.\\
+Um dieses Problem zu lösen, wird eine variable Schwelle eingesetzt. Diese Schwelle ist ein veränderbares Limit, das sich an Vergleichswerte anpasst. Das Limit wird höher gesetzt, sobald es überschritten wird. Über Zeit fällt das Limit wieder ab. Zusätzlich besitzt die Schwelle eine feste \lstinline!reset_rate!. Übersteigt der Vergleichswert des letzten Frames multipliziert mit der \lstinline!reset_rate!, das aktuelle Limit der Schwelle, so wird das Limit der Schwelle auf den Vergleichswert multipliziert mit der \lstinline!reset_rate! gesetzt. Übersteigt der aktuelle Vergleichswert das aktuelle Limit, so wird ein BeatEvent generiert.\\
 Da auf diese Weise für jedes Bark Band BeatEvents generiert werden, müssen diese im Nachhinein zusammengefasst werden. Dabei werden auch zeitlich direkt aufeinander folgende Events zusammengefasst.
+
+\newpage
 \subsubsection{Handler}
-Die Aufgabe der Handler ist es, die analysierten Informationen aus der Audioanalyse in eine Visualisierung umzusetzen. Sie werden zur Laufzeit der Visualisierung aufgerufen. Dabei haben alle Handler Zugriff auf die kontinuierlichen Daten sowie die aktuellen Events. Die AudioVisualizer-Klasse hält eine Liste von Handlern, welche vom Compositor gesteuert werden.
+Die Aufgabe der Handler ist es, die analysierten Informationen aus der Audioanalyse in eine Visualisierung umzusetzen. Sie werden zur Laufzeit der Visualisierung aufgerufen. Dabei haben alle Handler Zugriff auf die kontinuierlichen Daten sowie die aktuellen Events. Die \lstinline!AudioVisualizer!-Klasse hält eine Liste von Handlern, welche vom \lstinline!Compositor! gesteuert werden.
 
 \paragraph{FlowFieldHandler}
-Der FlowFieldHandler steuert die Parameter eines Flow Fields. Dabei werden die Arousalwerte sowie die BeatEvents verarbeitet. Sowohl die BeatEvents, als auch die Arousalwerte steuern die Stärke, mit der die Entities im Flow Field beschleunigt werden.\\
+Der \lstinline!FlowFieldHandler! steuert die Parameter eines Flow Fields. Dabei werden die Arousalwerte sowie die BeatEvents verarbeitet. Sowohl die BeatEvents, als auch die Arousalwerte steuern die Stärke, mit der die Entities im Flow Field beschleunigt werden.\\
 Hohe Arousalwerte führen allgemein dazu, dass die Objekte schneller bewegt werden. Dazu wird die Kraft, mit der die Entities beschleunigt werden, auf den aktuellen Arousalwert gesetzt. Wird ein BeatEvent verarbeitet, so wird die Kraft des Flow Fields kurzzeitig auf die Stärke des BeatEvents gesetzt. Durch die Trägheit der Entities ist die daraus resultierende Beschleunigung ebenfalls in späteren Frames zu sehen.\\
-Neben dem Flow Field verwaltet der FlowFieldHandler zusätzlich eine PlainForce, als eine Kraft, welche die Entities auf die xz-Ebene drückt. Da hohe Arousalwerte oder starke BeatEvents dazu führen, dass die Ordnung der Entities verloren geht, wird die Stärke der PlainForce ebenfalls mit den Arousalwerten verstärkt.
+Neben dem Flow Field verwaltet der \lstinline!FlowFieldHandler! zusätzlich eine \lstinline!PlainForce!, also eine Kraft, welche die Partikel auf die xz-Ebene drückt. Da hohe Arousalwerte oder starke BeatEvents dazu führen, dass die Ordnung der Partikel verloren geht, wird die Stärke der \lstinline!PlainForce! ebenfalls mit den Arousalwerten verstärkt.
 
 \paragraph{ColorHandler}
-Der ColorHandler verarbeitet die Valence- und Arousaldaten und setzt dementsprechend die Farben der Entities. Ein mögliches Farbschema ist im Konzept in Abbildung \ref{fig:Farbverlauf} zu sehen.\\
+Der \lstinline!ColorHandler! verarbeitet die Valence- und Arousaldaten und setzt dementsprechend die Farben der Partikel. Ein mögliches Farbschema ist im Abschnitt \ref{sec:Farbzuordnung} in Abbildung \ref{fig:Farbverlauf} zu sehen.\\
 Für die Umsetzung wird eine Funktion benötigt, die einen gegebenen Valence- und Arousalwerte auf eine Farbe abbildet. Dazu wurden Farben im Valence-Arousal-Koordinatensystem angeordnet. Tabelle \ref{tab:ColorHandlerFarbanordnung} zeigt die Anordnung, die im Prototypen verwendet wurde.
 
 \begin{table}[!ht]
@@ -1249,46 +1453,45 @@ Für die Umsetzung wird eine Funktion benötigt, die einen gegebenen Valence- un
 \end{table}
 \noindent
 In der linken Spalte sind die Farben zusammen mit den zugehörigen RGB-Values gelistet. Rechts daneben steht die Position dieser Farbe im Valence-Arousal-Koordinatensystem. In der letzten Spalte ist eine Intensität verzeichnet.\\
-Um von gegebenen Valence- und Arousalwerten auf eine Farbe abzubilden, wurden die Distanzen zwischen den gegebenen Valence-Arousaldaten und Positionen der Farben berechnet. Seien die durch die Audioanalyse gegebenen Valence-Arousalwerte mit dem zweidimensionalen Vektor $av$ bezeichnet. Der erste Wert des Vektors sei der Arousalwert und der zweite Wert der Valencewert. Sei die Position einer Farbe im Valence-Arousal-Koordinatensystem bezeichnet mit $av\_f$ und deren Intensität $i$, dann ergibt sich der Einfluss der Farbe mit folgender Rechnung.
+Um von gegebenen Valence- und Arousalwerten auf eine Farbe abzubilden, wurden die Distanzen zwischen den gegebenen Valence-Arousaldaten und Positionen der Farben berechnet.\\
+Seien die durch die Audioanalyse gegebenen Valence-Arousalwerte mit dem zweidimensionalen Vektor $av$ bezeichnet. Der erste Wert des Vektors sei der Arousalwert und der zweite Wert der Valencewert. Sei die Position einer Farbe im Valence-Arousal-Koordinatensystem bezeichnet mit $av\_f$ und deren Intensität $i$, dann ergibt sich der Einfluss der Farbe mit der in Formel \ref{ali:colorinfluence} gezeigten Rechnung.
 \begin{align}
 influence = \frac{i}{\vert av - av\_f\vert^5 + \varepsilon}
+\label{ali:colorinfluence}
 \end{align}
 \noindent
-$\vert av - av\_f\vert$ ist die Distanz zwischen $av$ und $av\_f$. Durch diese Rechnung ergibt sich für jede der oben gelisteten Farben ein Einfluss. Der Einfluss einer Farbe ist umso kleiner, je weiter die Position der Farbe von den aktuellen Valence-Arousalwerten entfernt ist. Die Addition von $\varepsilon$ dient nur zur numerischen Stabilität, da die Distanz null sein kann.\\
+$\vert av - av\_f\vert$ ist die Distanz zwischen $av$ und $av\_f$. Durch diese Rechnung ergibt sich für jede der oben gelisteten Farben ein Einfluss. Der Einfluss einer Farbe ist umso kleiner, je weiter die Position der Farbe von den aktuellen Valence-Arousalwerten entfernt ist. Die Addition von $\varepsilon$ dient zur numerischen Stabilität, da die Distanz null sein kann.\\
 Nun wird die Summe aller Einflüsse gebildet und jeder Einfluss durch diese Summe geteilt. Das Ergebnis ist eine Liste von Einflüssen, deren Summe gleich eins ist. Nun werden die RGB-Werte der Farben multipliziert mit deren Einflüssen aufsummiert. Das Resultat ist die gesuchte Farbe.
 
-\subsubsection{Compositor}
+%\subsubsection{Compositor}
 
 \newpage
-
 \section{Fazit}
 Mit dieser Arbeit wurde ein System aufgezeigt, das benutzt werden kann, um eine Audiovisualisierung durchzuführen. Dabei wurden bestehende Algorithmen in ein System integriert und neue Algorithmen implementiert. Weiterhin wurde eine Möglichkeit untersucht die subjektiven Emotionen der Musik zu analysieren und diese dann für die Visualisierung anzuwenden. Insbesondere wurden unterschiedliche Varianten der Analyse und Modellierung von Emotionen betrachtet sowie deren Interpretation in einer Visualisierung.\\
-Bei der Entwicklung des Prototypen wurde sich viel mit den Themen \textit{Music Emotion Recognition} und \textit{Bewegungen} beschäftigt. Dabei wurde das Konzept von \textit{Perlin Noise} sowie das \textit{Steering Behaviour} angewendet. Viel Zeit wurde auch in die Planung und Umsetzung einer performanten und erweiterbaren Softwarearchitektur investiert. Insbesondere die Integration von OpenGL sowie das System der Abhängigkeiten der DataGenerator waren zeitintensiv.\\
-Der Großteil der funktionalen Anforderungen wurde umgesetzt. Der AudioVisualizer lässt sich mit Angabe einer Audiodatei starten. Diese Datei kann in unterschiedlichen Audioformaten gegeben sein (wav, aiff, flac, ogg oder mp3). Treten bei der Audioanalyse Fehler auf, so werden diese abgefangen und eine verständliche Fehlermeldung erzeugt. Fehler können auftreten, wenn die angegebene Audiodatei nicht existiert oder fehlerhaft ist. Die Kameraposition lässt sich durch Tastatureingaben (W, A, S, D, Ctrl, Space) und Mausbewegungen verändern. Die Audioanalyse läuft in einer kurzen Zeitspanne ab. Sie benötigt als Richtwert ca. 0.2 Sekunden für eine Minute Audiomaterial. Nicht getestet wurde, wie der Prototyp auf anderen Plattformen agiert. Die Anforderung der Plattformunabhängigkeit wurde also nicht erfüllt.
+Bei der Entwicklung des Prototypen wurde sich ausgiebig mit den Themen Music Emotion Recognition und Bewegungen beschäftigt. Dabei wurde das Konzept von Perlin Noise sowie das Steering Behaviour angewendet. Viel Zeit wurde auch in die Planung und Umsetzung einer performanten und erweiterbaren Softwarearchitektur investiert. Insbesondere die Integration von OpenGL sowie das System der Abhängigkeiten in der Audioanalyse waren zeitintensiv.\\
+Der AudioVisualizer lässt sich mit Angabe einer Audiodatei starten. Diese Datei kann in unterschiedlichen Audioformaten gegeben sein (wav, aiff, flac, ogg oder mp3). Treten bei der Audioanalyse Fehler auf, so werden diese abgefangen und eine verständliche Fehlermeldung erzeugt. Fehler können auftreten, wenn die angegebene Audiodatei nicht existiert oder fehlerhaft ist. Die Kameraposition lässt sich durch Tastatureingaben (W, A, S, D, Ctrl, Space) und Mausbewegungen verändern. Die Audioanalyse läuft in einer kurzen Zeitspanne ab. Sie benötigt als Richtwert ca. 0.2 Sekunden für eine Minute Audiomaterial. Nicht getestet wurde, wie der Prototyp auf anderen Plattformen agiert. Die Anforderung der Plattformunabhängigkeit wurde damit nicht erfüllt.\\
+Für die Umsetzung der Visualisierung wird eine Analyse der Musik durchgeführt. Das Resultat dieser Analyse enthält Zeitpunkte und Intensitäten von rhythmischen Events, die über Beat"-Events dargestellt werden. Neben rhythmischen Events werden ebenfalls Informationen über die Emotionen des Musikstückes erfasst und modelliert. Dazu wurde das Circumplex Modell of Affect eingeführt und unterschiedliche Möglichkeiten getestet auf dieses abzubilden. Zum einen wurde die heute gängige Methode des Machine-Learning-Ansatzes untersucht sowie eine eigene Implementation einer Auswertung von Emotionen vorgenommen. Weiterhin wurde die Unterteilung der Musik in mehrere Abschnitte umgesetzt indem die Arousalwerte auf Ähnlichkeiten an unterschiedlichen Zeitpunkten untersucht werden.\\
+Um die Informationen der Audioanalyse in eine Visualisierung umzusetzen, wurden Flow Fields erarbeitet. Dabei wurden bestehende Algorithmen, wie Perlin Noise, untersucht, angepasst und implementiert. Die Bewegungen der Partikel passen sich dabei an die Beschaffenheit der Musik an, indem Parameter der Bewegung manipuliert werden.\\
+Neben der Bewegung wird die Farbe der Partikel angepasst. Sie bezieht den Valence- und Arousalwert ein, um eine passende Visualisierung zu erschaffen.\\
+Die Implementierung einer zweiten Bewegung wurde nicht umgesetzt. Daraus ergibt sich, dass auch keine Wechsel zwischen diesen Bewegungen realisiert wurde.\\
 
-\subsection{Ergebnis}
-Bei der Betrachtung der implementierten Visualisierung ist eine Verbindung zur Musik augenscheinlich. Unterschiedliche Musik wird unterschiedliche visualisiert.\\
-% - Einzelnen Genres:
-%   - Pop
-%   - Rock
-%   - Techno
-%   - Klassik
-%   - Folk
-% - Ob Visualisierung wirklich die Emotionen widerspiegelt ist schwierig zu sagen
-% - Sieht nicht sooo gut aus, weil keine besonderen Effekte
-% 
+\subsection{Ausblicke}
+% Bessere Approximation der Daten
+% - Valence und Arousaldaten besser machen
+Soll die Visualisierung verbessert werden, so bietet sich eine Verfeinerung der Audioanalyse an. Vor allem die Analyse der Valencedaten könnte durch eine zuverlässigere Erkennung der Akkorde verbessert werden. Weitere Annahmen, die sich auf die Erhebung der Emotionsdaten beziehen, können die Approximation dieser verbessern. An dieser Stelle sind vermutlich statistische Erhebungen notwendig, um ein begründetes Vorgehen zu ermöglichen.\\
+% Weitere Daten
+Überdies können weitere Daten in der Analyse erhoben werden, die Einfluss auf Parameter der Visualisierung nehmen. Vorstellbar sind die Konsonanz bzw. Dissonanz, deren Analyse verbessert werden muss oder spektrale Eigenschaften, wie der Centroid oder Schwerpunkt des Spektrums, der in eine Positionierung der Partikel eingehen kann.\\
+% Mehr Bewegungen
+Um die erfassten Informationen zu visualisieren, können weitere Bewegungen umgesetzt werden. Bei dieser Erweiterung gilt die Bedingung, dass sich die Bewegungen entsprechend der Musik parametrisieren lassen müssen, um den Bezug zur Musik zu gewährleisten.\\
+% Weitere Ausdrucksmittel der Analysierten Daten (Hintergrundfarbe, ...)
+Zudem können neben Farbe und Bewegung der Partikel auch andere Eigenschaften, wie Form oder Transparenz verändert werden oder Eigenschaften, die nicht die Partikel selbst betreffen, wie die Hintergrundfarbe.
 
-% Selbsteinschätzung
-% - Großes System / Overengineering, aber funktioniert gut
-% - Arousal/Valence - Implementation
-
-%\subsection{Ausblicke}
 
 \newpage
 
 \bibliography{bib/literatur}
 \bibliographystyle{alpha}
-
+\newpage
 \listoftables
 \listoffigures
 
