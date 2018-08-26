@@ -85,19 +85,18 @@ an der\\
 Hochschule für Technik und Wirtschaft Berlin\\
 
 \vspace{30pt}
-\large
-vorgelegt von\\
-
-\Large
-Bruno Schilling\\
-
-\large
-555131\\
-
-\vspace{30pt}
 \Large
 1. Betreuer: Prof. Dr.-Ing. Thomas Jung\\
 2. Betreuer: Michael Mario Droste\\
+
+\vspace{30pt}
+\large
+eingereicht von\\
+
+\Large
+Bruno Schilling\\
+\large
+555131\\
 
 \vfill
 {\large \today\par}
@@ -1307,6 +1306,9 @@ Der AudioVisualizer organisiert die Abfolge der Audioanalyse und die Abhängigke
 In diesem Abschnitt soll zu Beginn die Benutzung von Essentia erläutert werden, um darauf aufbauend die \lstinline!DataGenerator! näher zu beleuchten. Zuerst werden \lstinline!DataGenerator! beleuchtet, die Essentia-Algorithmen verwenden. Daraufhin werden die Bereiche erläutert, an denen die Audioanalyse um eigene Algorithmen erweitert wurde. Anschließend wird aufgezeigt, wie die Umwandlung der analysierten Daten in Farbe und Bewegungen der Partikel abläuft.\\
 Ausschlaggebend für das Verständnis der Arbeitsweise der DataGenerator ist die Datenstruktur \lstinline!Pool! von Essentia \cite{EssentiaPool}. Ein Pool ist ein Container, ähnlich wie eine \lstinline!std::map!, der benutzt werden kann, um Daten zu speichern. Dabei werden als Keys Strings verwendet, während unterschiedliche Value-Types verwendet werden können. Um Daten hinzuzufügen, kann die Funktion \lstinline!add()! oder \lstinline!set()! benutzt werden. Mit der \lstinline!value()! Funktion werden Daten abgefragt.\\
 Die \lstinline!DataGenerator! funktionieren, indem sie Daten aus dem Pool abfragen, indem sie die \lstinline!value()!-Funktion benutzen, diese Daten dann verarbeiten und die Ergebnisse zurück in den Pool schreiben. Der nächste Generator kann dann auf diese Daten zugreifen.
+
+\subsubsection{DataGenerator}
+
 \paragraph{Benutzung von Essentia}
 Essentia ist eine Sammlung von Algorithmen, die zur Analyse von Audiomaterial verwendet werden kann. Um einen Algorithmus zu benutzen, muss dieser erst erzeugt werden. Für diesen Zweck gibt es die \lstinline!AlgorithmFactory! von Essentia. Deren \lstinline!create()!-Funktion gibt einen \lstinline!essentia::Algorithm!-Pointer zurück. Die Algorithmen von Essentia haben Inputs und Outputs, die gesetzt werden müssen bevor der Algorithmus ausgeführt wird. Listing \ref{lst:GeneratorAblauf} zeigt schematisch den Ablauf eines typischen Generators.
 
@@ -1357,7 +1359,7 @@ Daraufhin wird das Spektrum berechnet. Es wird für die Bestimmung von Bark Band
 Für weitere Berechnungen wird die Menge an Informationen reduziert. Aus diesem Grund wird das Spektrum anschließend in Bark Bands eingeteilt. Für die Umsetzung wurde der Essentia-Algorithmus \lstinline!BarkBands! verwendet. Das Resultat ist ein \lstinline!std::vector<std::vector<float>>!, der die Lautstärken der Bänder für jeden Frame enthält.\\
 Im nächsten Schritt werden die Differenzen der Bark Bands berechnet. In diesem Zusammenhang muss beachtet werden, dass die Lautstärke eines Bandes mit der Lautstärke des gleichen Bandes aus dem letzten Frame verrechnet wird und nicht die Lautstärke unterschiedlicher Bänder im selben Frame.\\
 Neben den Bark Bands gehen aus dem Spektrum auch die spektralen Spitzen (Spectral Peaks) hervor. Das Spektrum wird dabei auf besonders laute Frequenzen untersucht. Die Ausgabe beinhaltet eine Angabe der gefundenen Frequenzen sowie deren Amplituden. Diese Werte können verwendet werden, um ein Pitch-Class-Profile des Frames zu erstellen. Ein Pitch-Class-Profile enthält einen Wert für jeden Ton der chromatischen Tonleiter, also einen Wert für jeden Ton der Klaviatur. Der Wert des Tones ist die Intensität mit der der Ton in diesem Frame wahrzunehmen ist. Für die Umsetzung wurden die Essentia-Algorithmen \lstinline!SpectralPeaks! und \lstinline!HPCP! (Harmonic Pitch Class Profile) verwendet.\\
-Mit Hilfe der Pitch-Class-Profiles kann der Algorithmus \lstinline!ChordsDetection! benutzt werden. Dieser wertet ein Pitch-Class-Profile aus und entscheidet, welcher Akkord die größte Übereinstimmung ergibt. Sind die Töne eines C-Dur-Akkordes am deutlichsten im Pitch-Class-Profile vertreten, so wird der String ``C'' als Output erzeugt. Töne mit Vorzeichen werden mit einem ``\#'' versehen und Mollakkorde mit einem ``m''. Der Fis-Moll Akkord beispielsweise erzeugt den Output ``F\#m''. Neben diesem String wird eine \lstinline!strength! bestimmt, die angibt, wie stark der gefundene Akkord dem Pitch-Class-Profile entspricht. Die Vorhersage der ChordDetection funktioniert nicht zuverlässig und erzeugt mitunter falsche Angaben. Vor allem bei der Unterscheidung zwischen Moll und Dur treten häufig Fehler auf.
+Mit Hilfe der Pitch-Class-Profiles kann der Algorithmus \lstinline!ChordsDetection! benutzt werden. Dieser wertet ein Pitch-Class-Profile aus und entscheidet, welcher Akkord die größte Übereinstimmung ergibt. Sind die Töne eines C-Dur-Akkordes am deutlichsten im Pitch-Class-Profile vertreten, so wird der String ``C'' als Output erzeugt. Töne mit Vorzeichen werden mit einem ``\#'' versehen und Mollakkorde mit einem ``m''. Der Fis-Moll Akkord beispielsweise erzeugt den Output ``F\#m''. Neben diesem String wird eine \lstinline!strength! bestimmt, die angibt, wie stark der gefundene Akkord dem Pitch-Class-Profile entspricht. Die Vorhersage der ChordDetection funktioniert nicht zuverlässig und erzeugt mitunter falsche Angaben.
 
 \paragraph{Arousal-Valence DataGenerator}
 \label{sec:AVDataGenerator}
@@ -1475,7 +1477,7 @@ Um die Informationen der Audioanalyse in eine Visualisierung umzusetzen, wurden 
 Neben der Bewegung wird die Farbe der Partikel angepasst. Sie bezieht den Valence- und Arousalwert ein, um eine passende Visualisierung zu erschaffen.\\
 Die Implementierung einer zweiten Bewegung wurde nicht umgesetzt. Daraus ergibt sich, dass auch keine Wechsel zwischen diesen Bewegungen realisiert wurde.\\
 
-\subsection{Ausblicke}
+\subsection*{Ausblicke}
 % Bessere Approximation der Daten
 % - Valence und Arousaldaten besser machen
 Soll die Visualisierung verbessert werden, so bietet sich eine Verfeinerung der Audioanalyse an. Vor allem die Analyse der Valencedaten könnte durch eine zuverlässigere Erkennung der Akkorde verbessert werden. Weitere Annahmen, die sich auf die Erhebung der Emotionsdaten beziehen, können die Approximation dieser verbessern. An dieser Stelle sind vermutlich statistische Erhebungen notwendig, um ein begründetes Vorgehen zu ermöglichen.\\
@@ -1488,7 +1490,6 @@ Zudem können neben Farbe und Bewegung der Partikel auch andere Eigenschaften, w
 
 
 \newpage
-
 \bibliography{bib/literatur}
 \bibliographystyle{alpha}
 \newpage
@@ -1496,6 +1497,7 @@ Zudem können neben Farbe und Bewegung der Partikel auch andere Eigenschaften, w
 \listoffigures
 
 \newpage
+\pagenumbering{gobble}
 \section{Eigenständigkeitserklärung}
 \noindent
 Hiermit versichere ich, dass ich die vorliegende Bachelorarbeit selbstständig und nur unter Verwendung der angegebenen Quellen und Hilfsmittel verfasst habe. Die Arbeit wurde bisher in gleicher oder ähnlicher Form keiner anderen Prüfungsbehörde vorgelegt.
